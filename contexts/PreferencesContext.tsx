@@ -4,7 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { Preferences, PreferencesContextType } from "@/types";
 
 const defaultPreferences: Preferences = {
-  gridWidth: 4,
+  gridWidth: 8,
 };
 
 const PreferencesContext = createContext<PreferencesContextType | undefined>(
