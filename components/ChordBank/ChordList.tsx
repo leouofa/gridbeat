@@ -1,6 +1,6 @@
 import React from "react";
 import { Chord } from "@/types";
-import ChordButton from "@/components/ChordButton";
+import ChordButton from "@/components/ChordBank/ChordButton";
 
 interface ChordListProps {
   chords: Chord[];

@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import ChordList from "@/components/ChordList";
-import ChordDetail from "@/components/ChordDetail";
+import ChordList from "@/components/ChordBank/ChordList";
+import ChordDetail from "@/components/ChordBank/ChordDetail";
 import { Chord } from "@/types";
 import { CHORD_DATA } from "@/constants/constants";
 import { usePreferences } from "@/contexts/PreferencesContext";
