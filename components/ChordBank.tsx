@@ -1,11 +1,8 @@
 "use client"
 
 import React, { useState } from 'react';
+import { Chord } from '@/types';
 
-interface Chord {
-    name: string;
-    pattern: number[];
-}
 
 const ChordBank: React.FC = () => {
     const chords: Chord[] = [
