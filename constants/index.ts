@@ -1,6 +1,6 @@
 import { Chord, Note } from "@/types";
 
-export const CHORD_DATA: Chord[] = [
+export const CHORDS: Chord[] = [
   { name: "Major", pattern: [1, 4, 3] },
   { name: "Minor", pattern: [1, 3, 4] },
   { name: "Diminished", pattern: [1, 3, 3] },
@@ -14,7 +14,7 @@ export const CHORD_DATA: Chord[] = [
   { name: "5", pattern: [1, 7, 5] },
 ];
 
-export const NOTE_DATA: Note[] = [
+export const NOTES: Note[] = [
   {
     name: "C",
     alias: "1",
