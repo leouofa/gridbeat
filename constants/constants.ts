@@ -1,4 +1,4 @@
-import { Chord } from "@/types";
+import { Chord, Note } from "@/types";
 
 export const CHORD_DATA: Chord[] = [
   { name: "Major", pattern: [1, 4, 3] },
@@ -12,4 +12,96 @@ export const CHORD_DATA: Chord[] = [
   { name: "Maj7", pattern: [1, 4, 3, 4] },
   { name: "9", pattern: [1, 4, 3, 3, 4] },
   { name: "5", pattern: [1, 7, 5] },
+];
+
+export const NOTE_DATA: Note[] = [
+  {
+    name: "C",
+    alias: "1",
+    natural: true,
+    color: "#de43dd",
+    text_color: "white",
+  },
+  {
+    name: "C♯",
+    alt_name: "D♭",
+    alias: "2",
+    natural: false,
+    color: "#2bfda6",
+    text_color: "black",
+  },
+  {
+    name: "D",
+    alias: "3",
+    natural: true,
+    color: "#acef39",
+    text_color: "black",
+  },
+  {
+    name: "D♯",
+    alt_name: "E♭",
+    alias: "4",
+    natural: false,
+    color: "#2ecc35",
+    text_color: "black",
+  },
+  {
+    name: "E",
+    alias: "5",
+    natural: true,
+    color: "#95fee8",
+    text_color: "black",
+  },
+  {
+    name: "F",
+    alt_name: "G♭",
+    alias: "6",
+    natural: true,
+    color: "#2dd9d8",
+    text_color: "black",
+  },
+  {
+    name: "F♯",
+    alias: "7",
+    natural: false,
+    color: "#2ca8d3",
+    text_color: "white",
+  },
+  {
+    name: "G",
+    alias: "8",
+    natural: true,
+    color: "#4d56fb",
+    text_color: "white",
+  },
+  {
+    name: "G♯",
+    alt_name: "A♭",
+    alias: "9",
+    natural: false,
+    color: "#a37dfc",
+    text_color: "white",
+  },
+  {
+    name: "A",
+    alias: "10",
+    natural: true,
+    color: "#9b3ce9",
+    text_color: "white",
+  },
+  {
+    name: "A♯",
+    alt_name: "B♭",
+    alias: "11",
+    natural: false,
+    color: "#f3f136",
+    text_color: "black",
+  },
+  {
+    name: "B",
+    alias: "12",
+    natural: true,
+    color: "#e97b25",
+    text_color: "black",
+  },
 ];
