@@ -19,9 +19,9 @@ export interface Chord {
 
 export interface Note {
   name: string;
-  alt_name?: string;
+  altName?: string;
   alias: string;
   natural: boolean;
   color: string;
-  text_color: string;
+  textColor: string;
 }
