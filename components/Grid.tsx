@@ -1,15 +1,17 @@
 "use client";
 
 import React from "react";
-import { Note } from "@/types";
+import { Note, Interval } from "@/types";
 import { NOTES } from "@/constants";
 import { usePreferences } from "@/contexts/PreferencesContext";
+import { getNoteHighlight } from "@/utils/NoteHighlighter";
 
 interface GridProps {
-  className?: string;
+  pattern: Interval;
+  rootNote: number;
 }
 
-const Grid: React.FC<GridProps> = ({ className }) => {
+const Grid: React.FC<GridProps> = ({ pattern, rootNote }) => {
   const { preferences } = usePreferences();
 
   // Helper function to normalize note position
@@ -109,21 +111,26 @@ const Grid: React.FC<GridProps> = ({ className }) => {
   const grid = buildGrid();
 
   return (
-    <div className={className}>
+    <div className="p-4">
       {grid.reverse().map((row, rowIndex) => (
         <div key={rowIndex} className="flex">
-          {row.map((note, columnIndex) => (
-            <div
-              key={`${rowIndex}-${columnIndex}`}
-              className="w-12 h-12 flex items-center justify-center m-1 rounded"
-              style={{
-                backgroundColor: note.color,
-                color: note.textColor,
-              }}
-            >
-              {note.name}
-            </div>
-          ))}
+          {row.map((note, columnIndex) => {
+            const highlight = getNoteHighlight(note, pattern, rootNote);
+
+            return (
+              <div
+                key={`${rowIndex}-${columnIndex}`}
+                className="w-12 h-12 flex items-center justify-center m-1 rounded"
+                style={{
+                  backgroundColor: note.color,
+                  color: note.textColor,
+                  ...highlight,
+                }}
+              >
+                {note.name}
+              </div>
+            );
+          })}
         </div>
       ))}
     </div>
