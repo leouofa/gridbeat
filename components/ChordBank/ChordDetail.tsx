@@ -1,6 +1,7 @@
 import React from "react";
 import { Chord } from "@/types";
 import { NOTES } from "@/constants";
+import Grid from "@/components/Grid";
 
 interface ChordDetailProps {
   chord: Chord;
@@ -21,6 +22,7 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
       <p>
         <strong>Pattern:</strong> {chord.pattern.join(" - ")}
       </p>
+      <Grid className="p-4" />
     </div>
   );
 };
