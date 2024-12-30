@@ -10,19 +10,22 @@ interface ChordDetailProps {
 const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
   return (
     <div className="p-4 border rounded shadow-lg">
-      <h2 className="text-xl font-semibold mb-2">Selected Chord</h2>
-      {NOTES.map((note, index) => (
-        <div key={index}>
-          <h2 className="font-mono">{note.name}</h2>
-        </div>
-      ))}
+      <h2 className="text-xl font-semibold mb-2">Chord Type</h2>
       <p className="mb-1">
         <strong>Name:</strong> {chord.name}
       </p>
       <p>
         <strong>Pattern:</strong> {chord.pattern.join(" - ")}
       </p>
-      <Grid className="p-4" />
+      <br />
+      <br />
+
+      {NOTES.map((note, index) => (
+        <div key={index}>
+          <h2 className="font-mono">{note.name}</h2>
+          <Grid pattern={chord.pattern} rootNote={parseInt(note.alias)} />
+        </div>
+      ))}
     </div>
   );
 };

@@ -10,11 +10,16 @@ export type PreferencesContextType = {
 };
 
 /**
+ * Describes an Interval which is an array that must contain at least 3 numbers
+ */
+export type Interval = [number, number, number, ...number[]];
+
+/**
  * Describes a chord with a name and a pattern of intervals.
  */
 export interface Chord {
   name: string;
-  pattern: [number, number, number, ...number[]];
+  pattern: Interval;
 }
 
 export interface Note {
