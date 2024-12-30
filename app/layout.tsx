@@ -31,7 +31,7 @@ export default function RootLayout({
       >
         <PreferencesProvider>
           <Menu />
-          {children}
+          <main className="pt-14">{children}</main>
         </PreferencesProvider>
       </body>
     </html>
