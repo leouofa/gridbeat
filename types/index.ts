@@ -16,3 +16,12 @@ export interface Chord {
   name: string;
   pattern: [number, number, number, ...number[]];
 }
+
+export interface Note {
+  name: string;
+  altName?: string;
+  alias: string;
+  natural: boolean;
+  color: string;
+  textColor: string;
+}
