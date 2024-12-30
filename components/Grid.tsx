@@ -7,8 +7,8 @@ import { usePreferences } from "@/contexts/PreferencesContext";
 import { getNoteHighlight } from "@/utils/NoteHighlighter";
 
 interface GridProps {
-  pattern: Interval;
-  rootNote: number;
+  pattern?: Interval;
+  rootNote?: number;
 }
 
 const Grid: React.FC<GridProps> = ({ pattern, rootNote }) => {
@@ -115,7 +115,11 @@ const Grid: React.FC<GridProps> = ({ pattern, rootNote }) => {
       {grid.reverse().map((row, rowIndex) => (
         <div key={rowIndex} className="flex">
           {row.map((note, columnIndex) => {
-            const highlight = getNoteHighlight(note, pattern, rootNote);
+            // Only get highlight if both pattern and rootNote are provided
+            const highlight =
+              pattern && rootNote !== undefined
+                ? getNoteHighlight(note, pattern, rootNote)
+                : {};
 
             return (
               <div
