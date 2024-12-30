@@ -9,6 +9,9 @@ export type PreferencesContextType = {
   updatePreferences: (newPreferences: Partial<Preferences>) => void;
 };
 
+/**
+ * Describes an Interval which is an array that must contain at least 3 numbers
+ */
 export type Interval = [number, number, number, ...number[]];
 
 /**
