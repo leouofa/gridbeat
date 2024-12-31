@@ -102,8 +102,8 @@ const Navigation = () => {
 type OctaveDropdownProps = {
   isOpen: boolean;
   onToggle: () => void;
-  selectedOctaves: number;
-  onOctaveSelect: (octaves: number) => void;
+  selectedOctaves: OctaveLength;
+  onOctaveSelect: (octaves: OctaveLength) => void;
 };
 
 const OctaveDropdown = ({
