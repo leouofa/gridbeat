@@ -1,7 +1,9 @@
 export type GridWidth = 2 | 3 | 4 | 5 | 8;
+export type OctaveLength = 1 | 2 | 3 | 4;
 
 export interface Preferences {
   gridWidth: GridWidth;
+  octaves: OctaveLength;
 }
 
 export type PreferencesContextType = {

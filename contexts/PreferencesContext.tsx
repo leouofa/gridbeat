@@ -5,6 +5,7 @@ import { Preferences, PreferencesContextType } from "@/types";
 
 const defaultPreferences: Preferences = {
   gridWidth: 8,
+  octaves: 2,
 };
 
 const PreferencesContext = createContext<PreferencesContextType | undefined>(
