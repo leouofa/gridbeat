@@ -36,14 +36,14 @@ export const getNoteHighlight = (
   // Check if note is part of the pattern
   if (notesInPattern.includes(noteValue)) {
     return {
-      opacity: 0.6,
-      filter: undefined,
+      opacity: 1,
+      filter: "grayscale(0) brightness(50%)",
     };
   }
 
   // Note is not part of the chord
   return {
-    opacity: 0.2,
-    filter: "grayscale(100%)",
+    opacity: 0.8,
+    filter: "grayscale(100%) brightness(15%)",
   };
 };

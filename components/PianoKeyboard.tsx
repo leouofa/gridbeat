@@ -36,9 +36,8 @@ const PianoKey: React.FC<PianoKeyProps> = ({
           ? `linear-gradient(to bottom, black 0%, black 30%, ${note.color} 30%, ${note.color} 100%)`
           : note.color,
         color: note.textColor,
-        opacity: highlight.opacity,
+        opacity: isBlack ? "" : highlight.opacity,
         filter: highlight.filter,
-        transition: "opacity 0.2s, filter 0.2s", // Optional: smooth transition for highlights
       }}
     >
       {note.name}
