@@ -106,6 +106,7 @@ export function Menu() {
       <div ref={menuRef}>
         <LayoutDropdown
           isOpen={isOpen}
+          aria-expanded={isOpen}
           onToggle={() => setIsOpen(!isOpen)}
           selectedWidth={preferences.gridWidth}
           onWidthSelect={handleWidthSelect}

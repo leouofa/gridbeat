@@ -5,13 +5,19 @@ export function useClickOutside(
   handler: () => void,
 ) {
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    function handleClickOutside(event: Event) {
       if (ref.current && !ref.current.contains(event.target as Node)) {
         handler();
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    const events = ["mousedown", "touchstart"] as const;
+    events.forEach((e) =>
+      document.addEventListener(e, handleClickOutside as EventListener),
+    );
+    return () =>
+      events.forEach((e) =>
+        document.removeEventListener(e, handleClickOutside as EventListener),
+      );
   }, [ref, handler]);
 }
