@@ -167,8 +167,8 @@ export function Menu() {
     setIsOctaveOpen(false);
   });
 
-  const handleWidthSelect = (width: GridWidth) => {
-    updatePreferences({ ...preferences, gridWidth: width });
+  const handleWidthSelect = (gridWidth: GridWidth) => {
+    updatePreferences({ ...preferences, gridWidth });
     setIsLayoutOpen(false);
   };
 
