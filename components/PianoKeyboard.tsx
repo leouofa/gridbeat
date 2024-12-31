@@ -1,7 +1,10 @@
+"use client";
+
 import React from "react";
 import { NOTES } from "@/constants";
 import { Note, Interval } from "@/types";
 import { getNoteHighlight } from "@/utils/NoteHighlighter";
+import { usePreferences } from "@/contexts/PreferencesContext";
 
 interface PianoKeyProps {
   note: Note;
@@ -51,9 +54,11 @@ interface PianoKeyboardProps {
 }
 
 const PianoKeyboard: React.FC<PianoKeyboardProps> = ({ pattern, rootNote }) => {
+  const { preferences } = usePreferences();
+
   const createKeys = () => {
     const keys = [];
-    const octaves = 2;
+    const octaves = preferences.octaves;
 
     for (let octave = 0; octave < octaves; octave++) {
       NOTES.forEach((note) => {
