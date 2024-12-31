@@ -5,10 +5,12 @@ import { useState, useRef } from "react";
 import { GridWidth } from "@/types";
 import Link from "next/link";
 import { useClickOutside } from "@/hooks/useClickOutside";
+import { usePathname } from "next/navigation";
 
 const GRID_WIDTH_OPTIONS: readonly GridWidth[] = [8, 5, 4, 3, 2];
 const NAV_LINKS = [
   { href: "/", label: "Home" },
+  { href: "/notes", label: "Notes" },
   { href: "/chords", label: "Chords" },
 ];
 
@@ -72,19 +74,28 @@ const LayoutDropdown = ({
   </div>
 );
 
-const Navigation = () => (
-  <nav className="flex space-x-4">
-    {NAV_LINKS.map(({ href, label }) => (
-      <Link
-        key={href}
-        href={href}
-        className="px-4 py-2 rounded-md hover:bg-zinc-800"
-      >
-        {label}
-      </Link>
-    ))}
-  </nav>
-);
+const Navigation = () => {
+  const pathname = usePathname(); // Add this hook
+
+  return (
+    <nav className="flex space-x-4">
+      {NAV_LINKS.map(({ href, label }) => (
+        <Link
+          key={href}
+          href={href}
+          className={`px-4 py-2 rounded-md transition-colors duration-200
+            ${
+              pathname === href
+                ? "bg-zinc-800 text-white"
+                : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
+            }`}
+        >
+          {label}
+        </Link>
+      ))}
+    </nav>
+  );
+};
 
 export function Menu() {
   const { preferences, updatePreferences } = usePreferences();
