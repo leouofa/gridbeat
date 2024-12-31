@@ -172,7 +172,7 @@ export function Menu() {
     setIsLayoutOpen(false);
   };
 
-  const handleOctaveSelect = (octaves: number) => {
+  const handleOctaveSelect = (octaves: OctaveLength) => {
     updatePreferences({ ...preferences, octaves });
     setIsOctaveOpen(false);
   };
