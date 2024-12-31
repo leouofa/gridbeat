@@ -1,14 +1,28 @@
 import React from "react";
 import { NOTES } from "@/constants";
-import { Note } from "@/types";
+import { Note, Interval } from "@/types";
+import { getNoteHighlight } from "@/utils/NoteHighlighter";
 
 interface PianoKeyProps {
   note: Note;
   octave: number;
+  pattern?: Interval;
+  rootNote?: number;
 }
 
-const PianoKey: React.FC<PianoKeyProps> = ({ note, octave }) => {
+const PianoKey: React.FC<PianoKeyProps> = ({
+  note,
+  octave,
+  pattern,
+  rootNote,
+}) => {
   const isBlack = !note.natural;
+
+  // Get highlight styling if pattern and rootNote are provided
+  const highlight =
+    pattern && rootNote !== undefined
+      ? getNoteHighlight(note, pattern, rootNote)
+      : { opacity: 1 };
 
   return (
     <div
@@ -22,6 +36,9 @@ const PianoKey: React.FC<PianoKeyProps> = ({ note, octave }) => {
           ? `linear-gradient(to bottom, black 0%, black 30%, ${note.color} 30%, ${note.color} 100%)`
           : note.color,
         color: note.textColor,
+        opacity: highlight.opacity,
+        filter: highlight.filter,
+        transition: "opacity 0.2s, filter 0.2s", // Optional: smooth transition for highlights
       }}
     >
       {note.name}
@@ -29,7 +46,12 @@ const PianoKey: React.FC<PianoKeyProps> = ({ note, octave }) => {
   );
 };
 
-const PianoKeyboard: React.FC = () => {
+interface PianoKeyboardProps {
+  pattern?: Interval;
+  rootNote?: number;
+}
+
+const PianoKeyboard: React.FC<PianoKeyboardProps> = ({ pattern, rootNote }) => {
   const createKeys = () => {
     const keys = [];
     const octaves = 2;
@@ -52,7 +74,13 @@ const PianoKeyboard: React.FC = () => {
     <div className="w-full overflow-x-auto p-4">
       <div className="flex relative">
         {keys.map((key, index) => (
-          <PianoKey key={index} note={key.note} octave={key.octave} />
+          <PianoKey
+            key={index}
+            note={key.note}
+            octave={key.octave}
+            pattern={pattern}
+            rootNote={rootNote}
+          />
         ))}
       </div>
     </div>
