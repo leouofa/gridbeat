@@ -1,7 +1,11 @@
+import Grid from "@/components/Grid";
+import PianoKeyboard from "@/components/PianoKeyboard";
+
 export default function NotesHome() {
   return (
     <div>
-      <h1>Hi</h1>
+      <Grid />
+      <PianoKeyboard />
     </div>
   );
 }
