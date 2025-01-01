@@ -56,6 +56,11 @@ interface PianoKeyboardProps {
 const PianoKeyboard: React.FC<PianoKeyboardProps> = ({ pattern, rootNote }) => {
   const { preferences } = usePreferences();
 
+  // Early return if piano is not in visible instruments
+  if (!preferences.visibleInstruments.includes("piano")) {
+    return null;
+  }
+
   const createKeys = () => {
     const keys = [];
     const octaves = preferences.octaves;
