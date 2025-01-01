@@ -10,32 +10,34 @@ interface GuitarStringProps {
   startNote: Note;
   pattern?: Interval;
   rootNote?: number;
+  frets: number;
 }
 
 const GuitarString: React.FC<GuitarStringProps> = ({
   startNote,
   pattern,
   rootNote,
+  frets,
 }) => {
-  // Generate 12 frets for each string
+  // Generate frets for each string based on preferences
   const getFretNotes = () => {
-    const frets = [];
+    const fretNotes = [];
     const currentNoteIndex = NOTES.findIndex(
       (note) => note.name === startNote.name,
     );
 
-    for (let fret = 0; fret <= 12; fret++) {
+    for (let fret = 0; fret <= frets; fret++) {
       const noteIndex = (currentNoteIndex + fret) % 12;
-      frets.push(NOTES[noteIndex]);
+      fretNotes.push(NOTES[noteIndex]);
     }
-    return frets;
+    return fretNotes;
   };
 
-  const frets = getFretNotes();
+  const fretNotes = getFretNotes();
 
   return (
     <div className="flex h-8 border-b border-gray-300">
-      {frets.map((note, index) => {
+      {fretNotes.map((note, index) => {
         const highlight =
           pattern && rootNote !== undefined
             ? getNoteHighlight(note, pattern, rootNote)
@@ -78,10 +80,10 @@ const Guitar: React.FC<GuitarProps> = ({ pattern, rootNote }) => {
   // Standard guitar tuning (from highest to lowest string)
   const standardTuning = [
     NOTES[4], // E
-    NOTES[11], // B
-    NOTES[7], // G
-    NOTES[2], // D
     NOTES[9], // A
+    NOTES[2], // D
+    NOTES[7], // G
+    NOTES[11], // B
     NOTES[4], // E
   ];
 
@@ -91,14 +93,22 @@ const Guitar: React.FC<GuitarProps> = ({ pattern, rootNote }) => {
         {/* Fret numbers */}
         <div className="flex h-8 border-b border-gray-300">
           <div className="w-12 flex items-center justify-center border-r border-gray-400"></div>
-          {[...Array(12)].map((_, index) => (
-            <div
-              key={index}
-              className="w-16 flex items-center justify-center border-r border-gray-400"
-            >
-              {index + 1}
-            </div>
-          ))}
+          {[...Array(preferences.guitarFrets)].map((_, index) => {
+            const fretNumber = index + 1;
+            const isBoldFret = [3, 5, 7, 9, 12].includes(fretNumber);
+
+            return (
+              <div
+                key={index}
+                className={`
+                  w-16 flex items-center justify-center border-r border-gray-400
+                  ${isBoldFret ? "bg-gray-500 text-white" : ""}
+                `}
+              >
+                {fretNumber}
+              </div>
+            );
+          })}
         </div>
 
         {/* Guitar strings */}
@@ -108,6 +118,7 @@ const Guitar: React.FC<GuitarProps> = ({ pattern, rootNote }) => {
             startNote={note}
             pattern={pattern}
             rootNote={rootNote}
+            frets={preferences.guitarFrets}
           />
         ))}
       </div>
