@@ -2,7 +2,13 @@
 
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { useState, useRef } from "react";
-import { GridWidth, OctaveLength, Instrument } from "@/types";
+import {
+  GridWidth,
+  OctaveLength,
+  GuitarFrets,
+  UkuleleFrets,
+  Instrument,
+} from "@/types";
 import Link from "next/link";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { usePathname } from "next/navigation";
@@ -15,6 +21,8 @@ const INSTRUMENT_OPTIONS: readonly Instrument[] = [
   "guitar",
   "ukulele",
 ];
+const GUITAR_FRETS_OPTIONS: readonly GuitarFrets[] = [3, 5, 7, 9, 12];
+const UKULELE_FRETS_OPTIONS: readonly UkuleleFrets[] = [3, 5, 7, 9, 12];
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -164,8 +172,8 @@ const OctaveDropdown = ({
 
 const getInstrumentLabel = (instrument: Instrument): string => {
   const labels: Record<Instrument, string> = {
+    grid: "Grid",
     piano: "Piano",
-    grid: "Grid Controller",
     guitar: "Guitar",
     ukulele: "Ukulele",
   };
@@ -236,16 +244,135 @@ const InstrumentDropdown = ({
   </div>
 );
 
+type GuitarFretsDropdownProps = {
+  isOpen: boolean;
+  onToggle: () => void;
+  selectedFrets: GuitarFrets;
+  onFretSelect: (frets: GuitarFrets) => void;
+};
+
+const GuitarFretsDropdown = ({
+  isOpen,
+  onToggle,
+  selectedFrets,
+  onFretSelect,
+}: GuitarFretsDropdownProps) => (
+  <div className="relative">
+    <button
+      onClick={onToggle}
+      className="px-4 py-2 text-sm bg-zinc-800 text-zinc-100 rounded-md hover:bg-zinc-700
+                transition-colors duration-200 flex items-center gap-2"
+    >
+      <span>Guitar Frets: {selectedFrets}</span>
+      <svg
+        className={`w-4 h-4 transition-transform duration-200 ${
+          isOpen ? "rotate-180" : ""
+        }`}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M19 9l-7 7-7-7"
+        />
+      </svg>
+    </button>
+
+    {isOpen && (
+      <div className="absolute right-0 mt-2 py-2 w-48 bg-zinc-800 rounded-md shadow-lg">
+        {GUITAR_FRETS_OPTIONS.map((frets) => (
+          <button
+            key={frets}
+            onClick={() => onFretSelect(frets)}
+            className={`w-full text-left px-4 py-2 text-sm ${
+              selectedFrets === frets
+                ? "bg-zinc-700 text-white"
+                : "text-zinc-300 hover:bg-zinc-700 hover:text-white"
+            } transition-colors duration-200`}
+          >
+            {frets} Frets
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+);
+
+type UkuleleFretsDropdownProps = {
+  isOpen: boolean;
+  onToggle: () => void;
+  selectedFrets: UkuleleFrets;
+  onFretSelect: (frets: UkuleleFrets) => void;
+};
+
+// Add new dropdown component
+const UkuleleFretsDropdown = ({
+  isOpen,
+  onToggle,
+  selectedFrets,
+  onFretSelect,
+}: UkuleleFretsDropdownProps) => (
+  <div className="relative">
+    <button
+      onClick={onToggle}
+      className="px-4 py-2 text-sm bg-zinc-800 text-zinc-100 rounded-md hover:bg-zinc-700
+                transition-colors duration-200 flex items-center gap-2"
+    >
+      <span>Ukulele Frets: {selectedFrets}</span>
+      <svg
+        className={`w-4 h-4 transition-transform duration-200 ${
+          isOpen ? "rotate-180" : ""
+        }`}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M19 9l-7 7-7-7"
+        />
+      </svg>
+    </button>
+
+    {isOpen && (
+      <div className="absolute right-0 mt-2 py-2 w-48 bg-zinc-800 rounded-md shadow-lg">
+        {UKULELE_FRETS_OPTIONS.map((frets) => (
+          <button
+            key={frets}
+            onClick={() => onFretSelect(frets)}
+            className={`w-full text-left px-4 py-2 text-sm ${
+              selectedFrets === frets
+                ? "bg-zinc-700 text-white"
+                : "text-zinc-300 hover:bg-zinc-700 hover:text-white"
+            } transition-colors duration-200`}
+          >
+            {frets} Frets
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+);
+
 export function Menu() {
   const { preferences, updatePreferences } = usePreferences();
   const [isLayoutOpen, setIsLayoutOpen] = useState(false);
   const [isOctaveOpen, setIsOctaveOpen] = useState(false);
   const [isInstrumentOpen, setIsInstrumentOpen] = useState(false);
+  const [isGuitarFretsOpen, setIsGuitarFretsOpen] = useState(false);
+  const [isUkuleleFretsOpen, setIsUkuleleFretsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useClickOutside(menuRef as React.RefObject<HTMLElement>, () => {
     setIsLayoutOpen(false);
     setIsOctaveOpen(false);
+    setIsGuitarFretsOpen(false);
+    setIsUkuleleFretsOpen(false);
     setIsInstrumentOpen(false);
   });
 
@@ -265,10 +392,18 @@ export function Menu() {
       ? currentInstruments.filter((i) => i !== instrument)
       : [...currentInstruments, instrument];
 
-    // Ensure at least one instrument is always selected
-    //if (newInstruments.length > 0) {
     updatePreferences({ ...preferences, visibleInstruments: newInstruments });
-    //}
+  };
+
+  const handleGuitarFretSelect = (guitarFrets: GuitarFrets) => {
+    updatePreferences({ ...preferences, guitarFrets });
+    setIsGuitarFretsOpen(false);
+  };
+
+  // Add new handler
+  const handleUkuleleFretSelect = (ukuleleFrets: UkuleleFrets) => {
+    updatePreferences({ ...preferences, ukuleleFrets });
+    setIsUkuleleFretsOpen(false);
   };
 
   return (
@@ -280,6 +415,18 @@ export function Menu() {
           onToggle={() => setIsInstrumentOpen(!isInstrumentOpen)}
           selectedInstruments={preferences.visibleInstruments}
           onInstrumentToggle={handleInstrumentToggle}
+        />
+        <GuitarFretsDropdown
+          isOpen={isGuitarFretsOpen}
+          onToggle={() => setIsGuitarFretsOpen(!isGuitarFretsOpen)}
+          selectedFrets={preferences.guitarFrets}
+          onFretSelect={handleGuitarFretSelect}
+        />
+        <UkuleleFretsDropdown
+          isOpen={isUkuleleFretsOpen}
+          onToggle={() => setIsUkuleleFretsOpen(!isUkuleleFretsOpen)}
+          selectedFrets={preferences.ukuleleFrets}
+          onFretSelect={handleUkuleleFretSelect}
         />
         <OctaveDropdown
           isOpen={isOctaveOpen}
