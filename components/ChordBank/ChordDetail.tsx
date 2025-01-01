@@ -3,6 +3,7 @@ import { Chord } from "@/types";
 import { NOTES } from "@/constants";
 import Grid from "@/components/Grid";
 import PianoKeyboard from "@/components/PianoKeyboard";
+import Guitar from "@/components/Guitar";
 
 interface ChordDetailProps {
   chord: Chord;
@@ -29,6 +30,7 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
             pattern={chord.pattern}
             rootNote={parseInt(note.alias)}
           />
+          <Guitar pattern={chord.pattern} rootNote={parseInt(note.alias)} />
         </div>
       ))}
     </div>
