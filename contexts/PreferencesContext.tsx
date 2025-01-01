@@ -7,6 +7,8 @@ const defaultPreferences: Preferences = {
   gridWidth: 8,
   octaves: 2,
   visibleInstruments: ["piano", "grid"],
+  guitarFrets: 12,
+  ukuleleFrets: 12,
 };
 
 const PreferencesContext = createContext<PreferencesContextType | undefined>(
