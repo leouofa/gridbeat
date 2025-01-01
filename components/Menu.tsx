@@ -2,13 +2,7 @@
 
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { useState, useRef } from "react";
-import {
-  GridWidth,
-  OctaveLength,
-  GuitarFrets,
-  UkuleleFrets,
-  Instrument,
-} from "@/types";
+import { GridWidth, Instrument } from "@/types";
 import Link from "next/link";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { usePathname } from "next/navigation";
@@ -104,13 +98,32 @@ export function Menu() {
   const { preferences, updatePreferences } = usePreferences();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   useClickOutside(menuRef as React.RefObject<HTMLElement>, () => {
     setOpenDropdown(null);
   });
 
   const toggleDropdown = (dropdown: string) => {
-    setOpenDropdown(openDropdown === dropdown ? null : dropdown);
+    // Special handling for instruments dropdown
+    if (dropdown === "instruments") {
+      // If instruments is open and user clicks it again, close it
+      if (openDropdown === "instruments") {
+        setOpenDropdown(null);
+      }
+      // If another dropdown is open, close it and open instruments
+      else if (openDropdown !== null) {
+        setOpenDropdown("instruments");
+      }
+      // If no dropdown is open, open instruments
+      else {
+        setOpenDropdown("instruments");
+      }
+    }
+    // For all other dropdowns
+    else {
+      setOpenDropdown(openDropdown === dropdown ? null : dropdown);
+    }
   };
 
   const updatePreference = <T extends keyof typeof preferences>(
@@ -118,7 +131,10 @@ export function Menu() {
     value: (typeof preferences)[T],
   ) => {
     updatePreferences({ ...preferences, [key]: value });
-    setOpenDropdown(null);
+    // Don't close the dropdown if we're updating instruments
+    if (key !== "visibleInstruments") {
+      setOpenDropdown(null);
+    }
   };
 
   const handleInstrumentToggle = (instrument: Instrument) => {
@@ -127,10 +143,10 @@ export function Menu() {
       ? currentInstruments.filter((i) => i !== instrument)
       : [...currentInstruments, instrument];
     updatePreference("visibleInstruments", newInstruments);
+    // Don't close the dropdown after toggling an instrument
   };
 
-  const renderNavigation = () => {
-    const pathname = usePathname();
+  const renderNavigation = (currentPath: string) => {
     return (
       <nav className="flex space-x-4">
         {CONSTANTS.NAV_LINKS.map(({ href, label }) => (
@@ -139,7 +155,7 @@ export function Menu() {
             href={href}
             className={`px-4 py-2 rounded-md transition-colors duration-200
               ${
-                pathname === href
+                currentPath === href
                   ? "bg-zinc-800 text-white"
                   : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
               }`}
@@ -277,7 +293,7 @@ export function Menu() {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-2 bg-zinc-900 text-zinc-100 font-mono">
-      {renderNavigation()}
+      {renderNavigation(pathname)}
       {renderDropdowns()}
     </div>
   );
