@@ -4,6 +4,7 @@ import React from "react";
 import { NOTES } from "@/constants";
 import { Note, Interval } from "@/types";
 import { getNoteHighlight } from "@/utils/NoteHighlighter";
+import { usePreferences } from "@/contexts/PreferencesContext";
 
 interface GuitarStringProps {
   startNote: Note;
@@ -67,6 +68,13 @@ interface GuitarProps {
 }
 
 const Guitar: React.FC<GuitarProps> = ({ pattern, rootNote }) => {
+  const { preferences } = usePreferences();
+
+  // Early return if guitar is not in visible instruments
+  if (!preferences.visibleInstruments.includes("guitar")) {
+    return null;
+  }
+
   // Standard guitar tuning (from highest to lowest string)
   const standardTuning = [
     NOTES[4], // E

@@ -1,9 +1,11 @@
 export type GridWidth = 2 | 3 | 4 | 5 | 8;
 export type OctaveLength = 1 | 2 | 3 | 4;
+export type Instrument = "guitar" | "ukulele" | "grid" | "piano";
 
 export interface Preferences {
   gridWidth: GridWidth;
   octaves: OctaveLength;
+  visibleInstruments: Instrument[];
 }
 
 export type PreferencesContextType = {

@@ -2,13 +2,19 @@
 
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { useState, useRef } from "react";
-import { GridWidth, OctaveLength } from "@/types";
+import { GridWidth, OctaveLength, Instrument } from "@/types";
 import Link from "next/link";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { usePathname } from "next/navigation";
 
 const GRID_WIDTH_OPTIONS: readonly GridWidth[] = [8, 5, 4, 3, 2];
 const OCTAVE_OPTIONS: readonly OctaveLength[] = [1, 2, 3, 4];
+const INSTRUMENT_OPTIONS: readonly Instrument[] = [
+  "piano",
+  "grid",
+  "guitar",
+  "ukulele",
+];
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -156,15 +162,91 @@ const OctaveDropdown = ({
   </div>
 );
 
+const getInstrumentLabel = (instrument: Instrument): string => {
+  const labels: Record<Instrument, string> = {
+    piano: "Piano",
+    grid: "Grid Controller",
+    guitar: "Guitar",
+    ukulele: "Ukulele",
+  };
+  return labels[instrument];
+};
+
+type InstrumentDropdownProps = {
+  isOpen: boolean;
+  onToggle: () => void;
+  selectedInstruments: Instrument[];
+  onInstrumentToggle: (instrument: Instrument) => void;
+};
+
+const InstrumentDropdown = ({
+  isOpen,
+  onToggle,
+  selectedInstruments = [],
+  onInstrumentToggle,
+}: InstrumentDropdownProps) => (
+  <div className="relative">
+    <button
+      onClick={onToggle}
+      className="px-4 py-2 text-sm bg-zinc-800 text-zinc-100 rounded-md hover:bg-zinc-700
+                transition-colors duration-200 flex items-center gap-2"
+    >
+      <span>Instruments ({selectedInstruments.length})</span>
+      <svg
+        className={`w-4 h-4 transition-transform duration-200 ${
+          isOpen ? "rotate-180" : ""
+        }`}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M19 9l-7 7-7-7"
+        />
+      </svg>
+    </button>
+
+    {isOpen && (
+      <div className="absolute right-0 mt-2 py-2 w-48 bg-zinc-800 rounded-md shadow-lg">
+        {INSTRUMENT_OPTIONS.map((instrument) => (
+          <button
+            key={instrument}
+            onClick={() => onInstrumentToggle(instrument)}
+            className={`w-full text-left px-4 py-2 text-sm flex items-center gap-2
+              ${
+                selectedInstruments.includes(instrument)
+                  ? "bg-zinc-700 text-white"
+                  : "text-zinc-300 hover:bg-zinc-700 hover:text-white"
+              } transition-colors duration-200`}
+          >
+            <input
+              type="checkbox"
+              checked={selectedInstruments.includes(instrument)}
+              onChange={() => {}}
+              className="h-4 w-4"
+            />
+            {getInstrumentLabel(instrument)}
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+);
+
 export function Menu() {
   const { preferences, updatePreferences } = usePreferences();
   const [isLayoutOpen, setIsLayoutOpen] = useState(false);
   const [isOctaveOpen, setIsOctaveOpen] = useState(false);
+  const [isInstrumentOpen, setIsInstrumentOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useClickOutside(menuRef as React.RefObject<HTMLElement>, () => {
     setIsLayoutOpen(false);
     setIsOctaveOpen(false);
+    setIsInstrumentOpen(false);
   });
 
   const handleWidthSelect = (gridWidth: GridWidth) => {
@@ -177,10 +259,28 @@ export function Menu() {
     setIsOctaveOpen(false);
   };
 
+  const handleInstrumentToggle = (instrument: Instrument) => {
+    const currentInstruments = preferences.visibleInstruments || [];
+    const newInstruments = currentInstruments.includes(instrument)
+      ? currentInstruments.filter((i) => i !== instrument)
+      : [...currentInstruments, instrument];
+
+    // Ensure at least one instrument is always selected
+    //if (newInstruments.length > 0) {
+    updatePreferences({ ...preferences, visibleInstruments: newInstruments });
+    //}
+  };
+
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-2 bg-zinc-900 text-zinc-100 font-mono">
       <Navigation />
       <div ref={menuRef} className="flex gap-2">
+        <InstrumentDropdown
+          isOpen={isInstrumentOpen}
+          onToggle={() => setIsInstrumentOpen(!isInstrumentOpen)}
+          selectedInstruments={preferences.visibleInstruments}
+          onInstrumentToggle={handleInstrumentToggle}
+        />
         <OctaveDropdown
           isOpen={isOctaveOpen}
           onToggle={() => setIsOctaveOpen(!isOctaveOpen)}

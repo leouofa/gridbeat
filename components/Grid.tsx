@@ -14,6 +14,11 @@ interface GridProps {
 const Grid: React.FC<GridProps> = ({ pattern, rootNote }) => {
   const { preferences } = usePreferences();
 
+  // Early return if grid is not in visible instruments
+  if (!preferences.visibleInstruments.includes("grid")) {
+    return null;
+  }
+
   // Helper function to normalize note position
   const normalizePosition = (position: number): number => {
     // Handle negative numbers and numbers larger than 11
