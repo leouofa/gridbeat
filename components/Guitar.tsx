@@ -80,10 +80,10 @@ const Guitar: React.FC<GuitarProps> = ({ pattern, rootNote }) => {
   // Standard guitar tuning (from highest to lowest string)
   const standardTuning = [
     NOTES[4], // E
-    NOTES[11], // B
-    NOTES[7], // G
-    NOTES[2], // D
     NOTES[9], // A
+    NOTES[2], // D
+    NOTES[7], // G
+    NOTES[11], // B
     NOTES[4], // E
   ];
 
@@ -93,14 +93,22 @@ const Guitar: React.FC<GuitarProps> = ({ pattern, rootNote }) => {
         {/* Fret numbers */}
         <div className="flex h-8 border-b border-gray-300">
           <div className="w-12 flex items-center justify-center border-r border-gray-400"></div>
-          {[...Array(preferences.guitarFrets)].map((_, index) => (
-            <div
-              key={index}
-              className="w-16 flex items-center justify-center border-r border-gray-400"
-            >
-              {index + 1}
-            </div>
-          ))}
+          {[...Array(preferences.guitarFrets)].map((_, index) => {
+            const fretNumber = index + 1;
+            const isBoldFret = [3, 5, 7, 9, 12].includes(fretNumber);
+
+            return (
+              <div
+                key={index}
+                className={`
+                  w-16 flex items-center justify-center border-r border-gray-400
+                  ${isBoldFret ? "bg-gray-500 text-white" : ""}
+                `}
+              >
+                {fretNumber}
+              </div>
+            );
+          })}
         </div>
 
         {/* Guitar strings */}
