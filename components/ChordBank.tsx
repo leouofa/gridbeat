@@ -1,29 +1,40 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import ChordList from "@/components/ChordBank/ChordList";
 import ChordDetail from "@/components/ChordBank/ChordDetail";
-import { Chord } from "@/types";
 import { CHORDS } from "@/constants";
 import { usePreferences } from "@/contexts/PreferencesContext";
 
-const ChordBank: React.FC = () => {
-  const [selectedChord, setSelectedChord] = useState<Chord | null>(null);
+const DEFAULT_CHORD = "Major";
 
-  const { preferences } = usePreferences();
+const ChordBank: React.FC = () => {
+  const { preferences, updatePreferences } = usePreferences();
+
+  // Get the active chord based on preferences
+  const selectedChord =
+    CHORDS.find((c) => c.name === preferences.activeChordName) ||
+    CHORDS.find((c) => c.name === DEFAULT_CHORD)!;
 
   const handleSelectChord = (chordName: string) => {
-    const chord = CHORDS.find((c) => c.name === chordName);
-    setSelectedChord(chord || null);
+    updatePreferences({ activeChordName: chordName });
   };
 
   return (
-    <div className="p-8 font-mono">
-      <h1 className="text-2xl font-bold mb-4">Chord Bank</h1>
-      <p>Current grid width: {preferences.gridWidth}</p>
-      <ChordList chords={CHORDS} onSelectChord={handleSelectChord} />
-      {selectedChord && <ChordDetail chord={selectedChord} />}
-    </div>
+    <>
+      <div className="fixed top-[56px] left-0 right-0 bg-zinc-800 border-b border-zinc-800 z-40">
+        <div className="p-3 font-mono">
+          <ChordList
+            chords={CHORDS}
+            onSelectChord={handleSelectChord}
+            selectedChordName={selectedChord.name}
+          />
+        </div>
+      </div>
+      <div className="mt-20">
+        <ChordDetail chord={selectedChord} />
+      </div>
+    </>
   );
 };
 
