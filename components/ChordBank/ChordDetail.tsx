@@ -38,9 +38,16 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
               />
             </div>
           </div>
-          <div>
-            <Guitar pattern={chord.pattern} rootNote={parseInt(note.alias)} />
-            <Ukulele pattern={chord.pattern} rootNote={parseInt(note.alias)} />
+          <div className="flex flex-wrap gap-4 mt-4">
+            <div className="flex-shrink-0">
+              <Guitar pattern={chord.pattern} rootNote={parseInt(note.alias)} />
+            </div>
+            <div className="flex-shrink-0">
+              <Ukulele
+                pattern={chord.pattern}
+                rootNote={parseInt(note.alias)}
+              />
+            </div>
           </div>
         </div>
       ))}
