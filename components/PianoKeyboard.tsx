@@ -80,8 +80,8 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({ pattern, rootNote }) => {
   const keys = createKeys();
 
   return (
-    <div className="w-full overflow-x-auto p-4">
-      <div className="flex relative">
+    <div className="overflow-x-auto m-1">
+      <div className="flex relative min-w-fit">
         {keys.map((key, index) => (
           <PianoKey
             key={index}

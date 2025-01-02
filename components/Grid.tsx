@@ -116,7 +116,7 @@ const Grid: React.FC<GridProps> = ({ pattern, rootNote }) => {
   const grid = buildGrid();
 
   return (
-    <div className="p-4">
+    <div>
       {grid.reverse().map((row, rowIndex) => (
         <div key={rowIndex} className="flex">
           {row.map((note, columnIndex) => {

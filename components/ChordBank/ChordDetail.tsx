@@ -26,13 +26,22 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
       {NOTES.map((note, index) => (
         <div key={index}>
           <h2 className="font-mono">{note.name}</h2>
-          <Grid pattern={chord.pattern} rootNote={parseInt(note.alias)} />
-          <PianoKeyboard
-            pattern={chord.pattern}
-            rootNote={parseInt(note.alias)}
-          />
-          <Guitar pattern={chord.pattern} rootNote={parseInt(note.alias)} />
-          <Ukulele pattern={chord.pattern} rootNote={parseInt(note.alias)} />
+          <br />
+          <div className="flex flex-wrap gap-4">
+            <div className="flex-shrink-0">
+              <Grid pattern={chord.pattern} rootNote={parseInt(note.alias)} />
+            </div>
+            <div className="flex-grow">
+              <PianoKeyboard
+                pattern={chord.pattern}
+                rootNote={parseInt(note.alias)}
+              />
+            </div>
+          </div>
+          <div>
+            <Guitar pattern={chord.pattern} rootNote={parseInt(note.alias)} />
+            <Ukulele pattern={chord.pattern} rootNote={parseInt(note.alias)} />
+          </div>
         </div>
       ))}
     </div>
