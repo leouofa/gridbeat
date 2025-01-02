@@ -11,19 +11,20 @@ export default function NotesPage() {
             <ContentCard title="What are Notes" emoji="🎵" headingLevel="h1">
               <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans">
                 <li>
-                  At their simplest form notes are <strong>symbols</strong> for
+                  Notes are simply <strong>symbols</strong> that represent
                   sounds.
                 </li>
                 <li>
-                  Western music uses 12 notes, to denote 12 distinct sounds.
+                  Western music uses 12 distinct notes to represent unique
+                  sounds.
                 </li>
               </ul>
 
-              <div className="flex justify-center gap-2 my-6">
+              <div className="flex gap-2 mt-8 mb-8">
                 {NOTES.map((note) => (
                   <div
                     key={note.alias}
-                    className="w-10 h-10 flex items-center justify-center rounded"
+                    className="w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800"
                   >
                     {note.alias}
                   </div>
@@ -31,17 +32,15 @@ export default function NotesPage() {
               </div>
 
               <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans">
-                <li>
-                  Instead of using numbers we can use letters to represent them.
-                </li>
-                <li>Its easiest to think of it as a musical alphabet.</li>
+                <li>Notes can be represented by letters instead of numbers.</li>
+                <li>Think of it as a musical alphabet for easy reference.</li>
               </ul>
 
-              <div className="flex justify-center gap-2 my-6">
+              <div className="flex gap-2 mt-8">
                 {NOTES.map((note) => (
                   <div
                     key={note.name}
-                    className="w-10 h-10 flex items-center justify-center rounded"
+                    className="w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800"
                     style={{
                       backgroundColor: note.color,
                       color: note.textColor,
@@ -58,16 +57,16 @@ export default function NotesPage() {
                 <li>The notes with the hash sign (♯) are called sharps.</li>
                 <li>The notes without sharps are called natural notes.</li>
                 <li>
-                  Sharps notes (♯) have alternate names, called flats (♭).
+                  Sharps notes (♯) have alternate names known as flats (♭).
                 </li>
                 <li>For example, C♯ is equivalent to D♭.</li>
               </ul>
 
-              <div className="flex justify-center gap-2 my-6">
+              <div className="flex gap-2 mt-8">
                 {NOTES.map((note) => (
                   <div
                     key={note.name}
-                    className={`w-10 h-10 flex items-center justify-center rounded ${
+                    className={`w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800 ${
                       !note.natural ? "bg-black text-white" : "bg-white"
                     }`}
                   >
@@ -80,12 +79,14 @@ export default function NotesPage() {
             <ContentCard title="The Octaves" emoji="🎶" headingLevel="h2">
               <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans">
                 <li>
-                  On a grid controller the notes are laid out from{" "}
+                  The grid controller lays out notes from{" "}
                   <strong>bottom left to top right</strong>.
                 </li>
-                <li>They start with C, go up to B, and then repeat.</li>
                 <li>
-                  The distance from C to B is called an <strong>Octave</strong>.
+                  It starts with C, progresses to B, and repeats the cycle.
+                </li>
+                <li>
+                  The span from C to B is called an <strong>Octave</strong>.
                 </li>
                 <li>Every time the pattern repeats a new Octave begins.</li>
               </ul>
