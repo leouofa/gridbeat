@@ -51,7 +51,7 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
         const chordNotes = getChordNotes(parseInt(note.alias), chord.pattern);
         return (
           <div key={index} className="mb-28">
-            <h2 className="font-mono mb-4">
+            <h2 className="font-mono mb-6 text-lg">
               {`${note.name} ${chord.name} (${chordNotes.join(", ")})`}
             </h2>
             <div className="flex flex-wrap gap-4">
