@@ -12,7 +12,7 @@ interface ChordDetailProps {
 
 const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
   return (
-    <div className="p-4 border rounded shadow-lg">
+    <div className="p-4">
       <h2 className="text-xl font-semibold mb-2">Chord Type</h2>
       <p className="mb-1">
         <strong>Name:</strong> {chord.name}

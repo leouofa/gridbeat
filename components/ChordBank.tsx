@@ -15,10 +15,16 @@ const ChordBank: React.FC = () => {
   };
 
   return (
-    <div className="p-8 font-mono">
-      <ChordList chords={CHORDS} onSelectChord={handleSelectChord} />
-      {selectedChord && <ChordDetail chord={selectedChord} />}
-    </div>
+    <>
+      <div className="fixed top-[56px] left-0 right-0 bg-zinc-800 border-b border-zinc-800 z-40">
+        <div className="p-3 font-mono">
+          <ChordList chords={CHORDS} onSelectChord={handleSelectChord} />
+        </div>
+      </div>
+      <div className="mt-20">
+        {selectedChord && <ChordDetail chord={selectedChord} />}
+      </div>
+    </>
   );
 };
 
