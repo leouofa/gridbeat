@@ -4,6 +4,7 @@ import { NOTES } from "@/constants";
 import Grid from "@/components/Grid";
 import PianoKeyboard from "@/components/PianoKeyboard";
 import Guitar from "@/components/Guitar";
+import Ukulele from "@/components/Ukulele";
 
 interface ChordDetailProps {
   chord: Chord;
@@ -21,16 +22,36 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
       </p>
       <br />
       <br />
-
       {NOTES.map((note, index) => (
-        <div key={index}>
-          <h2 className="font-mono">{note.name}</h2>
-          <Grid pattern={chord.pattern} rootNote={parseInt(note.alias)} />
-          <PianoKeyboard
-            pattern={chord.pattern}
-            rootNote={parseInt(note.alias)}
-          />
-          <Guitar pattern={chord.pattern} rootNote={parseInt(note.alias)} />
+        <div key={index} className="mb-8">
+          <h2 className="font-mono mb-4">{note.name}</h2>
+          <div className="flex flex-wrap gap-4">
+            <div className="flex-shrink-0 flex flex-col gap-4 max-w-full">
+              <div className="overflow-x-auto">
+                <PianoKeyboard
+                  pattern={chord.pattern}
+                  rootNote={parseInt(note.alias)}
+                />
+              </div>
+              <div className="flex flex-wrap gap-4 max-w-full">
+                <div className="overflow-x-auto flex-shrink-0 min-w-0">
+                  <Guitar
+                    pattern={chord.pattern}
+                    rootNote={parseInt(note.alias)}
+                  />
+                </div>
+                <div className="overflow-x-auto flex-shrink-0 min-w-0">
+                  <Ukulele
+                    pattern={chord.pattern}
+                    rootNote={parseInt(note.alias)}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="flex-grow">
+              <Grid pattern={chord.pattern} rootNote={parseInt(note.alias)} />
+            </div>
+          </div>
         </div>
       ))}
     </div>
