@@ -12,9 +12,10 @@ const defaultPreferences: Preferences = {
   activeChordName: "Major",
 };
 
-const PreferencesContext = createContext<PreferencesContextType | undefined>(
-  undefined,
-);
+const PreferencesContext = createContext<PreferencesContextType>({
+  preferences: defaultPreferences, // Provide default value here
+  updatePreferences: () => {}, // Provide empty function as default
+});
 
 export function PreferencesProvider({
   children,
@@ -24,23 +25,32 @@ export function PreferencesProvider({
   const [preferences, setPreferences] =
     useState<Preferences>(defaultPreferences);
 
-  // Load preferences from localStorage on mount
   useEffect(() => {
-    const storedPreferences = localStorage.getItem("gridbeat-preferences");
-    if (storedPreferences) {
-      try {
-        setPreferences(JSON.parse(storedPreferences));
-      } catch (error) {
-        console.error("Failed to parse stored preferences:", error);
+    try {
+      const storedPreferences = localStorage.getItem("gridbeat-preferences");
+      if (storedPreferences) {
+        const parsedPreferences = JSON.parse(storedPreferences);
+        // Ensure all required properties exist by merging with defaults
+        setPreferences({
+          ...defaultPreferences,
+          ...parsedPreferences,
+        });
       }
+    } catch (error) {
+      console.error("Failed to parse stored preferences:", error);
+      // Fallback to default preferences if there's an error
+      setPreferences(defaultPreferences);
     }
   }, []);
 
-  // Update preferences and persist to localStorage
   const updatePreferences = (newPreferences: Partial<Preferences>) => {
     setPreferences((prev) => {
       const updated = { ...prev, ...newPreferences };
-      localStorage.setItem("gridbeat-preferences", JSON.stringify(updated));
+      try {
+        localStorage.setItem("gridbeat-preferences", JSON.stringify(updated));
+      } catch (error) {
+        console.error("Failed to save preferences:", error);
+      }
       return updated;
     });
   };
@@ -52,11 +62,6 @@ export function PreferencesProvider({
   );
 }
 
-// Custom hook to use preferences
 export function usePreferences() {
-  const context = useContext(PreferencesContext);
-  if (context === undefined) {
-    throw new Error("usePreferences must be used within a PreferencesProvider");
-  }
-  return context;
+  return useContext(PreferencesContext);
 }
