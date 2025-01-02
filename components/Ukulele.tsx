@@ -86,8 +86,8 @@ const Ukulele: React.FC<UkuleleProps> = ({ pattern, rootNote }) => {
   ];
 
   return (
-    <div className="overflow-x-auto">
-      <div className="border rounded min-w-fit">
+    <div className="w-fit overflow-x-auto p-4">
+      <div className="border rounded">
         {/* Fret numbers */}
         <div className="flex h-8 border-b border-gray-300">
           <div className="w-12 flex items-center justify-center border-r border-gray-400"></div>
