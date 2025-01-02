@@ -9,13 +9,21 @@ import { getNoteHighlight } from "@/utils/NoteHighlighter";
 interface GridProps {
   pattern?: Interval;
   rootNote?: number;
+  props?: {
+    visible?: boolean;
+    width?: number;
+  };
 }
 
-const Grid: React.FC<GridProps> = ({ pattern, rootNote }) => {
+const Grid: React.FC<GridProps> = ({ pattern, rootNote, props }) => {
   const { preferences } = usePreferences();
 
-  // Early return if grid is not in visible instruments
-  if (!preferences.visibleInstruments.includes("grid")) {
+  // Use props.visible if provided, otherwise check preferences
+  const isVisible =
+    props?.visible ?? preferences.visibleInstruments.includes("grid");
+
+  // Early return if grid should not be visible
+  if (!isVisible) {
     return null;
   }
 
@@ -28,7 +36,8 @@ const Grid: React.FC<GridProps> = ({ pattern, rootNote }) => {
   };
 
   const buildGrid = (): Note[][] => {
-    const width = preferences.gridWidth;
+    // Use props.width if provided, otherwise use preferences width
+    const width = props?.width ?? preferences.gridWidth;
 
     switch (width) {
       case 8:
