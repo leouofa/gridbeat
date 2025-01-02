@@ -39,7 +39,7 @@ export default function Home() {
                   know the real us.
                 </li>
                 <li>
-                  <strong>Anyone can learn music</strong> how to play music,
+                  <strong>Anyone can learn how to play music</strong>,
                   regardless of age, creed or gender.
                 </li>
                 <li>
@@ -54,9 +54,9 @@ export default function Home() {
             </div>
 
             <div className="bg-gray-50 text-gray-800 px-6 sm:px-8 md:px-12 py-12 sm:py-16 md:py-20 mb-28 rounded drop-shadow-md">
-              <h1 className="font-sans text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-6 sm:mb-8 md:mb-10">
+              <h2 className="font-sans text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-6 sm:mb-8 md:mb-10">
                 Start With Electronic Music 💾
-              </h1>
+              </h2>
               <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
                 Ready to create your own beats and explore endless
                 possibilities? Electronic music is a great way to get started on
@@ -89,9 +89,9 @@ export default function Home() {
             </div>
 
             <div className="bg-gray-50 text-gray-800 px-6 sm:px-8 md:px-12 py-12 sm:py-16 md:py-20 mb-28 rounded drop-shadow-md">
-              <h1 className="font-sans text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-6 sm:mb-8 md:mb-10">
+              <h2 className="font-sans text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-6 sm:mb-8 md:mb-10">
                 Use Grid Controllers 🛠️
-              </h1>
+              </h2>
               <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
                 If you’re new to music production, grid controllers are a game
                 changer. Imagine creating music by simply pressing buttons.
@@ -99,7 +99,7 @@ export default function Home() {
               <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
                 That’s the power of a grid controller like the Novation
                 Launchpad. It’s as easy as tapping a button to trigger different
-                sounds, making it an perfect tool for beginners. Here’s why:
+                sounds, making it a perfect tool for beginners. Here’s why:
               </p>
               <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans">
                 <li>
