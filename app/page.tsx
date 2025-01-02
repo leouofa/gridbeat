@@ -8,6 +8,11 @@ export default function Home() {
               <h1 className="font-sans text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-6 sm:mb-8 md:mb-10">
                 The Truth About Music 🎵
               </h1>
+              <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
+                Have you ever wondered why music speaks to everyone, no matter
+                their background? Music {"isn't"} just something we listen to—
+                {"it's"} part of who we are. Here are some truths about music:
+              </p>
               <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans">
                 <li>
                   We are all born knowing how to tap our feet, sing and enjoy
@@ -19,26 +24,32 @@ export default function Home() {
                     href="https://www.amazon.com/Language-Instinct-How-Mind-Creates/dp/1491514981"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-400 underline"
+                    className="text-blue-700 underline"
                   >
                     Instinct
                   </a>
                   .
                 </li>
-                <li>Music both unifies and equalizes people.</li>
                 <li>
-                  Music is a language of feeling and through it people get to
+                  Music both unifies and equalizes people, breaking down
+                  barriers that separate us.
+                </li>
+                <li>
+                  Music is a language of feeling, and through it, people get to
                   know the real us.
                 </li>
                 <li>
                   <strong>Anyone can learn music</strong> how to play music,
-                  regardless of age, creed or sex.
+                  regardless of age, creed or gender.
                 </li>
                 <li>
-                  Music is easy to learn. All you have to do is start and give
-                  yourself space to succeed.
+                  Learning music is simpler than it seems. Just start and give
+                  yourself the space to grow.
                 </li>
-                <li>Music is a marathon. Slow down and enjoy the journey.</li>
+                <li>
+                  Music is a marathon, not a sprint—slow down and enjoy the
+                  journey.
+                </li>
               </ul>
             </div>
 
@@ -46,6 +57,11 @@ export default function Home() {
               <h1 className="font-sans text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-6 sm:mb-8 md:mb-10">
                 Start With Electronic Music 💾
               </h1>
+              <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
+                Ready to create your own beats and explore endless
+                possibilities? Electronic music is a great way to get started on
+                your musical journey. {"Here's"} why:
+              </p>
               <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans">
                 <li>
                   Start making music right away while you develop rhythm and
@@ -56,19 +72,18 @@ export default function Home() {
                   from learning how to play an instrument.
                 </li>
                 <li>
-                  Learn one instrument, and play hundreds of other instruments.
+                  Learn one instrument, and {"you'll"} have access to hundreds
+                  of others.
                 </li>
-                <li>Learn live looping and become a one person orchestra.</li>
+                <li>Learn live looping and become a one-person orchestra.</li>
                 <li>
-                  Use filters and special effects to craft your super special
+                  Use filters and special effects to craft your own unique
                   sounds.
                 </li>
+                <li>Produce your own music and share it with the world.</li>
                 <li>
-                  Learn how to produce your own music and share it with others.
-                </li>
-                <li>
-                  Music is music. You will become better at playing normal
-                  instruments.
+                  Music is music—your skills in electronic music will enhance
+                  your ability to play traditional instruments.
                 </li>
               </ul>
             </div>
@@ -78,9 +93,13 @@ export default function Home() {
                 Use Grid Controllers 🛠️
               </h1>
               <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
-                There are over 1,500 music instruments out there. This site
-                focuses on Grid Controllers, specifically the Novation Launchpad
-                Series, here is why:
+                If you’re new to music production, grid controllers are a game
+                changer. Imagine creating music by simply pressing buttons.
+              </p>
+              <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
+                That’s the power of a grid controller like the Novation
+                Launchpad. It’s as easy as tapping a button to trigger different
+                sounds, making it an perfect tool for beginners. Here’s why:
               </p>
               <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans">
                 <li>
