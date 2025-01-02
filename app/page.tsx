@@ -27,7 +27,7 @@ export default function Home() {
                     href="https://www.amazon.com/Language-Instinct-How-Mind-Creates/dp/1491514981"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-700 underline"
+                    className="text-blue-700 dark:text-blue-400 underline"
                   >
                     Instinct
                   </a>
@@ -118,7 +118,7 @@ export default function Home() {
                     href="https://us.novationmusic.com/products/launchpad-mini-mk3"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-700 underline"
+                    className="text-blue-700 dark:text-blue-400 underline"
                   >
                     $99
                   </a>{" "}
@@ -127,7 +127,7 @@ export default function Home() {
                     href="https://us.novationmusic.com/products/launchpad-pro-mk3"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-700 underline"
+                    className="text-blue-700 dark:text-blue-400 underline"
                   >
                     $299
                   </a>{" "}

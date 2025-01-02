@@ -14,7 +14,7 @@ export default function ContentCard({
   const Heading = headingLevel;
 
   return (
-    <div className="bg-gray-50 text-gray-800 px-6 sm:px-8 md:px-12 py-12 sm:py-16 md:py-20 mb-28 rounded drop-shadow-md">
+    <div className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 px-6 sm:px-8 md:px-12 py-12 sm:py-16 md:py-20 mb-28 rounded drop-shadow-md">
       <Heading className="font-sans text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-6 sm:mb-8 md:mb-10">
         {title} {emoji}
       </Heading>

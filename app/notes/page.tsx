@@ -24,7 +24,7 @@ export default function NotesPage() {
                 {NOTES.map((note) => (
                   <div
                     key={note.alias}
-                    className="w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800"
+                    className="w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800 dark:border-gray-200"
                   >
                     {note.alias}
                   </div>
@@ -40,7 +40,7 @@ export default function NotesPage() {
                 {NOTES.map((note) => (
                   <div
                     key={note.name}
-                    className="w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800"
+                    className="w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800 dark:border-gray-200"
                     style={{
                       backgroundColor: note.color,
                       color: note.textColor,
@@ -66,8 +66,10 @@ export default function NotesPage() {
                 {NOTES.map((note) => (
                   <div
                     key={note.name}
-                    className={`w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800 ${
-                      !note.natural ? "bg-black text-white" : "bg-white"
+                    className={`w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800 dark:border-gray-200 ${
+                      !note.natural
+                        ? "bg-black text-white"
+                        : "bg-white dark:text-gray-800"
                     }`}
                   >
                     {note.name}
