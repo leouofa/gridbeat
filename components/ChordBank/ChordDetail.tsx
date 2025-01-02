@@ -26,20 +26,14 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
         <div key={index} className="mb-8">
           <h2 className="font-mono mb-4">{note.name}</h2>
           <div className="flex flex-wrap gap-4">
-            {/* Left side: Piano with Guitar/Ukulele underneath */}
             <div className="flex-shrink-0 flex flex-col gap-4 max-w-full">
-              {" "}
-              {/* Added max-w-full */}
               <div className="overflow-x-auto">
                 <PianoKeyboard
                   pattern={chord.pattern}
                   rootNote={parseInt(note.alias)}
                 />
               </div>
-              {/* Changed to a scrollable container */}
               <div className="flex flex-wrap gap-4 max-w-full">
-                {" "}
-                {/* Added max-w-full and flex-wrap */}
                 <div className="overflow-x-auto flex-shrink-0 min-w-0">
                   <Guitar
                     pattern={chord.pattern}
@@ -54,14 +48,12 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
                 </div>
               </div>
             </div>
-
-            {/* Right side: Grid */}
             <div className="flex-grow">
               <Grid pattern={chord.pattern} rootNote={parseInt(note.alias)} />
             </div>
           </div>
         </div>
-      ))}{" "}
+      ))}
     </div>
   );
 };
