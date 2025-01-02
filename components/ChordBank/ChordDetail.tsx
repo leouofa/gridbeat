@@ -38,15 +38,13 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-semibold mb-2">Chord Type</h2>
-      <p className="mb-1">
-        <strong>Name:</strong> {chord.name}
-      </p>
-      <p>
-        <strong>Pattern:</strong> {chord.pattern.join(" - ")}
-      </p>
-      <br />
-      <br />
+      <div className="mb-10">
+        <h1 className="text-2xl">
+          {chord.name} Chords ({chord.pattern.join(" - ")})
+        </h1>
+        <p>{chord.description}</p>
+      </div>
+
       {NOTES.map((note, index) => {
         const chordNotes = getChordNotes(parseInt(note.alias), chord.pattern);
         return (
