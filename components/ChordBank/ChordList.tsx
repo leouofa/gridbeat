@@ -10,7 +10,6 @@ interface ChordListProps {
 const ChordList: React.FC<ChordListProps> = ({ chords, onSelectChord }) => {
   return (
     <div className="mb-6">
-      <h2 className="text-xl font-semibold mb-2">Available Chords</h2>
       <ul className="flex space-x-4">
         {chords.map((chord) => (
           <li key={chord.name}>
