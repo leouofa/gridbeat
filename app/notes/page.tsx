@@ -99,16 +99,16 @@ export default function NotesPage() {
             <ContentCard title="Take Your Time" emoji="🧘‍♀" headingLevel="h2">
               <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans">
                 <li>
-                  Learning to use the grid controller is no different than using
-                  a computer keyboard.
+                  Using a grid controller is similar to mastering a computer
+                  keyboard.
                 </li>
                 <li>
-                  In the beginning you will look at the controller to find the
-                  notes you are looking for.
+                  Initially, {"you'll"} rely on looking at the controller to
+                  find the right notes.
                 </li>
                 <li>
-                  Over time you will develop muscle memory, and will know which
-                  button to press based on the sound you want to produce.
+                  With practice, your muscle memory will guide you, and{" "}
+                  {"you'll"} intuitively know which button produces which sound.
                 </li>
               </ul>
             </ContentCard>

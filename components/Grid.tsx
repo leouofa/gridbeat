@@ -138,7 +138,7 @@ const Grid: React.FC<GridProps> = ({ pattern, rootNote, props }) => {
             return (
               <div
                 key={`${rowIndex}-${columnIndex}`}
-                className="w-12 h-12 flex items-center justify-center m-1 rounded"
+                className="w-12 h-12 flex items-center justify-center m-1 rounded border-2 border-gray-800 dark:border-gray-200"
                 style={{
                   backgroundColor: note.color,
                   color: note.textColor,
