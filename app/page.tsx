@@ -4,11 +4,11 @@ export default function Home() {
       <div className="mx-auto p-4">
         <div className="flex justify-center">
           <div className="w-full lg:w-7/12">
-            <div className="bg-gray-50 text-gray-800 px-12 py-20 mb-28 rounded drop-shadow-md">
-              <h1 className="font-sans text-4xl font-semibold text-center mb-10">
+            <div className="bg-gray-50 text-gray-800 px-6 sm:px-8 md:px-12 py-12 sm:py-16 md:py-20 mb-28 rounded drop-shadow-md">
+              <h1 className="font-sans text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-6 sm:mb-8 md:mb-10">
                 The Truth About Music 🎵
               </h1>
-              <ul className="list-disc list-inside text-lg space-y-2 font-sans">
+              <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans">
                 <li>
                   We are all born knowing how to tap our feet, sing and enjoy
                   music.
@@ -42,11 +42,11 @@ export default function Home() {
               </ul>
             </div>
 
-            <div className="bg-gray-50 text-gray-800 px-12 py-20 mb-28 rounded drop-shadow-md">
-              <h1 className="font-sans text-4xl font-semibold text-center mb-10">
+            <div className="bg-gray-50 text-gray-800 px-6 sm:px-8 md:px-12 py-12 sm:py-16 md:py-20 mb-28 rounded drop-shadow-md">
+              <h1 className="font-sans text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-6 sm:mb-8 md:mb-10">
                 Start With Electronic Music 💾
               </h1>
-              <ul className="list-disc list-inside text-lg space-y-2 font-sans">
+              <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans">
                 <li>
                   Start making music right away while you develop rhythm and
                   timing.
@@ -73,16 +73,16 @@ export default function Home() {
               </ul>
             </div>
 
-            <div className="bg-gray-50 text-gray-800 px-12 py-20 mb-28 rounded drop-shadow-md">
-              <h1 className="font-sans text-4xl font-semibold text-center mb-10">
+            <div className="bg-gray-50 text-gray-800 px-6 sm:px-8 md:px-12 py-12 sm:py-16 md:py-20 mb-28 rounded drop-shadow-md">
+              <h1 className="font-sans text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-6 sm:mb-8 md:mb-10">
                 Use Grid Controllers 🛠️
               </h1>
-              <p className="text-lg mb-4 font-sans">
+              <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
                 There are over 1,500 music instruments out there. This site
                 focuses on Grid Controllers, specifically the Novation Launchpad
                 Series, here is why:
               </p>
-              <ul className="list-disc list-inside text-lg space-y-2 font-sans">
+              <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans">
                 <li>
                   Launchpads are similar to computer keyboards, making them an
                   ideal choice for those that already know how to type.
