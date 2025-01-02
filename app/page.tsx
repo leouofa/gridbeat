@@ -1,13 +1,16 @@
+import ContentCard from "@/components/ContentCard";
+
 export default function Home() {
   return (
     <div className="mt-20">
       <div className="mx-auto p-4">
         <div className="flex justify-center">
           <div className="w-full lg:w-7/12">
-            <div className="bg-gray-50 text-gray-800 px-6 sm:px-8 md:px-12 py-12 sm:py-16 md:py-20 mb-28 rounded drop-shadow-md">
-              <h1 className="font-sans text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-6 sm:mb-8 md:mb-10">
-                The Truth About Music 🎵
-              </h1>
+            <ContentCard
+              title="The Truth About Music"
+              emoji="🎵"
+              headingLevel="h1"
+            >
               <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
                 Have you ever wondered why music speaks to everyone, no matter
                 their background? Music {"isn't"} just something we listen to—
@@ -51,12 +54,13 @@ export default function Home() {
                   journey.
                 </li>
               </ul>
-            </div>
+            </ContentCard>
 
-            <div className="bg-gray-50 text-gray-800 px-6 sm:px-8 md:px-12 py-12 sm:py-16 md:py-20 mb-28 rounded drop-shadow-md">
-              <h2 className="font-sans text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-6 sm:mb-8 md:mb-10">
-                Start With Electronic Music 💾
-              </h2>
+            <ContentCard
+              title="Start With Electronic Music"
+              emoji="💾"
+              headingLevel="h2"
+            >
               <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
                 Ready to create your own beats and explore endless
                 possibilities? Electronic music is a great way to get started on
@@ -86,20 +90,22 @@ export default function Home() {
                   your ability to play traditional instruments.
                 </li>
               </ul>
-            </div>
+            </ContentCard>
 
-            <div className="bg-gray-50 text-gray-800 px-6 sm:px-8 md:px-12 py-12 sm:py-16 md:py-20 mb-28 rounded drop-shadow-md">
-              <h2 className="font-sans text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-6 sm:mb-8 md:mb-10">
-                Use Grid Controllers 🛠️
-              </h2>
+            <ContentCard
+              title="Use Grid Controllers"
+              emoji="🛠️"
+              headingLevel="h2"
+            >
               <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
-                If you’re new to music production, grid controllers are a game
-                changer. Imagine creating music by simply pressing buttons.
+                If {"you're"} new to music production, grid controllers are a
+                game changer. Imagine creating music by simply pressing buttons.
               </p>
               <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
-                That’s the power of a grid controller like the Novation
-                Launchpad. It’s as easy as tapping a button to trigger different
-                sounds, making it a perfect tool for beginners. Here’s why:
+                {"That's"} the power of a grid controller like the Novation
+                Launchpad. {"It's"} as easy as tapping a button to trigger
+                different sounds, making it a perfect tool for beginners.{" "}
+                {"Here's"} why:
               </p>
               <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans">
                 <li>
@@ -136,7 +142,7 @@ export default function Home() {
                   expand your setup and add more launchpads to your arsenal.
                 </li>
               </ul>
-            </div>
+            </ContentCard>
           </div>
         </div>
       </div>
