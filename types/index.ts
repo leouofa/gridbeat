@@ -29,6 +29,7 @@ export type Interval = [number, number, number, ...number[]];
 export interface Chord {
   name: string;
   pattern: Interval;
+  description: string;
 }
 
 export interface Note {
