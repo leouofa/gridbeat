@@ -10,6 +10,7 @@ export interface Preferences {
   visibleInstruments: Instrument[];
   guitarFrets: GuitarFrets;
   ukuleleFrets: UkuleleFrets;
+  activeChordName: string;
 }
 
 export type PreferencesContextType = {

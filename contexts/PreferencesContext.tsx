@@ -9,6 +9,7 @@ const defaultPreferences: Preferences = {
   visibleInstruments: ["piano", "grid"],
   guitarFrets: 12,
   ukuleleFrets: 12,
+  activeChordName: "Major",
 };
 
 const PreferencesContext = createContext<PreferencesContextType | undefined>(
