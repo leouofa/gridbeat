@@ -23,8 +23,20 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
       <br />
       <br />
       {NOTES.map((note, index) => (
-        <div key={index} className="mb-8">
-          <h2 className="font-mono mb-4">{note.name}</h2>
+        <div key={index} className="mb-28">
+          <h2 className="font-mono mb-4">
+            {`${note.name} ${chord.name}`}
+            <span className="text-zinc-600 dark:text-zinc-400">
+              (
+              {chord.pattern
+                .map(
+                  (interval) =>
+                    NOTES[(parseInt(note.alias) + interval) % 12].name,
+                )
+                .join(", ")}
+              )
+            </span>
+          </h2>
           <div className="flex flex-wrap gap-4">
             <div className="flex-shrink-0 flex flex-col gap-4 max-w-full">
               <div className="overflow-x-auto">
