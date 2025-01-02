@@ -5,9 +5,14 @@ import ChordButton from "@/components/ChordBank/ChordButton";
 interface ChordListProps {
   chords: Chord[];
   onSelectChord: (chordName: string) => void;
+  selectedChordName: string | null; // Add this prop
 }
 
-const ChordList: React.FC<ChordListProps> = ({ chords, onSelectChord }) => {
+const ChordList: React.FC<ChordListProps> = ({
+  chords,
+  onSelectChord,
+  selectedChordName,
+}) => {
   return (
     <div>
       <ul className="flex space-x-4">
@@ -16,6 +21,7 @@ const ChordList: React.FC<ChordListProps> = ({ chords, onSelectChord }) => {
             <ChordButton
               name={chord.name}
               onClick={() => onSelectChord(chord.name)}
+              isActive={selectedChordName === chord.name} // Pass isActive prop
             />
           </li>
         ))}
