@@ -182,6 +182,9 @@ export function Menu() {
         />
         {openDropdown === "instruments" && (
           <DropdownContainer>
+            <div className="border-t border-zinc-700 mt-1" />
+            <div className="px-4 py-2 text-md text-zinc-400">Instruments</div>
+            <div className="border-t border-zinc-700 mb-1" />
             {CONSTANTS.INSTRUMENTS.map((instrument) => (
               <DropdownOption
                 key={instrument}
@@ -201,8 +204,9 @@ export function Menu() {
                 </div>
               </DropdownOption>
             ))}
-            <div className="border-t border-zinc-700 my-2" />
-            <div className="px-4 py-2 text-sm text-zinc-400">Synth Type</div>
+            <div className="border-t border-zinc-700 mt-1" />
+            <div className="px-4 py-2 text-md text-zinc-400">Sound Type</div>
+            <div className="border-t border-zinc-700 mb-1" />
             {CONSTANTS.SYNTH_TYPES.map(({ value, label }) => (
               <DropdownOption
                 key={value}
