@@ -6,6 +6,9 @@ import Guitar from "@/components/Guitar";
 import Ukulele from "@/components/Ukulele";
 import { usePreferences } from "@/contexts/PreferencesContext";
 
+import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid";
+import { StarIcon as StarIconOutline } from "@heroicons/react/24/outline";
+
 interface ChordViewProps {
   note: Note;
   chord: Chord;
@@ -46,13 +49,23 @@ export const ChordView: React.FC<ChordViewProps> = ({
         </button>
         <button
           onClick={onToggleFavorite}
-          className={`px-3 py-1 rounded text-sm border-2 ${
+          className={`px-3 py-1 rounded text-sm border-2 inline-flex items-center justify-center gap-2 ${
             isFavorite
               ? "bg-yellow-500 hover:bg-yellow-400 active:bg-yellow-600 text-black border-gray-800"
               : "bg-gray-600 hover:bg-gray-500 active:bg-gray-700 text-white border-gray-800"
           }`}
         >
-          {isFavorite ? "★ Favorited" : "☆ Add to Favorites"}
+          {isFavorite ? (
+            <>
+              <StarIconSolid className="h-4 w-4" />
+              <span>Favorited</span>
+            </>
+          ) : (
+            <>
+              <StarIconOutline className="h-4 w-4" />
+              <span>Add to Favorites</span>
+            </>
+          )}{" "}
         </button>
       </div>
       <div className="flex flex-wrap gap-4">
