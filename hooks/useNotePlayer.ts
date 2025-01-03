@@ -3,7 +3,7 @@ import { Note, SynthType } from "@/types";
 import { useInstrument } from "@/hooks/useInstrument";
 import { usePreferences } from "@/contexts/PreferencesContext";
 
-type InstrumentType = "guitar" | "piano" | "ukulele";
+type InstrumentType = "guitar" | "piano" | "ukulele" | "grid";
 
 export const useNotePlayer = (
   instrumentType: InstrumentType,
