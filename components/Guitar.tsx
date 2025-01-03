@@ -2,15 +2,20 @@
 
 import React from "react";
 import { NOTES } from "@/constants";
-import { Note, Interval } from "@/types";
+import { Note, Interval, SynthType } from "@/types";
 import { getNoteHighlight } from "@/utils/NoteHighlighter";
 import { usePreferences } from "@/contexts/PreferencesContext";
+import { useInstrument } from "@/hooks/useInstrument";
+import * as Tone from "tone";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface GuitarStringProps {
   startNote: Note;
   pattern?: Interval;
   rootNote?: number;
   frets: number;
+  onPlay: (note: Note, octave: number) => void;
+  stringOctave: number;
 }
 
 const GuitarString: React.FC<GuitarStringProps> = ({
@@ -18,8 +23,9 @@ const GuitarString: React.FC<GuitarStringProps> = ({
   pattern,
   rootNote,
   frets,
+  onPlay,
+  stringOctave,
 }) => {
-  // Generate frets for each string based on preferences
   const getFretNotes = () => {
     const fretNotes = [];
     const currentNoteIndex = NOTES.findIndex(
@@ -34,6 +40,9 @@ const GuitarString: React.FC<GuitarStringProps> = ({
   };
 
   const fretNotes = getFretNotes();
+  const currentNoteIndex = NOTES.findIndex(
+    (note) => note.name === startNote.name,
+  );
 
   return (
     <div className="flex h-8 border-b border-gray-300">
@@ -47,13 +56,20 @@ const GuitarString: React.FC<GuitarStringProps> = ({
           <div
             key={index}
             className={`
-              flex items-center justify-center
+              flex items-center justify-center cursor-pointer
+              hover:saturate-[2.5] active:saturate-[3.0]
+              select-none
               ${index === 0 ? "w-12 border-r border-gray-400" : "w-16 border-r border-gray-400"}
             `}
             style={{
               backgroundColor: note.color,
               color: note.textColor,
               ...highlight,
+            }}
+            onClick={() => {
+              // Calculate the actual octave based on fret position
+              const octaveShift = Math.floor((index + currentNoteIndex) / 12);
+              onPlay(note, stringOctave + octaveShift);
             }}
           >
             {note.name}
@@ -67,24 +83,45 @@ const GuitarString: React.FC<GuitarStringProps> = ({
 interface GuitarProps {
   pattern?: Interval;
   rootNote?: number;
+  synthType?: SynthType;
 }
 
-const Guitar: React.FC<GuitarProps> = ({ pattern, rootNote }) => {
+const Guitar: React.FC<GuitarProps> = ({
+  pattern,
+  rootNote,
+  synthType: propsSynthType = undefined,
+}) => {
   const { preferences } = usePreferences();
+  const activeSynthType = propsSynthType ?? preferences.synthType;
+  const { instrument, isLoading } = useInstrument(activeSynthType);
 
   // Early return if guitar is not in visible instruments
   if (!preferences.visibleInstruments.includes("guitar")) {
     return null;
   }
 
-  // Standard guitar tuning (from highest to lowest string)
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  const playNote = async (note: Note, octave: number) => {
+    await Tone.start();
+
+    if (instrument) {
+      const standardNoteName = note.name.replace("♯", "#");
+      const noteWithOctave = `${standardNoteName}${octave}`;
+      instrument.triggerAttackRelease(noteWithOctave, "8n");
+    }
+  };
+
+  // Standard guitar tuning with corresponding octaves
   const standardTuning = [
-    NOTES[4], // E
-    NOTES[9], // A
-    NOTES[2], // D
-    NOTES[7], // G
-    NOTES[11], // B
-    NOTES[4], // E
+    { note: NOTES[4], octave: 4 }, // High E
+    { note: NOTES[9], octave: 3 }, // A
+    { note: NOTES[2], octave: 3 }, // D
+    { note: NOTES[7], octave: 2 }, // G
+    { note: NOTES[11], octave: 2 }, // B
+    { note: NOTES[4], octave: 2 }, // Low E
   ];
 
   return (
@@ -112,13 +149,15 @@ const Guitar: React.FC<GuitarProps> = ({ pattern, rootNote }) => {
         </div>
 
         {/* Guitar strings */}
-        {standardTuning.map((note, index) => (
+        {standardTuning.map(({ note, octave }, index) => (
           <GuitarString
             key={index}
             startNote={note}
             pattern={pattern}
             rootNote={rootNote}
             frets={preferences.guitarFrets}
+            onPlay={playNote}
+            stringOctave={octave}
           />
         ))}
       </div>

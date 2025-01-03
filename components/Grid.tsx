@@ -183,16 +183,17 @@ const Grid: React.FC<GridProps> = ({
             const highlight =
               pattern && rootNote !== undefined
                 ? getNoteHighlight(note, pattern, rootNote)
-                : {};
+                : { opacity: 1 };
 
             return (
               <div
                 key={`${rowIndex}-${columnIndex}`}
-                className="w-12 h-12 flex items-center justify-center m-1 rounded border-2 border-gray-800 dark:border-gray-200 cursor-pointer hover:opacity-80 active:opacity-60 select-none"
+                className="w-12 h-12 flex items-center justify-center m-1 rounded border-2 border-gray-800 dark:border-gray-200 cursor-pointer hover:saturate-[2.5] active:saturate-[3.0] select-none"
                 style={{
                   backgroundColor: note.color,
                   color: note.textColor,
-                  ...highlight,
+                  opacity: highlight.opacity,
+                  filter: highlight.filter,
                 }}
                 onClick={() => playNote(note, rowIndex, columnIndex)}
               >
