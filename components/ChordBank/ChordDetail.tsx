@@ -5,12 +5,33 @@ import Grid from "@/components/Grid";
 import PianoKeyboard from "@/components/PianoKeyboard";
 import Guitar from "@/components/Guitar";
 import Ukulele from "@/components/Ukulele";
+import * as Tone from "tone";
+import { usePreferences } from "@/contexts/PreferencesContext";
+import { useInstrument } from "@/hooks/useInstrument";
 
 interface ChordDetailProps {
   chord: Chord;
 }
 
 const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
+  const { preferences } = usePreferences();
+  const { instrument, isLoading } = useInstrument(preferences.synthType);
+
+  const hasVisibleInstruments = preferences.visibleInstruments.length > 0;
+
+  const playChord = async (chordNotes: string[]) => {
+    await Tone.start();
+
+    if (instrument) {
+      // Play each note in the chord with octave 4
+      chordNotes.forEach((note) => {
+        const standardNoteName = note.replace("♯", "#");
+        const noteWithOctave = `${standardNoteName}4`;
+        instrument.triggerAttackRelease(noteWithOctave, "0.5");
+      });
+    }
+  };
+
   // Helper function to get notes in chord pattern
   const getChordNotes = (rootNote: number, pattern: number[]): string[] => {
     const notesInPattern: number[] = [];
@@ -48,10 +69,21 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
       {NOTES.map((note, index) => {
         const chordNotes = getChordNotes(parseInt(note.alias), chord.pattern);
         return (
-          <div key={index} className="mb-28">
-            <h2 className="font-mono mb-6 text-lg">
-              {`${note.name} ${chord.name} (${chordNotes.join(", ")})`}
-            </h2>
+          <div key={index} className={hasVisibleInstruments ? "mb-28" : "mb-2"}>
+            <div
+              className={`font-mono text-lg flex items-center gap-2 ${hasVisibleInstruments ? "mb-6" : ""}`}
+            >
+              <span>
+                {`${note.name} ${chord.name} (${chordNotes.join(", ")})`}
+              </span>
+              <button
+                onClick={() => playChord(chordNotes)}
+                className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-500 active:bg-blue-700 text-sm border-2 border-gray-800 dark:border-gray-200 "
+                disabled={isLoading}
+              >
+                Play
+              </button>
+            </div>
             <div className="flex flex-wrap gap-4">
               <div className="flex-shrink-0 flex flex-col gap-4 max-w-full">
                 <div className="overflow-x-auto">
