@@ -1,22 +1,152 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Note, Interval } from "@/types";
 import { NOTES } from "@/constants";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { getNoteHighlight } from "@/utils/NoteHighlighter";
+import * as Tone from "tone";
+
+class PianoSamplerSingleton {
+  private static instance: Tone.Sampler | null = null;
+  private static isLoading = false;
+  private static loadPromise: Promise<void> | null = null;
+
+  static async getInstance(): Promise<Tone.Sampler> {
+    if (!this.instance && !this.loadPromise) {
+      this.isLoading = true;
+      this.loadPromise = new Promise((resolve) => {
+        const sampler = new Tone.Sampler({
+          urls: {
+            C4: "C4.mp3",
+            "D#4": "Ds4.mp3",
+            "F#4": "Fs4.mp3",
+            A4: "A4.mp3",
+          },
+          baseUrl: "https://tonejs.github.io/audio/salamander/",
+          onload: () => {
+            this.instance = sampler;
+            this.isLoading = false;
+            resolve();
+          },
+        }).toDestination();
+      });
+    }
+    await this.loadPromise;
+    return this.instance!;
+  }
+}
+
+type SynthType = "basic" | "piano" | "poly";
 
 interface GridProps {
   pattern?: Interval;
   rootNote?: number;
+  synthType?: SynthType;
   props?: {
     visible?: boolean;
     width?: number;
   };
 }
 
-const Grid: React.FC<GridProps> = ({ pattern, rootNote, props }) => {
+const Grid: React.FC<GridProps> = ({
+  pattern,
+  rootNote,
+  synthType = "poly",
+  props,
+}) => {
   const { preferences } = usePreferences();
+  const [instrument, setInstrument] = useState<
+    Tone.Synth | Tone.Sampler | Tone.PolySynth | null
+  >(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    let newInstrument: typeof instrument = null;
+    let mounted = true;
+
+    const setupInstrument = async () => {
+      setIsLoading(true);
+
+      switch (synthType) {
+        case "piano":
+          newInstrument = await PianoSamplerSingleton.getInstance();
+          break;
+
+        case "poly":
+          newInstrument = new Tone.PolySynth(Tone.Synth, {
+            oscillator: {
+              type: "triangle",
+            },
+            envelope: {
+              attack: 0.02,
+              decay: 0.1,
+              sustain: 0.3,
+              release: 1,
+            },
+          }).toDestination();
+          break;
+
+        case "basic":
+        default:
+          newInstrument = new Tone.Synth().toDestination();
+          break;
+      }
+
+      if (mounted) {
+        setInstrument(newInstrument);
+        setIsLoading(false);
+      }
+    };
+
+    setupInstrument();
+
+    return () => {
+      mounted = false;
+      if (newInstrument && synthType !== "piano") {
+        newInstrument.dispose();
+      }
+    };
+  }, [synthType]);
+
+  // Preload piano samples when component mounts
+  useEffect(() => {
+    PianoSamplerSingleton.getInstance(); // Start loading immediately
+  }, []);
+
+  const playNote = async (
+    note: Note,
+    rowIndex: number,
+    columnIndex: number,
+  ) => {
+    await Tone.start();
+
+    if (instrument) {
+      const actualRowIndex = 7 - rowIndex;
+      const position = actualRowIndex * 8 + columnIndex;
+
+      let octave = 1;
+      let notePosition = 0;
+
+      for (let i = 0; i < position; i++) {
+        if (notePosition === 12) {
+          notePosition = 0;
+        }
+        if (notePosition === 0) {
+          octave++;
+        }
+        notePosition++;
+      }
+
+      const standardNoteName = note.name.replace("♯", "#");
+      const noteWithOctave = `${standardNoteName}${octave}`;
+      instrument.triggerAttackRelease(noteWithOctave, "8n");
+    }
+  };
+
+  if (isLoading) {
+    return <div>Loading synthesizer...</div>;
+  }
 
   // Use props.visible if provided, otherwise check preferences
   const isVisible =
@@ -129,7 +259,6 @@ const Grid: React.FC<GridProps> = ({ pattern, rootNote, props }) => {
       {grid.reverse().map((row, rowIndex) => (
         <div key={rowIndex} className="flex">
           {row.map((note, columnIndex) => {
-            // Only get highlight if both pattern and rootNote are provided
             const highlight =
               pattern && rootNote !== undefined
                 ? getNoteHighlight(note, pattern, rootNote)
@@ -138,12 +267,13 @@ const Grid: React.FC<GridProps> = ({ pattern, rootNote, props }) => {
             return (
               <div
                 key={`${rowIndex}-${columnIndex}`}
-                className="w-12 h-12 flex items-center justify-center m-1 rounded border-2 border-gray-800 dark:border-gray-200"
+                className="w-12 h-12 flex items-center justify-center m-1 rounded border-2 border-gray-800 dark:border-gray-200 cursor-pointer hover:opacity-80 active:opacity-60 select-none"
                 style={{
                   backgroundColor: note.color,
                   color: note.textColor,
                   ...highlight,
                 }}
+                onClick={() => playNote(note, rowIndex, columnIndex)}
               >
                 {note.name}
               </div>

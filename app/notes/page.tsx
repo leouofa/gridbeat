@@ -1,8 +1,35 @@
+"use client";
 import ContentCard from "@/components/ContentCard";
 import Grid from "@/components/Grid";
 import { NOTES } from "@/constants";
+import * as Tone from "tone";
+import { useEffect, useState } from "react";
 
 export default function NotesPage() {
+  const [synth, setSynth] = useState<Tone.Synth | null>(null);
+
+  // Initialize the synth when the component mounts
+  useEffect(() => {
+    const newSynth = new Tone.Synth().toDestination();
+    setSynth(newSynth);
+
+    // Cleanup when component unmounts
+    return () => {
+      newSynth.dispose();
+    };
+  }, []);
+
+  const playNote = async (noteName: string) => {
+    // Make sure audio context is started (needs user interaction first)
+    await Tone.start();
+
+    if (synth) {
+      const standardNoteName = noteName.replace("♯", "#");
+      const noteWithOctave = `${standardNoteName}4`;
+      synth.triggerAttackRelease(noteWithOctave, "16n");
+    }
+  };
+
   return (
     <div className="mt-20">
       <div className="mx-auto p-4">
@@ -24,7 +51,8 @@ export default function NotesPage() {
                 {NOTES.map((note) => (
                   <div
                     key={note.alias}
-                    className="w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800 dark:border-gray-200"
+                    className="w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800 dark:border-gray-200 cursor-pointer hover:opacity-80 active:opacity-60 select-none"
+                    onClick={() => playNote(note.name)}
                   >
                     {note.alias}
                   </div>
@@ -40,11 +68,12 @@ export default function NotesPage() {
                 {NOTES.map((note) => (
                   <div
                     key={note.name}
-                    className="w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800 dark:border-gray-200"
+                    className="w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800 dark:border-gray-200 cursor-pointer hover:opacity-80 active:opacity-60 select-none"
                     style={{
                       backgroundColor: note.color,
                       color: note.textColor,
                     }}
+                    onClick={() => playNote(note.name)}
                   >
                     {note.name}
                   </div>
@@ -66,11 +95,12 @@ export default function NotesPage() {
                 {NOTES.map((note) => (
                   <div
                     key={note.name}
-                    className={`w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800 dark:border-gray-200 ${
+                    className={`w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800 dark:border-gray-200 cursor-pointer hover:opacity-80 active:opacity-60 select-none ${
                       !note.natural
                         ? "bg-black text-white"
                         : "bg-white dark:text-gray-800"
                     }`}
+                    onClick={() => playNote(note.name)}
                   >
                     {note.name}
                   </div>
