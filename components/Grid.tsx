@@ -18,11 +18,38 @@ class PianoSamplerSingleton {
       this.loadPromise = new Promise((resolve) => {
         const sampler = new Tone.Sampler({
           urls: {
+            A0: "A0.mp3",
+            C1: "C1.mp3",
+            "D#1": "Ds1.mp3",
+            "F#1": "Fs1.mp3",
+            A1: "A1.mp3",
+            C2: "C2.mp3",
+            "D#2": "Ds2.mp3",
+            "F#2": "Fs2.mp3",
+            A2: "A2.mp3",
+            C3: "C3.mp3",
+            "D#3": "Ds3.mp3",
+            "F#3": "Fs3.mp3",
+            A3: "A3.mp3",
             C4: "C4.mp3",
             "D#4": "Ds4.mp3",
             "F#4": "Fs4.mp3",
             A4: "A4.mp3",
+            C5: "C5.mp3",
+            "D#5": "Ds5.mp3",
+            "F#5": "Fs5.mp3",
+            A5: "A5.mp3",
+            C6: "C6.mp3",
+            "D#6": "Ds6.mp3",
+            "F#6": "Fs6.mp3",
+            A6: "A6.mp3",
+            C7: "C7.mp3",
+            "D#7": "Ds7.mp3",
+            "F#7": "Fs7.mp3",
+            A7: "A7.mp3",
+            C8: "C8.mp3",
           },
+          release: 1,
           baseUrl: "https://tonejs.github.io/audio/salamander/",
           onload: () => {
             this.instance = sampler;
@@ -72,15 +99,45 @@ const Grid: React.FC<GridProps> = ({
       } else {
         newInstrument = new Tone.PolySynth(Tone.Synth, {
           oscillator: {
-            type: "triangle",
+            type: "fatsawtooth",
           },
           envelope: {
-            attack: 0.02,
-            decay: 0.1,
-            sustain: 0.3,
-            release: 1,
+            attack: 0.03,
+            decay: 0.3,
+            sustain: 0.4,
+            release: 1.5,
           },
-        }).toDestination();
+        })
+          .chain(
+            // Add chorus for width and richness
+            new Tone.Chorus({
+              frequency: 2.5,
+              delayTime: 3.5,
+              depth: 0.7,
+              wet: 0.3,
+            }),
+            // Add reverb for space and depth
+            new Tone.Reverb({
+              decay: 2,
+              wet: 0.2,
+            }),
+            // Add a subtle compression to glue it together
+            new Tone.Compressor({
+              threshold: -24,
+              ratio: 3,
+              attack: 0.03,
+              release: 0.25,
+            }),
+            // EQ to shape the tone
+            new Tone.EQ3({
+              low: 2,
+              mid: 0,
+              high: 1,
+              lowFrequency: 250,
+              highFrequency: 2500,
+            }),
+          )
+          .toDestination();
       }
 
       if (mounted) {
