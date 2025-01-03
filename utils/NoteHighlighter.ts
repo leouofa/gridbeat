@@ -37,7 +37,6 @@ export const getNoteHighlight = (
   if (notesInPattern.includes(noteValue)) {
     return {
       opacity: 1,
-      filter: "grayscale(0) brightness(50%)",
     };
   }
 
