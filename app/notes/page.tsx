@@ -1,30 +1,24 @@
 "use client";
 import ContentCard from "@/components/ContentCard";
 import Grid from "@/components/Grid";
-import { NOTES } from "@/constants";
-import * as Tone from "tone";
-import { usePreferences } from "@/contexts/PreferencesContext";
-import { useInstrument } from "@/hooks/useInstrument";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { NoteButtonRow } from "@/components/NoteButtonRow";
+import { useNotePlayer } from "@/hooks/useNotePlayer";
+import { NOTES } from "@/constants";
 
 export default function NotesPage() {
-  const { preferences } = usePreferences();
-  const { instrument, isLoading } = useInstrument(preferences.synthType);
-
-  const playNote = async (noteName: string) => {
-    await Tone.start();
-
-    if (instrument) {
-      const standardNoteName = noteName.replace("♯", "#");
-      const noteWithOctave = `${standardNoteName}4`;
-      instrument.triggerAttackRelease(noteWithOctave, "16n");
-    }
-  };
+  const { playNote, isLoading } = useNotePlayer("piano");
 
   if (isLoading) {
     return <LoadingSpinner />;
   }
 
+  const handlePlayNote = (noteName: string) => {
+    const note = NOTES.find((n) => n.name === noteName);
+    if (note) {
+      playNote(note, 4);
+    }
+  };
   return (
     <div className="mt-20">
       <div className="mx-auto p-4">
@@ -42,38 +36,18 @@ export default function NotesPage() {
                 </li>
               </ul>
 
-              <div className="flex gap-2 mt-8 mb-8">
-                {NOTES.map((note) => (
-                  <div
-                    key={note.alias}
-                    className="w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800 dark:border-gray-200 cursor-pointer hover:opacity-80 active:opacity-60 select-none"
-                    onClick={() => playNote(note.name)}
-                  >
-                    {note.alias}
-                  </div>
-                ))}
-              </div>
+              <NoteButtonRow
+                variant="alias"
+                onPlay={handlePlayNote}
+                className="mb-8"
+              />
 
               <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans">
                 <li>Notes can be represented by letters instead of numbers.</li>
                 <li>Think of it as a musical alphabet for easy reference.</li>
               </ul>
 
-              <div className="flex gap-2 mt-8">
-                {NOTES.map((note) => (
-                  <div
-                    key={note.name}
-                    className="w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800 dark:border-gray-200 cursor-pointer hover:saturate-[2.5] active:saturate-[3.0]  select-none"
-                    style={{
-                      backgroundColor: note.color,
-                      color: note.textColor,
-                    }}
-                    onClick={() => playNote(note.name)}
-                  >
-                    {note.name}
-                  </div>
-                ))}
-              </div>
+              <NoteButtonRow onPlay={handlePlayNote} />
             </ContentCard>
 
             <ContentCard title="Sharps and Flats" emoji="♯" headingLevel="h2">
@@ -86,21 +60,7 @@ export default function NotesPage() {
                 <li>For example, C♯ is equivalent to D♭.</li>
               </ul>
 
-              <div className="flex gap-2 mt-8">
-                {NOTES.map((note) => (
-                  <div
-                    key={note.name}
-                    className={`w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800 dark:border-gray-200 cursor-pointer hover:opacity-80 active:opacity-60 select-none ${
-                      !note.natural
-                        ? "bg-black text-white"
-                        : "bg-white dark:text-gray-800"
-                    }`}
-                    onClick={() => playNote(note.name)}
-                  >
-                    {note.name}
-                  </div>
-                ))}
-              </div>
+              <NoteButtonRow variant="natural" onPlay={handlePlayNote} />
             </ContentCard>
 
             <ContentCard title="The Octaves" emoji="🎶" headingLevel="h2">
