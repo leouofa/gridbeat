@@ -33,9 +33,24 @@ const Guitar: React.FC<GuitarProps> = ({ pattern, rootNote, synthType }) => {
   return (
     <div className="w-fit overflow-x-auto p-4">
       <div className="border rounded">
-        {/* Fret numbers */}
         <div className="flex h-8 border-b border-gray-300">
-          {/* ... fret numbers rendering ... */}
+          <div className="w-12 flex items-center justify-center border-r border-gray-400"></div>
+          {[...Array(preferences.guitarFrets)].map((_, index) => {
+            const fretNumber = index + 1;
+            const isBoldFret = [3, 5, 7, 9, 12].includes(fretNumber);
+
+            return (
+                <div
+                    key={index}
+                    className={`
+                  w-16 flex items-center justify-center border-r border-gray-400
+                  ${isBoldFret ? "bg-gray-500 text-white" : ""}
+                `}
+                >
+                  {fretNumber}
+                </div>
+            );
+          })}
         </div>
 
         {standardTuning.map(({ note, octave }, index) => (
