@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { NOTES } from "@/constants";
 import { Interval, SynthType } from "@/types";
+import { NOTES } from "@/constants";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { useNotePlayer } from "@/hooks/useNotePlayer";
 import { InstrumentString } from "./common/StringInstrument";
@@ -16,15 +16,11 @@ interface UkuleleProps {
 
 const Ukulele: React.FC<UkuleleProps> = ({ pattern, rootNote, synthType }) => {
   const { preferences } = usePreferences();
-  const { playNote, isLoading, isVisible } = useNotePlayer(
-    "ukulele",
-    synthType,
-  );
+  const { playNote, isLoading, isVisible } = useNotePlayer("ukulele", synthType);
 
   if (!isVisible) return null;
   if (isLoading) return <LoadingSpinner />;
 
-  // Standard ukulele tuning with corresponding octaves
   const standardTuning = [
     { note: NOTES[7], octave: 4 }, // G
     { note: NOTES[0], octave: 4 }, // C
@@ -35,7 +31,6 @@ const Ukulele: React.FC<UkuleleProps> = ({ pattern, rootNote, synthType }) => {
   return (
     <div className="w-fit overflow-x-auto p-4">
       <div className="border rounded">
-        {/* Fret numbers */}
         <div className="flex h-8 border-b border-gray-300">
           <div className="w-12 flex items-center justify-center border-r border-gray-400"></div>
           {[...Array(preferences.ukuleleFrets)].map((_, index) => {
@@ -56,7 +51,6 @@ const Ukulele: React.FC<UkuleleProps> = ({ pattern, rootNote, synthType }) => {
           })}
         </div>
 
-        {/* Ukulele strings */}
         {standardTuning.map(({ note, octave }, index) => (
           <InstrumentString
             key={index}
