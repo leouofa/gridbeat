@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Note, Interval } from "@/types";
 import { NOTES } from "@/constants";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { getNoteHighlight } from "@/utils/NoteHighlighter";
+import * as Tone from "tone";
 
 interface GridProps {
   pattern?: Interval;
@@ -17,6 +18,49 @@ interface GridProps {
 
 const Grid: React.FC<GridProps> = ({ pattern, rootNote, props }) => {
   const { preferences } = usePreferences();
+  const [synth, setSynth] = useState<Tone.Synth | null>(null);
+
+  useEffect(() => {
+    const newSynth = new Tone.Synth().toDestination();
+    setSynth(newSynth);
+
+    return () => {
+      newSynth.dispose();
+    };
+  }, []);
+
+  const playNote = async (
+    note: Note,
+    rowIndex: number,
+    columnIndex: number,
+  ) => {
+    await Tone.start();
+
+    if (synth) {
+      // Since the grid is rendered in reverse, we need to flip the row index
+      const actualRowIndex = 7 - rowIndex;
+      const position = actualRowIndex * 8 + columnIndex;
+
+      // Start from octave 1
+      let octave = 1;
+      let notePosition = 0;
+
+      for (let i = 0; i < position; i++) {
+        if (notePosition === 12) {
+          notePosition = 0;
+        }
+        if (notePosition === 0) {
+          // We've hit a C
+          octave++;
+        }
+        notePosition++;
+      }
+
+      const standardNoteName = note.name.replace("♯", "#");
+      const noteWithOctave = `${standardNoteName}${octave}`;
+      synth.triggerAttackRelease(noteWithOctave, "8n");
+    }
+  };
 
   // Use props.visible if provided, otherwise check preferences
   const isVisible =
@@ -129,7 +173,6 @@ const Grid: React.FC<GridProps> = ({ pattern, rootNote, props }) => {
       {grid.reverse().map((row, rowIndex) => (
         <div key={rowIndex} className="flex">
           {row.map((note, columnIndex) => {
-            // Only get highlight if both pattern and rootNote are provided
             const highlight =
               pattern && rootNote !== undefined
                 ? getNoteHighlight(note, pattern, rootNote)
@@ -138,12 +181,13 @@ const Grid: React.FC<GridProps> = ({ pattern, rootNote, props }) => {
             return (
               <div
                 key={`${rowIndex}-${columnIndex}`}
-                className="w-12 h-12 flex items-center justify-center m-1 rounded border-2 border-gray-800 dark:border-gray-200"
+                className="w-12 h-12 flex items-center justify-center m-1 rounded border-2 border-gray-800 dark:border-gray-200 cursor-pointer hover:opacity-80 active:opacity-60 select-none"
                 style={{
                   backgroundColor: note.color,
                   color: note.textColor,
                   ...highlight,
                 }}
+                onClick={() => playNote(note, rowIndex, columnIndex)}
               >
                 {note.name}
               </div>
