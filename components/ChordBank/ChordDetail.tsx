@@ -69,7 +69,6 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
         return (
           <div key={index} className="mb-28">
             <div className="font-mono mb-6 text-lg flex items-center gap-2">
-              {/* <h2 className="font-mono mb-6 text-lg"> */}
               <span>
                 {`${note.name} ${chord.name} (${chordNotes.join(", ")})`}
               </span>
@@ -80,7 +79,6 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
               >
                 Play
               </button>
-              {/* </h2> */}
             </div>
             <div className="flex flex-wrap gap-4">
               <div className="flex-shrink-0 flex flex-col gap-4 max-w-full">
