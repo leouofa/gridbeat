@@ -1,5 +1,5 @@
 import React from "react";
-import { Chord } from "@/types";
+import { Chord, Note } from "@/types";
 import { NOTES } from "@/constants";
 import Grid from "@/components/Grid";
 import PianoKeyboard from "@/components/PianoKeyboard";
@@ -14,7 +14,7 @@ interface ChordDetailProps {
 }
 
 const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
-  const { preferences } = usePreferences();
+  const { preferences, updatePreferences } = usePreferences();
   const { instrument, isLoading } = useInstrument(preferences.synthType);
 
   const hasVisibleInstruments = preferences.visibleInstruments.length > 0;
@@ -57,6 +57,34 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
     );
   };
 
+  // Update helper function to use Note and Chord types
+  const isFavorite = (rootNote: Note, chord: Chord) => {
+    return preferences.favoriteChords.some(
+      (fc) =>
+        fc.rootNote.name === rootNote.name && fc.chord.name === chord.name,
+    );
+  };
+
+  const toggleFavorite = (rootNote: Note, chord: Chord) => {
+    const isCurrentlyFavorite = isFavorite(rootNote, chord);
+
+    if (isCurrentlyFavorite) {
+      // Remove from favorites
+      const updatedFavorites = preferences.favoriteChords.filter(
+        (fc) =>
+          !(fc.rootNote.name === rootNote.name && fc.chord.name === chord.name),
+      );
+      updatePreferences({ favoriteChords: updatedFavorites });
+    } else {
+      // Add to favorites
+      const updatedFavorites = [
+        ...preferences.favoriteChords,
+        { rootNote, chord },
+      ];
+      updatePreferences({ favoriteChords: updatedFavorites });
+    }
+  };
+
   return (
     <div className="p-4">
       <div className="mb-10">
@@ -68,6 +96,8 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
 
       {NOTES.map((note, index) => {
         const chordNotes = getChordNotes(parseInt(note.alias), chord.pattern);
+        const favorite = isFavorite(note, chord);
+
         return (
           <div key={index} className={hasVisibleInstruments ? "mb-28" : "mb-2"}>
             <div
@@ -82,6 +112,16 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
                 disabled={isLoading}
               >
                 Play
+              </button>
+              <button
+                onClick={() => toggleFavorite(note, chord)}
+                className={`px-3 py-1 rounded text-sm border-2 ${
+                  favorite
+                    ? "bg-yellow-500 hover:bg-yellow-400 active:bg-yellow-600 text-black border-gray-800"
+                    : "bg-gray-600 hover:bg-gray-500 active:bg-gray-700 text-white border-gray-800"
+                }`}
+              >
+                {favorite ? "★ Favorited" : "☆ Add to Favorites"}
               </button>
             </div>
             <div className="flex flex-wrap gap-4">
