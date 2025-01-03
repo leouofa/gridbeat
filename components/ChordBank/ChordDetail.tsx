@@ -17,6 +17,8 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
   const { preferences } = usePreferences();
   const { instrument, isLoading } = useInstrument(preferences.synthType);
 
+  const hasVisibleInstruments = preferences.visibleInstruments.length > 0;
+
   const playChord = async (chordNotes: string[]) => {
     await Tone.start();
 
@@ -67,8 +69,10 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
       {NOTES.map((note, index) => {
         const chordNotes = getChordNotes(parseInt(note.alias), chord.pattern);
         return (
-          <div key={index} className="mb-28">
-            <div className="font-mono mb-6 text-lg flex items-center gap-2">
+          <div key={index} className={hasVisibleInstruments ? "mb-28" : "mb-2"}>
+            <div
+              className={`font-mono text-lg flex items-center gap-2 ${hasVisibleInstruments ? "mb-6" : ""}`}
+            >
               <span>
                 {`${note.name} ${chord.name} (${chordNotes.join(", ")})`}
               </span>
