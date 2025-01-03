@@ -2,15 +2,20 @@
 
 import React from "react";
 import { NOTES } from "@/constants";
-import { Note, Interval } from "@/types";
+import { Note, Interval, SynthType } from "@/types";
 import { getNoteHighlight } from "@/utils/NoteHighlighter";
 import { usePreferences } from "@/contexts/PreferencesContext";
+import { useInstrument } from "@/hooks/useInstrument";
+import * as Tone from "tone";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface UkuleleStringProps {
   startNote: Note;
   pattern?: Interval;
   rootNote?: number;
   frets: number;
+  onPlay: (note: Note, octave: number) => void;
+  stringOctave: number;
 }
 
 const UkuleleString: React.FC<UkuleleStringProps> = ({
@@ -18,8 +23,9 @@ const UkuleleString: React.FC<UkuleleStringProps> = ({
   pattern,
   rootNote,
   frets,
+  onPlay,
+  stringOctave,
 }) => {
-  // Generate frets for each string based on preferences
   const getFretNotes = () => {
     const fretNotes = [];
     const currentNoteIndex = NOTES.findIndex(
@@ -34,6 +40,9 @@ const UkuleleString: React.FC<UkuleleStringProps> = ({
   };
 
   const fretNotes = getFretNotes();
+  const currentNoteIndex = NOTES.findIndex(
+    (note) => note.name === startNote.name,
+  );
 
   return (
     <div className="flex h-8 border-b border-gray-300">
@@ -47,13 +56,19 @@ const UkuleleString: React.FC<UkuleleStringProps> = ({
           <div
             key={index}
             className={`
-              flex items-center justify-center
+              flex items-center justify-center cursor-pointer
+              hover:saturate-[2.5] active:saturate-[3.0]
+              select-none
               ${index === 0 ? "w-12 border-r border-gray-400" : "w-16 border-r border-gray-400"}
             `}
             style={{
               backgroundColor: note.color,
               color: note.textColor,
               ...highlight,
+            }}
+            onClick={() => {
+              const octaveShift = Math.floor((index + currentNoteIndex) / 12);
+              onPlay(note, stringOctave + octaveShift);
             }}
           >
             {note.name}
@@ -67,22 +82,42 @@ const UkuleleString: React.FC<UkuleleStringProps> = ({
 interface UkuleleProps {
   pattern?: Interval;
   rootNote?: number;
+  synthType?: SynthType;
 }
 
-const Ukulele: React.FC<UkuleleProps> = ({ pattern, rootNote }) => {
+const Ukulele: React.FC<UkuleleProps> = ({
+  pattern,
+  rootNote,
+  synthType: propsSynthType = undefined,
+}) => {
   const { preferences } = usePreferences();
+  const activeSynthType = propsSynthType ?? preferences.synthType;
+  const { instrument, isLoading } = useInstrument(activeSynthType);
 
-  // Early return if ukulele is not in visible instruments
   if (!preferences.visibleInstruments.includes("ukulele")) {
     return null;
   }
 
-  // Standard ukulele tuning (from highest to lowest string)
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  const playNote = async (note: Note, octave: number) => {
+    await Tone.start();
+
+    if (instrument) {
+      const standardNoteName = note.name.replace("♯", "#");
+      const noteWithOctave = `${standardNoteName}${octave}`;
+      instrument.triggerAttackRelease(noteWithOctave, "8n");
+    }
+  };
+
+  // Standard ukulele tuning with corresponding octaves
   const standardTuning = [
-    NOTES[7], // G
-    NOTES[0], // C
-    NOTES[4], // E
-    NOTES[9], // A
+    { note: NOTES[7], octave: 4 }, // G
+    { note: NOTES[0], octave: 4 }, // C
+    { note: NOTES[4], octave: 4 }, // E
+    { note: NOTES[9], octave: 3 }, // A
   ];
 
   return (
@@ -110,13 +145,15 @@ const Ukulele: React.FC<UkuleleProps> = ({ pattern, rootNote }) => {
         </div>
 
         {/* Ukulele strings */}
-        {standardTuning.map((note, index) => (
+        {standardTuning.map(({ note, octave }, index) => (
           <UkuleleString
             key={index}
             startNote={note}
             pattern={pattern}
             rootNote={rootNote}
             frets={preferences.ukuleleFrets}
+            onPlay={playNote}
+            stringOctave={octave}
           />
         ))}
       </div>
