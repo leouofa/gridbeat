@@ -1,68 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Note, Interval, SynthType } from "@/types";
 import { NOTES } from "@/constants";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { getNoteHighlight } from "@/utils/NoteHighlighter";
+import { PianoSamplerSingleton } from "@/utils/PianoSamplerSingleton";
 import * as Tone from "tone";
-
-class PianoSamplerSingleton {
-  private static instance: Tone.Sampler | null = null;
-  private static isLoading = false;
-  private static loadPromise: Promise<void> | null = null;
-
-  static async getInstance(): Promise<Tone.Sampler> {
-    if (!this.instance && !this.loadPromise) {
-      this.isLoading = true;
-      this.loadPromise = new Promise((resolve) => {
-        const sampler = new Tone.Sampler({
-          urls: {
-            A0: "A0.mp3",
-            C1: "C1.mp3",
-            "D#1": "Ds1.mp3",
-            "F#1": "Fs1.mp3",
-            A1: "A1.mp3",
-            C2: "C2.mp3",
-            "D#2": "Ds2.mp3",
-            "F#2": "Fs2.mp3",
-            A2: "A2.mp3",
-            C3: "C3.mp3",
-            "D#3": "Ds3.mp3",
-            "F#3": "Fs3.mp3",
-            A3: "A3.mp3",
-            C4: "C4.mp3",
-            "D#4": "Ds4.mp3",
-            "F#4": "Fs4.mp3",
-            A4: "A4.mp3",
-            C5: "C5.mp3",
-            "D#5": "Ds5.mp3",
-            "F#5": "Fs5.mp3",
-            A5: "A5.mp3",
-            C6: "C6.mp3",
-            "D#6": "Ds6.mp3",
-            "F#6": "Fs6.mp3",
-            A6: "A6.mp3",
-            C7: "C7.mp3",
-            "D#7": "Ds7.mp3",
-            "F#7": "Fs7.mp3",
-            A7: "A7.mp3",
-            C8: "C8.mp3",
-          },
-          release: 1,
-          baseUrl: "https://tonejs.github.io/audio/salamander/",
-          onload: () => {
-            this.instance = sampler;
-            this.isLoading = false;
-            resolve();
-          },
-        }).toDestination();
-      });
-    }
-    await this.loadPromise;
-    return this.instance!;
-  }
-}
+import { useInstrument } from "@/hooks/useInstrument";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface GridProps {
   pattern?: Interval;
@@ -82,79 +28,7 @@ const Grid: React.FC<GridProps> = ({
 }) => {
   const { preferences } = usePreferences();
   const activeSynthType = propsSynthType ?? preferences.synthType;
-  const [instrument, setInstrument] = useState<
-    Tone.Synth | Tone.Sampler | Tone.PolySynth | null
-  >(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    let newInstrument: typeof instrument = null;
-    let mounted = true;
-
-    const setupInstrument = async () => {
-      setIsLoading(true);
-
-      if (activeSynthType === "piano") {
-        newInstrument = await PianoSamplerSingleton.getInstance();
-      } else {
-        newInstrument = new Tone.PolySynth(Tone.Synth, {
-          oscillator: {
-            type: "fatsawtooth",
-          },
-          envelope: {
-            attack: 0.03,
-            decay: 0.3,
-            sustain: 0.4,
-            release: 1.5,
-          },
-        })
-          .chain(
-            // Add chorus for width and richness
-            new Tone.Chorus({
-              frequency: 2.5,
-              delayTime: 3.5,
-              depth: 0.7,
-              wet: 0.3,
-            }),
-            // Add reverb for space and depth
-            new Tone.Reverb({
-              decay: 2,
-              wet: 0.2,
-            }),
-            // Add a subtle compression to glue it together
-            new Tone.Compressor({
-              threshold: -24,
-              ratio: 3,
-              attack: 0.03,
-              release: 0.25,
-            }),
-            // EQ to shape the tone
-            new Tone.EQ3({
-              low: 2,
-              mid: 0,
-              high: 1,
-              lowFrequency: 250,
-              highFrequency: 2500,
-            }),
-          )
-          .toDestination();
-      }
-
-      if (mounted) {
-        setInstrument(newInstrument);
-        setIsLoading(false);
-      }
-    };
-
-    setupInstrument();
-
-    return () => {
-      mounted = false;
-      if (newInstrument && activeSynthType !== "piano") {
-        newInstrument.dispose();
-      }
-    };
-  }, [activeSynthType]);
+  const { instrument, isLoading } = useInstrument(activeSynthType);
 
   // Preload piano samples when component mounts
   useEffect(() => {
@@ -192,7 +66,7 @@ const Grid: React.FC<GridProps> = ({
   };
 
   if (isLoading) {
-    return <div>Loading synthesizer...</div>;
+    return <LoadingSpinner />;
   }
 
   // Use props.visible if provided, otherwise check preferences

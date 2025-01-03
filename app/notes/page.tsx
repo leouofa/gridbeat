@@ -3,32 +3,27 @@ import ContentCard from "@/components/ContentCard";
 import Grid from "@/components/Grid";
 import { NOTES } from "@/constants";
 import * as Tone from "tone";
-import { useEffect, useState } from "react";
+import { usePreferences } from "@/contexts/PreferencesContext";
+import { useInstrument } from "@/hooks/useInstrument";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function NotesPage() {
-  const [synth, setSynth] = useState<Tone.Synth | null>(null);
-
-  // Initialize the synth when the component mounts
-  useEffect(() => {
-    const newSynth = new Tone.Synth().toDestination();
-    setSynth(newSynth);
-
-    // Cleanup when component unmounts
-    return () => {
-      newSynth.dispose();
-    };
-  }, []);
+  const { preferences } = usePreferences();
+  const { instrument, isLoading } = useInstrument(preferences.synthType);
 
   const playNote = async (noteName: string) => {
-    // Make sure audio context is started (needs user interaction first)
     await Tone.start();
 
-    if (synth) {
+    if (instrument) {
       const standardNoteName = noteName.replace("♯", "#");
       const noteWithOctave = `${standardNoteName}4`;
-      synth.triggerAttackRelease(noteWithOctave, "16n");
+      instrument.triggerAttackRelease(noteWithOctave, "16n");
     }
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="mt-20">
