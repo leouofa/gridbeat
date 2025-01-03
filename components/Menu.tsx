@@ -14,9 +14,8 @@ const CONSTANTS = {
   INSTRUMENTS: ["piano", "grid", "guitar", "ukulele"] as const,
   FRETS: [3, 5, 7, 9, 12] as const,
   SYNTH_TYPES: [
-    { value: "basic", label: "Basic Synth" },
+    { value: "poly", label: "Synth" },
     { value: "piano", label: "Piano" },
-    { value: "poly", label: "Poly Synth" },
   ] as const,
   NAV_LINKS: [
     { href: "/", label: "Home" },

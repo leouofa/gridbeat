@@ -3,7 +3,7 @@ export type OctaveLength = 1 | 2 | 3 | 4;
 export type Instrument = "guitar" | "ukulele" | "grid" | "piano";
 export type GuitarFrets = 3 | 5 | 7 | 9 | 12;
 export type UkuleleFrets = 3 | 5 | 7 | 9 | 12;
-export type SynthType = "basic" | "piano" | "poly";
+export type SynthType = "piano" | "poly";
 
 export interface Preferences {
   gridWidth: GridWidth;

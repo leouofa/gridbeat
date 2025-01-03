@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Note, Interval } from "@/types";
+import { Note, Interval, SynthType } from "@/types";
 import { NOTES } from "@/constants";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { getNoteHighlight } from "@/utils/NoteHighlighter";
@@ -37,8 +37,6 @@ class PianoSamplerSingleton {
   }
 }
 
-type SynthType = "basic" | "piano" | "poly";
-
 interface GridProps {
   pattern?: Interval;
   rootNote?: number;
@@ -52,7 +50,7 @@ interface GridProps {
 const Grid: React.FC<GridProps> = ({
   pattern,
   rootNote,
-  synthType: propsSynthType,
+  synthType: propsSynthType = undefined,
   props,
 }) => {
   const { preferences } = usePreferences();
@@ -69,31 +67,20 @@ const Grid: React.FC<GridProps> = ({
     const setupInstrument = async () => {
       setIsLoading(true);
 
-      switch (
-        activeSynthType // Use activeSynthType instead of synthType
-      ) {
-        case "piano":
-          newInstrument = await PianoSamplerSingleton.getInstance();
-          break;
-
-        case "poly":
-          newInstrument = new Tone.PolySynth(Tone.Synth, {
-            oscillator: {
-              type: "triangle",
-            },
-            envelope: {
-              attack: 0.02,
-              decay: 0.1,
-              sustain: 0.3,
-              release: 1,
-            },
-          }).toDestination();
-          break;
-
-        case "basic":
-        default:
-          newInstrument = new Tone.Synth().toDestination();
-          break;
+      if (activeSynthType === "piano") {
+        newInstrument = await PianoSamplerSingleton.getInstance();
+      } else {
+        newInstrument = new Tone.PolySynth(Tone.Synth, {
+          oscillator: {
+            type: "triangle",
+          },
+          envelope: {
+            attack: 0.02,
+            decay: 0.1,
+            sustain: 0.3,
+            release: 1,
+          },
+        }).toDestination();
       }
 
       if (mounted) {
