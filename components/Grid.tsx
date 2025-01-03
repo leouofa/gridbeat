@@ -7,26 +7,111 @@ import { usePreferences } from "@/contexts/PreferencesContext";
 import { getNoteHighlight } from "@/utils/NoteHighlighter";
 import * as Tone from "tone";
 
+class PianoSamplerSingleton {
+  private static instance: Tone.Sampler | null = null;
+  private static isLoading = false;
+  private static loadPromise: Promise<void> | null = null;
+
+  static async getInstance(): Promise<Tone.Sampler> {
+    if (!this.instance && !this.loadPromise) {
+      this.isLoading = true;
+      this.loadPromise = new Promise((resolve) => {
+        const sampler = new Tone.Sampler({
+          urls: {
+            C4: "C4.mp3",
+            "D#4": "Ds4.mp3",
+            "F#4": "Fs4.mp3",
+            A4: "A4.mp3",
+          },
+          baseUrl: "https://tonejs.github.io/audio/salamander/",
+          onload: () => {
+            this.instance = sampler;
+            this.isLoading = false;
+            resolve();
+          },
+        }).toDestination();
+      });
+    }
+    await this.loadPromise;
+    return this.instance!;
+  }
+}
+
+type SynthType = "basic" | "piano" | "poly";
+
 interface GridProps {
   pattern?: Interval;
   rootNote?: number;
+  synthType?: SynthType;
   props?: {
     visible?: boolean;
     width?: number;
   };
 }
 
-const Grid: React.FC<GridProps> = ({ pattern, rootNote, props }) => {
+const Grid: React.FC<GridProps> = ({
+  pattern,
+  rootNote,
+  synthType = "poly",
+  props,
+}) => {
   const { preferences } = usePreferences();
-  const [synth, setSynth] = useState<Tone.Synth | null>(null);
+  const [instrument, setInstrument] = useState<
+    Tone.Synth | Tone.Sampler | Tone.PolySynth | null
+  >(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const newSynth = new Tone.Synth().toDestination();
-    setSynth(newSynth);
+    let newInstrument: typeof instrument = null;
+    let mounted = true;
+
+    const setupInstrument = async () => {
+      setIsLoading(true);
+
+      switch (synthType) {
+        case "piano":
+          newInstrument = await PianoSamplerSingleton.getInstance();
+          break;
+
+        case "poly":
+          newInstrument = new Tone.PolySynth(Tone.Synth, {
+            oscillator: {
+              type: "triangle",
+            },
+            envelope: {
+              attack: 0.02,
+              decay: 0.1,
+              sustain: 0.3,
+              release: 1,
+            },
+          }).toDestination();
+          break;
+
+        case "basic":
+        default:
+          newInstrument = new Tone.Synth().toDestination();
+          break;
+      }
+
+      if (mounted) {
+        setInstrument(newInstrument);
+        setIsLoading(false);
+      }
+    };
+
+    setupInstrument();
 
     return () => {
-      newSynth.dispose();
+      mounted = false;
+      if (newInstrument && synthType !== "piano") {
+        newInstrument.dispose();
+      }
     };
+  }, [synthType]);
+
+  // Preload piano samples when component mounts
+  useEffect(() => {
+    PianoSamplerSingleton.getInstance(); // Start loading immediately
   }, []);
 
   const playNote = async (
@@ -36,12 +121,10 @@ const Grid: React.FC<GridProps> = ({ pattern, rootNote, props }) => {
   ) => {
     await Tone.start();
 
-    if (synth) {
-      // Since the grid is rendered in reverse, we need to flip the row index
+    if (instrument) {
       const actualRowIndex = 7 - rowIndex;
       const position = actualRowIndex * 8 + columnIndex;
 
-      // Start from octave 1
       let octave = 1;
       let notePosition = 0;
 
@@ -50,7 +133,6 @@ const Grid: React.FC<GridProps> = ({ pattern, rootNote, props }) => {
           notePosition = 0;
         }
         if (notePosition === 0) {
-          // We've hit a C
           octave++;
         }
         notePosition++;
@@ -58,9 +140,13 @@ const Grid: React.FC<GridProps> = ({ pattern, rootNote, props }) => {
 
       const standardNoteName = note.name.replace("♯", "#");
       const noteWithOctave = `${standardNoteName}${octave}`;
-      synth.triggerAttackRelease(noteWithOctave, "8n");
+      instrument.triggerAttackRelease(noteWithOctave, "8n");
     }
   };
+
+  if (isLoading) {
+    return <div>Loading synthesizer...</div>;
+  }
 
   // Use props.visible if provided, otherwise check preferences
   const isVisible =
