@@ -63,7 +63,7 @@ export default function NotesPage() {
                 {NOTES.map((note) => (
                   <div
                     key={note.name}
-                    className="w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800 dark:border-gray-200 cursor-pointer hover:saturate-150 active:saturate-200  select-none"
+                    className="w-10 h-10 flex items-center justify-center rounded border-2 border-gray-800 dark:border-gray-200 cursor-pointer hover:saturate-[2.5] active:saturate-[3.0]  select-none"
                     style={{
                       backgroundColor: note.color,
                       color: note.textColor,
