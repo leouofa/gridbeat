@@ -99,15 +99,45 @@ const Grid: React.FC<GridProps> = ({
       } else {
         newInstrument = new Tone.PolySynth(Tone.Synth, {
           oscillator: {
-            type: "triangle",
+            type: "fatsawtooth",
           },
           envelope: {
-            attack: 0.02,
-            decay: 0.1,
-            sustain: 0.3,
-            release: 1,
+            attack: 0.03,
+            decay: 0.3,
+            sustain: 0.4,
+            release: 1.5,
           },
-        }).toDestination();
+        })
+          .chain(
+            // Add chorus for width and richness
+            new Tone.Chorus({
+              frequency: 2.5,
+              delayTime: 3.5,
+              depth: 0.7,
+              wet: 0.3,
+            }),
+            // Add reverb for space and depth
+            new Tone.Reverb({
+              decay: 2,
+              wet: 0.2,
+            }),
+            // Add a subtle compression to glue it together
+            new Tone.Compressor({
+              threshold: -24,
+              ratio: 3,
+              attack: 0.03,
+              release: 0.25,
+            }),
+            // EQ to shape the tone
+            new Tone.EQ3({
+              low: 2,
+              mid: 0,
+              high: 1,
+              lowFrequency: 250,
+              highFrequency: 2500,
+            }),
+          )
+          .toDestination();
       }
 
       if (mounted) {
