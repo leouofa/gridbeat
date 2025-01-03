@@ -23,10 +23,10 @@ const Guitar: React.FC<GuitarProps> = ({ pattern, rootNote, synthType }) => {
 
   const standardTuning = [
     { note: NOTES[4], octave: 4 }, // High E
-    { note: NOTES[9], octave: 3 }, // B
-    { note: NOTES[2], octave: 3 }, // G
-    { note: NOTES[7], octave: 2 }, // D
-    { note: NOTES[11], octave: 2 }, // A
+    { note: NOTES[9], octave: 3 }, // A
+    { note: NOTES[2], octave: 3 }, // D
+    { note: NOTES[7], octave: 2 }, // G
+    { note: NOTES[11], octave: 2 }, // B
     { note: NOTES[4], octave: 2 }, // Low E
   ];
 
