@@ -10,6 +10,7 @@ const defaultPreferences: Preferences = {
   guitarFrets: 12,
   ukuleleFrets: 12,
   activeChordName: "Major",
+  synthType: "poly",
 };
 
 const PreferencesContext = createContext<PreferencesContextType>({

@@ -2,7 +2,7 @@
 
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { useState, useRef } from "react";
-import { GridWidth, Instrument } from "@/types";
+import { GridWidth, Instrument, SynthType } from "@/types";
 import Link from "next/link";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { usePathname } from "next/navigation";
@@ -13,6 +13,10 @@ const CONSTANTS = {
   OCTAVES: [1, 2, 3, 4] as const,
   INSTRUMENTS: ["piano", "grid", "guitar", "ukulele"] as const,
   FRETS: [3, 5, 7, 9, 12] as const,
+  SYNTH_TYPES: [
+    { value: "poly", label: "Synth" },
+    { value: "piano", label: "Piano" },
+  ] as const,
   NAV_LINKS: [
     { href: "/", label: "Home" },
     { href: "/notes", label: "Notes" },
@@ -71,7 +75,7 @@ const DropdownOption = ({
 }) => (
   <button
     onClick={onClick}
-    className={`w-full text-left px-4 py-2 text-sm ${
+    className={`w-full text-left px-4 py-2 text-sm font-sans ${
       isSelected
         ? "bg-zinc-700 text-white"
         : "text-zinc-300 hover:bg-zinc-700 hover:text-white"
@@ -105,19 +109,19 @@ export function Menu() {
   });
 
   const toggleDropdown = (dropdown: string) => {
-    // Special handling for instruments dropdown
-    if (dropdown === "instruments") {
-      // If instruments is open and user clicks it again, close it
-      if (openDropdown === "instruments") {
+    // Special handling for settings dropdown
+    if (dropdown === "settings") {
+      // If settings is open and user clicks it again, close it
+      if (openDropdown === "settings") {
         setOpenDropdown(null);
       }
-      // If another dropdown is open, close it and open instruments
+      // If another dropdown is open, close it and open settings
       else if (openDropdown !== null) {
-        setOpenDropdown("instruments");
+        setOpenDropdown("settings");
       }
-      // If no dropdown is open, open instruments
+      // If no dropdown is open, open settings
       else {
-        setOpenDropdown("instruments");
+        setOpenDropdown("settings");
       }
     }
     // For all other dropdowns
@@ -169,38 +173,6 @@ export function Menu() {
 
   const renderDropdowns = () => (
     <div ref={menuRef} className="flex gap-2">
-      {/* Instruments Dropdown */}
-      <div className="relative">
-        <DropdownButton
-          label={`Instruments (${preferences.visibleInstruments.length})`}
-          isOpen={openDropdown === "instruments"}
-          onClick={() => toggleDropdown("instruments")}
-        />
-        {openDropdown === "instruments" && (
-          <DropdownContainer>
-            {CONSTANTS.INSTRUMENTS.map((instrument) => (
-              <DropdownOption
-                key={instrument}
-                isSelected={preferences.visibleInstruments.includes(instrument)}
-                onClick={() => handleInstrumentToggle(instrument)}
-              >
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={preferences.visibleInstruments.includes(
-                      instrument,
-                    )}
-                    onChange={() => {}}
-                    className="h-4 w-4"
-                  />
-                  {getInstrumentLabel(instrument)}
-                </div>
-              </DropdownOption>
-            ))}
-          </DropdownContainer>
-        )}
-      </div>
-
       {/* Guitar Frets Dropdown */}
       <div className="relative">
         <DropdownButton
@@ -283,6 +255,58 @@ export function Menu() {
                 onClick={() => updatePreference("gridWidth", width)}
               >
                 {getLayoutLabel(width)}
+              </DropdownOption>
+            ))}
+          </DropdownContainer>
+        )}
+      </div>
+
+      {/* Settings Dropdown */}
+      <div className="relative">
+        <DropdownButton
+          label={`Settings`}
+          isOpen={openDropdown === "settings"}
+          onClick={() => toggleDropdown("settings")}
+        />
+        {openDropdown === "settings" && (
+          <DropdownContainer>
+            <div className="px-4 py-2 text-md text-zinc-400 font-mono font-semibold">
+              Instruments
+            </div>
+            <div className="border-t border-1 border-zinc-500" />
+            {CONSTANTS.INSTRUMENTS.map((instrument) => (
+              <DropdownOption
+                key={instrument}
+                isSelected={preferences.visibleInstruments.includes(instrument)}
+                onClick={() => handleInstrumentToggle(instrument)}
+              >
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={preferences.visibleInstruments.includes(
+                      instrument,
+                    )}
+                    onChange={() => {}}
+                    className="h-4 w-4"
+                  />
+                  {getInstrumentLabel(instrument)}
+                </div>
+              </DropdownOption>
+            ))}
+            {/* <div className="border-t border-1 border-zinc-500 mb-4" /> */}
+            <div className="px-4 py-2 text-md text-zinc-400 font-mono font-semibold mt-2">
+              Sound Type
+            </div>
+            <div className="border-t border-1 border-zinc-500" />
+            {CONSTANTS.SYNTH_TYPES.map(({ value, label }) => (
+              <DropdownOption
+                key={value}
+                isSelected={preferences.synthType === value}
+                onClick={() =>
+                  updatePreference("synthType", value as SynthType)
+                }
+              >
+                {label}
               </DropdownOption>
             ))}
           </DropdownContainer>
