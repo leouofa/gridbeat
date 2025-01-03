@@ -52,10 +52,11 @@ interface GridProps {
 const Grid: React.FC<GridProps> = ({
   pattern,
   rootNote,
-  synthType = "poly",
+  synthType: propsSynthType,
   props,
 }) => {
   const { preferences } = usePreferences();
+  const activeSynthType = propsSynthType ?? preferences.synthType;
   const [instrument, setInstrument] = useState<
     Tone.Synth | Tone.Sampler | Tone.PolySynth | null
   >(null);
@@ -68,7 +69,9 @@ const Grid: React.FC<GridProps> = ({
     const setupInstrument = async () => {
       setIsLoading(true);
 
-      switch (synthType) {
+      switch (
+        activeSynthType // Use activeSynthType instead of synthType
+      ) {
         case "piano":
           newInstrument = await PianoSamplerSingleton.getInstance();
           break;
@@ -103,11 +106,11 @@ const Grid: React.FC<GridProps> = ({
 
     return () => {
       mounted = false;
-      if (newInstrument && synthType !== "piano") {
+      if (newInstrument && activeSynthType !== "piano") {
         newInstrument.dispose();
       }
     };
-  }, [synthType]);
+  }, [activeSynthType]);
 
   // Preload piano samples when component mounts
   useEffect(() => {

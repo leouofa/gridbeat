@@ -2,7 +2,7 @@
 
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { useState, useRef } from "react";
-import { GridWidth, Instrument } from "@/types";
+import { GridWidth, Instrument, SynthType } from "@/types";
 import Link from "next/link";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { usePathname } from "next/navigation";
@@ -13,6 +13,11 @@ const CONSTANTS = {
   OCTAVES: [1, 2, 3, 4] as const,
   INSTRUMENTS: ["piano", "grid", "guitar", "ukulele"] as const,
   FRETS: [3, 5, 7, 9, 12] as const,
+  SYNTH_TYPES: [
+    { value: "basic", label: "Basic Synth" },
+    { value: "piano", label: "Piano" },
+    { value: "poly", label: "Poly Synth" },
+  ] as const,
   NAV_LINKS: [
     { href: "/", label: "Home" },
     { href: "/notes", label: "Notes" },
@@ -195,6 +200,19 @@ export function Menu() {
                   />
                   {getInstrumentLabel(instrument)}
                 </div>
+              </DropdownOption>
+            ))}
+            <div className="border-t border-zinc-700 my-2" />
+            <div className="px-4 py-2 text-sm text-zinc-400">Synth Type</div>
+            {CONSTANTS.SYNTH_TYPES.map(({ value, label }) => (
+              <DropdownOption
+                key={value}
+                isSelected={preferences.synthType === value}
+                onClick={() =>
+                  updatePreference("synthType", value as SynthType)
+                }
+              >
+                {label}
               </DropdownOption>
             ))}
           </DropdownContainer>
