@@ -2,82 +2,11 @@
 
 import React from "react";
 import { NOTES } from "@/constants";
-import { Note, Interval, SynthType } from "@/types";
-import { getNoteHighlight } from "@/utils/NoteHighlighter";
+import { Interval, SynthType } from "@/types";
 import { usePreferences } from "@/contexts/PreferencesContext";
-import { useInstrument } from "@/hooks/useInstrument";
-import * as Tone from "tone";
+import { useNotePlayer } from "@/hooks/useNotePlayer";
+import { InstrumentString } from "./common/StringInstrument";
 import LoadingSpinner from "@/components/LoadingSpinner";
-
-interface UkuleleStringProps {
-  startNote: Note;
-  pattern?: Interval;
-  rootNote?: number;
-  frets: number;
-  onPlay: (note: Note, octave: number) => void;
-  stringOctave: number;
-}
-
-const UkuleleString: React.FC<UkuleleStringProps> = ({
-  startNote,
-  pattern,
-  rootNote,
-  frets,
-  onPlay,
-  stringOctave,
-}) => {
-  const getFretNotes = () => {
-    const fretNotes = [];
-    const currentNoteIndex = NOTES.findIndex(
-      (note) => note.name === startNote.name,
-    );
-
-    for (let fret = 0; fret <= frets; fret++) {
-      const noteIndex = (currentNoteIndex + fret) % 12;
-      fretNotes.push(NOTES[noteIndex]);
-    }
-    return fretNotes;
-  };
-
-  const fretNotes = getFretNotes();
-  const currentNoteIndex = NOTES.findIndex(
-    (note) => note.name === startNote.name,
-  );
-
-  return (
-    <div className="flex h-8 border-b border-gray-300">
-      {fretNotes.map((note, index) => {
-        const highlight =
-          pattern && rootNote !== undefined
-            ? getNoteHighlight(note, pattern, rootNote)
-            : { opacity: 1 };
-
-        return (
-          <div
-            key={index}
-            className={`
-              flex items-center justify-center cursor-pointer
-              hover:saturate-[2.5] active:saturate-[3.0]
-              select-none
-              ${index === 0 ? "w-12 border-r border-gray-400" : "w-16 border-r border-gray-400"}
-            `}
-            style={{
-              backgroundColor: note.color,
-              color: note.textColor,
-              ...highlight,
-            }}
-            onClick={() => {
-              const octaveShift = Math.floor((index + currentNoteIndex) / 12);
-              onPlay(note, stringOctave + octaveShift);
-            }}
-          >
-            {note.name}
-          </div>
-        );
-      })}
-    </div>
-  );
-};
 
 interface UkuleleProps {
   pattern?: Interval;
@@ -85,32 +14,15 @@ interface UkuleleProps {
   synthType?: SynthType;
 }
 
-const Ukulele: React.FC<UkuleleProps> = ({
-  pattern,
-  rootNote,
-  synthType: propsSynthType = undefined,
-}) => {
+const Ukulele: React.FC<UkuleleProps> = ({ pattern, rootNote, synthType }) => {
   const { preferences } = usePreferences();
-  const activeSynthType = propsSynthType ?? preferences.synthType;
-  const { instrument, isLoading } = useInstrument(activeSynthType);
+  const { playNote, isLoading, isVisible } = useNotePlayer(
+    "ukulele",
+    synthType,
+  );
 
-  if (!preferences.visibleInstruments.includes("ukulele")) {
-    return null;
-  }
-
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
-
-  const playNote = async (note: Note, octave: number) => {
-    await Tone.start();
-
-    if (instrument) {
-      const standardNoteName = note.name.replace("♯", "#");
-      const noteWithOctave = `${standardNoteName}${octave}`;
-      instrument.triggerAttackRelease(noteWithOctave, "8n");
-    }
-  };
+  if (!isVisible) return null;
+  if (isLoading) return <LoadingSpinner />;
 
   // Standard ukulele tuning with corresponding octaves
   const standardTuning = [
@@ -146,7 +58,7 @@ const Ukulele: React.FC<UkuleleProps> = ({
 
         {/* Ukulele strings */}
         {standardTuning.map(({ note, octave }, index) => (
-          <UkuleleString
+          <InstrumentString
             key={index}
             startNote={note}
             pattern={pattern}

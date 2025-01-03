@@ -5,8 +5,7 @@ import { NOTES } from "@/constants";
 import { Note, Interval, SynthType } from "@/types";
 import { getNoteHighlight } from "@/utils/NoteHighlighter";
 import { usePreferences } from "@/contexts/PreferencesContext";
-import { useInstrument } from "@/hooks/useInstrument";
-import * as Tone from "tone";
+import { useNotePlayer } from "@/hooks/useNotePlayer";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface PianoKeyProps {
@@ -26,7 +25,6 @@ const PianoKey: React.FC<PianoKeyProps> = ({
 }) => {
   const isBlack = !note.natural;
 
-  // Get highlight styling if pattern and rootNote are provided
   const highlight =
     pattern && rootNote !== undefined
       ? getNoteHighlight(note, pattern, rootNote)
@@ -63,30 +61,13 @@ interface PianoKeyboardProps {
 const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
   pattern,
   rootNote,
-  synthType: propsSynthType = undefined,
+  synthType,
 }) => {
   const { preferences } = usePreferences();
-  const activeSynthType = propsSynthType ?? preferences.synthType;
-  const { instrument, isLoading } = useInstrument(activeSynthType);
+  const { playNote, isLoading, isVisible } = useNotePlayer("piano", synthType);
 
-  // Early return if piano is not in visible instruments
-  if (!preferences.visibleInstruments.includes("piano")) {
-    return null;
-  }
-
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
-
-  const playNote = async (note: Note, octave: number) => {
-    await Tone.start();
-
-    if (instrument) {
-      const standardNoteName = note.name.replace("♯", "#");
-      const noteWithOctave = `${standardNoteName}${octave}`;
-      instrument.triggerAttackRelease(noteWithOctave, "8n");
-    }
-  };
+  if (!isVisible) return null;
+  if (isLoading) return <LoadingSpinner />;
 
   const createKeys = () => {
     const keys = [];
@@ -98,9 +79,7 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
       });
     }
 
-    // Add the final C key for the last octave
     keys.push({ note: NOTES[0], octave: octaves });
-
     return keys;
   };
 
