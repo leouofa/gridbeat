@@ -1,10 +1,7 @@
 import React from "react";
 import { Chord, Note } from "@/types";
 import { NOTES } from "@/constants";
-import Grid from "@/components/Grid";
-import PianoKeyboard from "@/components/PianoKeyboard";
-import Guitar from "@/components/Guitar";
-import Ukulele from "@/components/Ukulele";
+import { ChordView } from "@/components/ChordBank/ChordView";
 import * as Tone from "tone";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { useInstrument } from "@/hooks/useInstrument";
@@ -16,8 +13,6 @@ interface ChordDetailProps {
 const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
   const { preferences, updatePreferences } = usePreferences();
   const { instrument, isLoading } = useInstrument(preferences.synthType);
-
-  const hasVisibleInstruments = preferences.visibleInstruments.length > 0;
 
   const playChord = async (chordNotes: string[]) => {
     await Tone.start();
@@ -99,59 +94,16 @@ const ChordDetail: React.FC<ChordDetailProps> = ({ chord }) => {
         const favorite = isFavorite(note, chord);
 
         return (
-          <div key={index} className={hasVisibleInstruments ? "mb-28" : "mb-2"}>
-            <div
-              className={`font-mono text-lg flex items-center gap-2 ${hasVisibleInstruments ? "mb-6" : ""}`}
-            >
-              <span>
-                {`${note.name} ${chord.name} (${chordNotes.join(", ")})`}
-              </span>
-              <button
-                onClick={() => playChord(chordNotes)}
-                className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-500 active:bg-blue-700 text-sm border-2 border-gray-800 dark:border-gray-200 "
-                disabled={isLoading}
-              >
-                Play
-              </button>
-              <button
-                onClick={() => toggleFavorite(note, chord)}
-                className={`px-3 py-1 rounded text-sm border-2 ${
-                  favorite
-                    ? "bg-yellow-500 hover:bg-yellow-400 active:bg-yellow-600 text-black border-gray-800"
-                    : "bg-gray-600 hover:bg-gray-500 active:bg-gray-700 text-white border-gray-800"
-                }`}
-              >
-                {favorite ? "★ Favorited" : "☆ Add to Favorites"}
-              </button>
-            </div>
-            <div className="flex flex-wrap gap-4">
-              <div className="flex-shrink-0 flex flex-col gap-4 max-w-full">
-                <div className="overflow-x-auto">
-                  <PianoKeyboard
-                    pattern={chord.pattern}
-                    rootNote={parseInt(note.alias)}
-                  />
-                </div>
-                <div className="flex flex-wrap gap-4 max-w-full">
-                  <div className="overflow-x-auto flex-shrink-0 min-w-0">
-                    <Guitar
-                      pattern={chord.pattern}
-                      rootNote={parseInt(note.alias)}
-                    />
-                  </div>
-                  <div className="overflow-x-auto flex-shrink-0 min-w-0">
-                    <Ukulele
-                      pattern={chord.pattern}
-                      rootNote={parseInt(note.alias)}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex-grow">
-                <Grid pattern={chord.pattern} rootNote={parseInt(note.alias)} />
-              </div>
-            </div>
-          </div>
+          <ChordView
+            key={index}
+            note={note}
+            chord={chord}
+            chordNotes={chordNotes}
+            onPlay={playChord}
+            onToggleFavorite={() => toggleFavorite(note, chord)}
+            isFavorite={favorite}
+            isLoading={isLoading}
+          />
         );
       })}
     </div>
