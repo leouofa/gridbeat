@@ -27,7 +27,7 @@ export default function FavoritesHome() {
       {preferences.favoriteChords.length === 0 ? (
         <p>No favorite chords yet. Add some from the Chord Bank!</p>
       ) : (
-        <div className="space-y-8">
+        <div>
           {preferences.favoriteChords.map((favorite, index) => {
             const chordNotes = getChordNotes(
               parseInt(favorite.rootNote.alias),
