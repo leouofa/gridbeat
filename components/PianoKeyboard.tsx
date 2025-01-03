@@ -36,7 +36,7 @@ const PianoKey: React.FC<PianoKeyProps> = ({
     <div
       className={`
         ${isBlack ? "bg-black h-32 w-8 -mx-4 z-10 pl-1 pt-16" : `bg-white h-48 w-12 pl-5 pt-36 `}
-        relative border border-gray-800 font-mono cursor-pointer hover:saturate-150 active:saturate-200
+        relative border border-gray-800 font-mono cursor-pointer select-none hover:saturate-150 active:saturate-200
       `}
       data-note={`${note.name}${octave}`}
       style={{
