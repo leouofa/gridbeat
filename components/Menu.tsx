@@ -173,93 +173,101 @@ export function Menu() {
 
   const renderDropdowns = () => (
     <div ref={menuRef} className="flex gap-2">
-      {/* Guitar Frets Dropdown */}
-      <div className="relative">
-        <DropdownButton
-          label={`Guitar Frets: ${preferences.guitarFrets}`}
-          isOpen={openDropdown === "guitarFrets"}
-          onClick={() => toggleDropdown("guitarFrets")}
-        />
-        {openDropdown === "guitarFrets" && (
-          <DropdownContainer>
-            {CONSTANTS.FRETS.map((frets) => (
-              <DropdownOption
-                key={frets}
-                isSelected={preferences.guitarFrets === frets}
-                onClick={() => updatePreference("guitarFrets", frets)}
-              >
-                {frets} Frets
-              </DropdownOption>
-            ))}
-          </DropdownContainer>
-        )}
-      </div>
+      {/* Guitar Frets Dropdown - Only show if guitar is visible */}
+      {preferences.visibleInstruments.includes("guitar") && (
+        <div className="relative">
+          <DropdownButton
+            label={`Guitar Frets: ${preferences.guitarFrets}`}
+            isOpen={openDropdown === "guitarFrets"}
+            onClick={() => toggleDropdown("guitarFrets")}
+          />
+          {openDropdown === "guitarFrets" && (
+            <DropdownContainer>
+              {CONSTANTS.FRETS.map((frets) => (
+                <DropdownOption
+                  key={frets}
+                  isSelected={preferences.guitarFrets === frets}
+                  onClick={() => updatePreference("guitarFrets", frets)}
+                >
+                  {frets} Frets
+                </DropdownOption>
+              ))}
+            </DropdownContainer>
+          )}
+        </div>
+      )}
 
-      {/* Ukulele Frets Dropdown */}
-      <div className="relative">
-        <DropdownButton
-          label={`Ukulele Frets: ${preferences.ukuleleFrets}`}
-          isOpen={openDropdown === "ukuleleFrets"}
-          onClick={() => toggleDropdown("ukuleleFrets")}
-        />
-        {openDropdown === "ukuleleFrets" && (
-          <DropdownContainer>
-            {CONSTANTS.FRETS.map((frets) => (
-              <DropdownOption
-                key={frets}
-                isSelected={preferences.ukuleleFrets === frets}
-                onClick={() => updatePreference("ukuleleFrets", frets)}
-              >
-                {frets} Frets
-              </DropdownOption>
-            ))}
-          </DropdownContainer>
-        )}
-      </div>
+      {/* Ukulele Frets Dropdown - Only show if ukulele is visible */}
+      {preferences.visibleInstruments.includes("ukulele") && (
+        <div className="relative">
+          <DropdownButton
+            label={`Ukulele Frets: ${preferences.ukuleleFrets}`}
+            isOpen={openDropdown === "ukuleleFrets"}
+            onClick={() => toggleDropdown("ukuleleFrets")}
+          />
+          {openDropdown === "ukuleleFrets" && (
+            <DropdownContainer>
+              {CONSTANTS.FRETS.map((frets) => (
+                <DropdownOption
+                  key={frets}
+                  isSelected={preferences.ukuleleFrets === frets}
+                  onClick={() => updatePreference("ukuleleFrets", frets)}
+                >
+                  {frets} Frets
+                </DropdownOption>
+              ))}
+            </DropdownContainer>
+          )}
+        </div>
+      )}
 
-      {/* Octaves Dropdown */}
-      <div className="relative">
-        <DropdownButton
-          label={`Piano Octaves: ${preferences.octaves}`}
-          isOpen={openDropdown === "octaves"}
-          onClick={() => toggleDropdown("octaves")}
-        />
-        {openDropdown === "octaves" && (
-          <DropdownContainer>
-            {CONSTANTS.OCTAVES.map((octaves) => (
-              <DropdownOption
-                key={octaves}
-                isSelected={preferences.octaves === octaves}
-                onClick={() => updatePreference("octaves", octaves)}
-              >
-                {octaves} Octave{octaves > 1 ? "s" : ""}
-              </DropdownOption>
-            ))}
-          </DropdownContainer>
-        )}
-      </div>
+      {/* Octaves Dropdown - Only show if piano is visible */}
+      {preferences.visibleInstruments.includes("piano") && (
+        <div className="relative">
+          <DropdownButton
+            label={`Piano Octaves: ${preferences.octaves}`}
+            isOpen={openDropdown === "octaves"}
+            onClick={() => toggleDropdown("octaves")}
+          />
+          {openDropdown === "octaves" && (
+            <DropdownContainer>
+              {CONSTANTS.OCTAVES.map((octaves) => (
+                <DropdownOption
+                  key={octaves}
+                  isSelected={preferences.octaves === octaves}
+                  onClick={() => updatePreference("octaves", octaves)}
+                >
+                  {octaves} Octave{octaves > 1 ? "s" : ""}
+                </DropdownOption>
+              ))}
+            </DropdownContainer>
+          )}
+        </div>
+      )}
 
-      {/* Grid Width Dropdown */}
-      <div className="relative">
-        <DropdownButton
-          label={`Grid Overlap: ${getLayoutLabel(preferences.gridWidth)}`}
-          isOpen={openDropdown === "gridWidth"}
-          onClick={() => toggleDropdown("gridWidth")}
-        />
-        {openDropdown === "gridWidth" && (
-          <DropdownContainer>
-            {CONSTANTS.GRID_WIDTH.map((width) => (
-              <DropdownOption
-                key={width}
-                isSelected={preferences.gridWidth === width}
-                onClick={() => updatePreference("gridWidth", width)}
-              >
-                {getLayoutLabel(width)}
-              </DropdownOption>
-            ))}
-          </DropdownContainer>
-        )}
-      </div>
+      {/* Grid Width Dropdown - Only show if grid is visible */}
+      {preferences.visibleInstruments.includes("grid") && (
+        <div className="relative">
+          <DropdownButton
+            label={`Grid Overlap: ${getLayoutLabel(preferences.gridWidth)}`}
+            isOpen={openDropdown === "gridWidth"}
+            onClick={() => toggleDropdown("gridWidth")}
+          />
+          {openDropdown === "gridWidth" && (
+            <DropdownContainer>
+              {CONSTANTS.GRID_WIDTH.map((width) => (
+                <DropdownOption
+                  key={width}
+                  isSelected={preferences.gridWidth === width}
+                  onClick={() => updatePreference("gridWidth", width)}
+                >
+                  {getLayoutLabel(width)}
+                </DropdownOption>
+              ))}
+            </DropdownContainer>
+          )}
+        </div>
+      )}
 
       {/* Settings Dropdown */}
       <div className="relative">
@@ -293,7 +301,6 @@ export function Menu() {
                 </div>
               </DropdownOption>
             ))}
-            {/* <div className="border-t border-1 border-zinc-500 mb-4" /> */}
             <div className="px-4 py-2 text-md text-zinc-400 font-mono font-semibold mt-2">
               Sound Type
             </div>
