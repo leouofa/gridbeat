@@ -63,11 +63,4 @@ export class ToneManager {
     }
     return this.synth;
   }
-
-  disposeSynth() {
-    if (this.synth) {
-      this.synth.dispose();
-      this.synth = null;
-    }
-  }
 }
