@@ -13,6 +13,12 @@ export interface Preferences {
   ukuleleFrets: UkuleleFrets;
   activeChordName: string;
   synthType: SynthType;
+  favoriteChords: FavoriteChord[];
+}
+
+export interface FavoriteChord {
+  rootNote: Note;
+  chord: Chord;
 }
 
 export type PreferencesContextType = {
