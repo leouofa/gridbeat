@@ -59,21 +59,5 @@ export interface Scale {
   noteCount: 5 | 6 | 7 | 8 | 9; // Different scales have different numbers of notes
 }
 
-type ScaleCategory = "Western" | "Jazz" | "Blues" | "World" | "Exotic";
-type ScaleName =
-  | "Major"
-  | "Minor"
-  | "Dorian"
-  | "Phrygian"
-  | "Mixolydian"
-  | "Melodic Minor"
-  | "Harmonic Minor"
-  | "BeBop"
-  | "Blues Scale"
-  | "Minor Pentatonic"
-  | "Hungarian Minor"
-  | "Ukrainian Dorian Mode"
-  | "Marva"
-  | "Todi"
-  | "Whole Tone Scale"
-  | "Hirajoshi";
+type ScaleCategory = "Western" | "Blues";
+type ScaleName = "Major" | "Minor" | "Blues Scale";
