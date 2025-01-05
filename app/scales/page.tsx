@@ -14,7 +14,7 @@ const ScaleList: React.FC<{
   onSelectScale: (scaleName: string) => void;
 }> = ({ scales, selectedScale, onSelectScale }) => {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2 mb-4">
       {scales.map((scale) => (
         <button
           key={scale.name}
