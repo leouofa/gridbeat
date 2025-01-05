@@ -21,6 +21,7 @@ const CONSTANTS = {
     { href: "/", label: "Home" },
     { href: "/notes", label: "Notes" },
     { href: "/chords", label: "Chords" },
+    { href: "/scales", label: "Scales" },
     { href: "/favorites", label: "Favorites" },
   ],
 } as const;
