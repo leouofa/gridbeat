@@ -17,13 +17,6 @@ export const SCALES: Scale[] = [
     category: "Western",
     noteCount: 7,
   },
-  {
-    name: "Blues Scale",
-    pattern: [3, 2, 1, 1, 3, 2],
-    description: "A minor pentatonic scale with an added diminished 5th.",
-    category: "Blues",
-    noteCount: 6,
-  },
 ];
 
 export const CHORDS: Chord[] = [
