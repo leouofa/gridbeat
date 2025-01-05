@@ -4,9 +4,10 @@ import React, { useState } from "react";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { ChordView } from "@/components/ChordBank/ChordView";
 import { useInstrument } from "@/hooks/useInstrument";
-import { getChordNotes, playChord } from "@/utils/chordUtils";
+import { getChordNotes, playChord, isFavoriteChord } from "@/utils/chordUtils";
 import { NOTES, CHORDS, SCALES } from "@/constants";
 import { Note, Chord, Scale } from "@/types";
+import ChordButton from "@/components/ChordBank/ChordButton";
 
 const ScaleList: React.FC<{
   scales: Scale[];
@@ -14,19 +15,14 @@ const ScaleList: React.FC<{
   onSelectScale: (scaleName: string) => void;
 }> = ({ scales, selectedScale, onSelectScale }) => {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex space-x-2 mb-2">
       {scales.map((scale) => (
-        <button
+        <ChordButton
           key={scale.name}
+          name={scale.name}
           onClick={() => onSelectScale(scale.name)}
-          className={`px-3 py-1 rounded ${
-            selectedScale === scale.name
-              ? "bg-blue-500 text-white"
-              : "bg-zinc-700 hover:bg-zinc-600"
-          }`}
-        >
-          {scale.name}
-        </button>
+          isActive={selectedScale === scale.name}
+        />
       ))}
     </div>
   );
@@ -38,19 +34,14 @@ const RootNoteList: React.FC<{
   onSelectNote: (noteName: string) => void;
 }> = ({ notes, selectedNote, onSelectNote }) => {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex space-x-2">
       {notes.map((note) => (
-        <button
+        <ChordButton
           key={note.name}
+          name={note.name}
           onClick={() => onSelectNote(note.name)}
-          className={`px-3 py-1 rounded ${
-            selectedNote === note.name
-              ? "bg-blue-500 text-white"
-              : "bg-zinc-700 hover:bg-zinc-600"
-          }`}
-        >
-          {note.name}
-        </button>
+          isActive={selectedNote === note.name}
+        />
       ))}
     </div>
   );
@@ -92,13 +83,35 @@ function getScaleDegreeChordQualities(scale: Scale): Chord[] {
 }
 
 export default function ScaleChordsPage() {
-  const { preferences } = usePreferences();
+  const { preferences, updatePreferences } = usePreferences();
   const { instrument, isLoading } = useInstrument(preferences.synthType);
   const [selectedScale, setSelectedScale] = useState<Scale>(SCALES[0]);
   const [selectedRoot, setSelectedRoot] = useState<Note>(NOTES[0]);
 
   const handlePlayChord = (chordNotes: string[]) => {
     playChord(instrument, chordNotes);
+  };
+
+  const toggleFavorite = (rootNote: Note, chord: Chord) => {
+    const isCurrentlyFavorite = isFavoriteChord(
+      preferences.favoriteChords,
+      rootNote,
+      chord,
+    );
+
+    if (isCurrentlyFavorite) {
+      const updatedFavorites = preferences.favoriteChords.filter(
+        (fc) =>
+          !(fc.rootNote.name === rootNote.name && fc.chord.name === chord.name),
+      );
+      updatePreferences({ favoriteChords: updatedFavorites });
+    } else {
+      const updatedFavorites = [
+        ...preferences.favoriteChords,
+        { rootNote, chord },
+      ];
+      updatePreferences({ favoriteChords: updatedFavorites });
+    }
   };
 
   const generateScaleChords = () => {
@@ -186,8 +199,14 @@ export default function ScaleChordsPage() {
                     chord={chord.chord}
                     chordNotes={chordNotes}
                     onPlay={handlePlayChord}
-                    onToggleFavorite={() => {}}
-                    isFavorite={false}
+                    onToggleFavorite={() =>
+                      toggleFavorite(chord.rootNote, chord.chord)
+                    }
+                    isFavorite={isFavoriteChord(
+                      preferences.favoriteChords,
+                      chord.rootNote,
+                      chord.chord,
+                    )}
                     isLoading={isLoading}
                   />
                 </div>
