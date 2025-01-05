@@ -135,19 +135,6 @@ export default function ScaleChordsPage() {
     return chords;
   };
 
-  // Helper function to get roman numeral notation
-  const getRomanNumeral = (index: number, chord: Chord): string => {
-    const numerals = ["I", "II", "III", "IV", "V", "VI", "VII"];
-    const numeral = numerals[index];
-
-    if (chord.name === "Minor") {
-      return numeral.toLowerCase();
-    } else if (chord.name === "Diminished") {
-      return numeral.toLowerCase() + "°";
-    }
-    return numeral;
-  };
-
   return (
     <>
       <div className="fixed top-[56px] left-0 right-0 bg-zinc-800 border-b border-zinc-800 z-40">
@@ -174,11 +161,11 @@ export default function ScaleChordsPage() {
       </div>
 
       <div className="mt-32 p-4">
-        <div className="mb-4">
-          <h2 className="text-xl">
+        <div className="mb-10">
+          <h2 className="text-2xl">
             {selectedRoot.name} {selectedScale.name}
           </h2>
-          <p className="text-sm text-gray-600">{selectedScale.description}</p>
+          <p className="">{selectedScale.description}</p>
         </div>
 
         <div className="space-y-4">
@@ -190,9 +177,6 @@ export default function ScaleChordsPage() {
 
             return (
               <div key={index} className="flex items-center gap-4">
-                <div className="w-12 text-sm font-medium">
-                  {getRomanNumeral(index, chord.chord)}
-                </div>
                 <div className="flex-1">
                   <ChordView
                     note={chord.rootNote}

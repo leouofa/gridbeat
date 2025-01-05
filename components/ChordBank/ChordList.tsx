@@ -15,7 +15,7 @@ const ChordList: React.FC<ChordListProps> = ({
 }) => {
   return (
     <div>
-      <ul className="flex space-x-4">
+      <ul className="flex space-x-2">
         {chords.map((chord) => (
           <li key={chord.name}>
             <ChordButton

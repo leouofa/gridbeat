@@ -46,7 +46,7 @@ export default function FavoritesHome() {
         </div>
       ) : (
         <div>
-          <h1 className="text-2xl mb-4">Favorite Chords</h1>
+          <h1 className="text-2xl mb-10">Favorite Chords</h1>
           {preferences.favoriteChords.map((favorite, index) => {
             const chordNotes = getChordNotes(
               parseInt(favorite.rootNote.alias),

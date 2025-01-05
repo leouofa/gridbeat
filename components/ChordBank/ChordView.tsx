@@ -33,7 +33,10 @@ export const ChordView: React.FC<ChordViewProps> = ({
   const rootNoteNumber = parseInt(note.alias);
 
   return (
-    <div className={hasVisibleInstruments ? "mb-28" : "mb-2"}>
+    <div
+      id={`chord-${note.name}`}
+      className={hasVisibleInstruments ? "mb-28" : "mb-2"}
+    >
       <div
         className={`font-mono text-lg flex items-center gap-2 ${
           hasVisibleInstruments ? "mb-6" : ""
