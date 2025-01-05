@@ -59,5 +59,5 @@ export interface Scale {
   noteCount: 5 | 6 | 7 | 8 | 9; // Different scales have different numbers of notes
 }
 
-type ScaleCategory = "Western" | "Blues";
-type ScaleName = "Major" | "Minor" | "Blues Scale";
+type ScaleCategory = "Western";
+type ScaleName = "Major" | "Minor";
