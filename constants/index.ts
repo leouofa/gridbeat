@@ -1,4 +1,30 @@
-import { Chord, Note } from "@/types";
+import { Chord, Note, Scale } from "@/types";
+
+export const SCALES: Scale[] = [
+  {
+    name: "Major",
+    pattern: [2, 2, 1, 2, 2, 2, 1],
+    description:
+      "The foundation of Western music, characterized by its bright and stable sound.",
+    category: "Western",
+    noteCount: 7,
+  },
+  {
+    name: "Minor",
+    pattern: [2, 1, 2, 2, 1, 2, 2],
+    description:
+      "The natural minor scale, often used to convey melancholy or darkness.",
+    category: "Western",
+    noteCount: 7,
+  },
+  {
+    name: "Blues Scale",
+    pattern: [3, 2, 1, 1, 3, 2],
+    description: "A minor pentatonic scale with an added diminished 5th.",
+    category: "Blues",
+    noteCount: 6,
+  },
+];
 
 export const CHORDS: Chord[] = [
   {
