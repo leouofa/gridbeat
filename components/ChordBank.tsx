@@ -22,29 +22,50 @@ const ChordBank: React.FC = () => {
     CHORDS.find((c) => c.name === DEFAULT_CHORD)!;
 
   useEffect(() => {
-    // Set up intersection observer
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const noteId = entry.target.id.replace("chord-", "");
-            setVisibleChordNote(noteId);
-          }
-        });
-      },
-      {
-        rootMargin: "-140px 0px -80% 0px", // Adjust these values to control when the highlighting happens
-        threshold: 0,
-      },
-    );
+    const handleScroll = () => {
+      // Check if we're at the bottom of the page
+      if (
+        window.innerHeight + Math.round(window.scrollY) >=
+        document.documentElement.scrollHeight - 70 // Adding a small buffer
+      ) {
+        // When at the bottom, set the last note as visible
+        setVisibleChordNote(NOTES[NOTES.length - 1].name);
+        return;
+      }
 
-    // Observe all chord elements
-    NOTES.forEach((note) => {
-      const element = document.getElementById(`chord-${note.name}`);
-      if (element) observer.observe(element);
-    });
+      // Regular intersection observer logic for other cases
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const noteId = entry.target.id.replace("chord-", "");
+              setVisibleChordNote(noteId);
+            }
+          });
+        },
+        {
+          rootMargin: "-120px 0px -80% 0px",
+          threshold: 0,
+        },
+      );
 
-    return () => observer.disconnect();
+      NOTES.forEach((note) => {
+        const element = document.getElementById(`chord-${note.name}`);
+        if (element) observer.observe(element);
+      });
+
+      return () => observer.disconnect();
+    };
+
+    // Initial setup
+    handleScroll();
+
+    // Add scroll event listener
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const handleSelectChord = (chordName: string) => {
@@ -54,8 +75,7 @@ const ChordBank: React.FC = () => {
   const scrollToNote = (noteName: string) => {
     const element = document.getElementById(`chord-${noteName}`);
     if (element) {
-      // Calculate header height (adjust this value if your header height changes)
-      const headerHeight = 180; // Approximate height of the fixed header
+      const headerHeight = 180;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition =
         elementPosition + window.pageYOffset - headerHeight;
