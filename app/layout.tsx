@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { PreferencesProvider } from "@/contexts/PreferencesContext";
 import { Menu } from "@/components/Menu";
+import { Analytics } from "@vercel/analytics/react"
 import "./globals.css";
 
 const geistSans = Geist({
@@ -67,6 +68,7 @@ export default function RootLayout({
           <Menu />
           <main className="pt-14">{children}</main>
         </PreferencesProvider>
+        <Analytics/>
       </body>
     </html>
   );
