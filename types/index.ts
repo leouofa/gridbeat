@@ -48,3 +48,32 @@ export interface Note {
   color: string;
   textColor: string;
 }
+
+type ScaleInterval = 1 | 2 | 3; // 1 = half step, 2 = whole step, 3 = augmented second
+
+export interface Scale {
+  name: ScaleName; // You could create a union type of allowed scale names
+  pattern: ScaleInterval[];
+  description: string;
+  category?: ScaleCategory;
+  noteCount: 5 | 6 | 7 | 8 | 9; // Different scales have different numbers of notes
+}
+
+type ScaleCategory = "Western" | "Jazz" | "Blues" | "World" | "Exotic";
+type ScaleName =
+  | "Major"
+  | "Minor"
+  | "Dorian"
+  | "Phrygian"
+  | "Mixolydian"
+  | "Melodic Minor"
+  | "Harmonic Minor"
+  | "BeBop"
+  | "Blues Scale"
+  | "Minor Pentatonic"
+  | "Hungarian Minor"
+  | "Ukrainian Dorian Mode"
+  | "Marva"
+  | "Todi"
+  | "Whole Tone Scale"
+  | "Hirajoshi";
