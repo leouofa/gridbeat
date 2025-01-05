@@ -79,7 +79,7 @@ export default function ScaleChordsPage() {
   // Helper function to get roman numeral notation
   const getRomanNumeral = (index: number, chord: Chord): string => {
     const numerals = ["I", "II", "III", "IV", "V", "VI", "VII"];
-    let numeral = numerals[index];
+    const numeral = numerals[index];
 
     if (chord.name === "Minor") {
       return numeral.toLowerCase();
