@@ -12,7 +12,7 @@ const DEFAULT_CHORD = "Major";
 
 const ChordBank: React.FC = () => {
   const { preferences, updatePreferences } = usePreferences();
-  const [selectedNote, setSelectedNote] = useState<Note>(NOTES[0]);
+  const [, setSelectedNote] = useState<Note>(NOTES[0]);
   const [visibleChordNote, setVisibleChordNote] = useState<string>(
     NOTES[0].name,
   );
