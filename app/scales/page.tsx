@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { ChordView } from "@/components/ChordBank/ChordView";
 import { useInstrument } from "@/hooks/useInstrument";
-import { getChordNotes, playChord } from "@/utils/chordUtils";
+import { getChordNotes, playChord, isFavoriteChord } from "@/utils/chordUtils";
 import { NOTES, CHORDS, SCALES } from "@/constants";
 import { Note, Chord, Scale } from "@/types";
 
@@ -92,13 +92,35 @@ function getScaleDegreeChordQualities(scale: Scale): Chord[] {
 }
 
 export default function ScaleChordsPage() {
-  const { preferences } = usePreferences();
+  const { preferences, updatePreferences } = usePreferences();
   const { instrument, isLoading } = useInstrument(preferences.synthType);
   const [selectedScale, setSelectedScale] = useState<Scale>(SCALES[0]);
   const [selectedRoot, setSelectedRoot] = useState<Note>(NOTES[0]);
 
   const handlePlayChord = (chordNotes: string[]) => {
     playChord(instrument, chordNotes);
+  };
+
+  const toggleFavorite = (rootNote: Note, chord: Chord) => {
+    const isCurrentlyFavorite = isFavoriteChord(
+      preferences.favoriteChords,
+      rootNote,
+      chord,
+    );
+
+    if (isCurrentlyFavorite) {
+      const updatedFavorites = preferences.favoriteChords.filter(
+        (fc) =>
+          !(fc.rootNote.name === rootNote.name && fc.chord.name === chord.name),
+      );
+      updatePreferences({ favoriteChords: updatedFavorites });
+    } else {
+      const updatedFavorites = [
+        ...preferences.favoriteChords,
+        { rootNote, chord },
+      ];
+      updatePreferences({ favoriteChords: updatedFavorites });
+    }
   };
 
   const generateScaleChords = () => {
@@ -186,8 +208,14 @@ export default function ScaleChordsPage() {
                     chord={chord.chord}
                     chordNotes={chordNotes}
                     onPlay={handlePlayChord}
-                    onToggleFavorite={() => {}}
-                    isFavorite={false}
+                    onToggleFavorite={() =>
+                      toggleFavorite(chord.rootNote, chord.chord)
+                    }
+                    isFavorite={isFavoriteChord(
+                      preferences.favoriteChords,
+                      chord.rootNote,
+                      chord.chord,
+                    )}
                     isLoading={isLoading}
                   />
                 </div>
