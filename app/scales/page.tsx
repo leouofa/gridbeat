@@ -8,6 +8,54 @@ import { getChordNotes, playChord } from "@/utils/chordUtils";
 import { NOTES, CHORDS, SCALES } from "@/constants";
 import { Note, Chord, Scale } from "@/types";
 
+const ScaleList: React.FC<{
+  scales: Scale[];
+  selectedScale: string;
+  onSelectScale: (scaleName: string) => void;
+}> = ({ scales, selectedScale, onSelectScale }) => {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {scales.map((scale) => (
+        <button
+          key={scale.name}
+          onClick={() => onSelectScale(scale.name)}
+          className={`px-3 py-1 rounded ${
+            selectedScale === scale.name
+              ? "bg-blue-500 text-white"
+              : "bg-zinc-700 hover:bg-zinc-600"
+          }`}
+        >
+          {scale.name}
+        </button>
+      ))}
+    </div>
+  );
+};
+
+const RootNoteList: React.FC<{
+  notes: Note[];
+  selectedNote: string;
+  onSelectNote: (noteName: string) => void;
+}> = ({ notes, selectedNote, onSelectNote }) => {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {notes.map((note) => (
+        <button
+          key={note.name}
+          onClick={() => onSelectNote(note.name)}
+          className={`px-3 py-1 rounded ${
+            selectedNote === note.name
+              ? "bg-blue-500 text-white"
+              : "bg-zinc-700 hover:bg-zinc-600"
+          }`}
+        >
+          {note.name}
+        </button>
+      ))}
+    </div>
+  );
+};
+
 function getScaleDegreeChordQualities(scale: Scale): Chord[] {
   const chordQualities: Chord[] = [];
 
@@ -74,8 +122,6 @@ export default function ScaleChordsPage() {
     return chords;
   };
 
-  const scaleChords = generateScaleChords();
-
   // Helper function to get roman numeral notation
   const getRomanNumeral = (index: number, chord: Chord): string => {
     const numerals = ["I", "II", "III", "IV", "V", "VI", "VII"];
@@ -90,81 +136,66 @@ export default function ScaleChordsPage() {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl mb-4">Scale Chord Generator</h1>
-
-      <div className="flex gap-4 mb-6">
-        <div className="w-48">
-          <label className="block text-sm font-medium mb-2">Scale</label>
-          <select
-            className="w-full p-2 border rounded"
-            value={selectedScale.name}
-            onChange={(e) => {
-              const newScale = SCALES.find((s) => s.name === e.target.value);
+    <>
+      <div className="fixed top-[56px] left-0 right-0 bg-zinc-800 border-b border-zinc-800 z-40">
+        <div className="p-3 font-mono">
+          <ScaleList
+            scales={SCALES}
+            selectedScale={selectedScale.name}
+            onSelectScale={(scaleName) => {
+              const newScale = SCALES.find((s) => s.name === scaleName);
               if (newScale) setSelectedScale(newScale);
             }}
-          >
-            {SCALES.map((scale) => (
-              <option key={scale.name} value={scale.name}>
-                {scale.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="w-48">
-          <label className="block text-sm font-medium mb-2">Root Note</label>
-          <select
-            className="w-full p-2 border rounded"
-            value={selectedRoot.name}
-            onChange={(e) => {
-              const newRoot = NOTES.find((n) => n.name === e.target.value);
-              if (newRoot) setSelectedRoot(newRoot);
-            }}
-          >
-            {NOTES.map((note) => (
-              <option key={note.name} value={note.name}>
-                {note.name}
-              </option>
-            ))}
-          </select>
+          />
+          <div className="mt-2">
+            <RootNoteList
+              notes={NOTES}
+              selectedNote={selectedRoot.name}
+              onSelectNote={(noteName) => {
+                const newRoot = NOTES.find((n) => n.name === noteName);
+                if (newRoot) setSelectedRoot(newRoot);
+              }}
+            />
+          </div>
         </div>
       </div>
 
-      <div className="mb-4">
-        <h2 className="text-xl">
-          {selectedRoot.name} {selectedScale.name}
-        </h2>
-        <p className="text-sm text-gray-600">{selectedScale.description}</p>
-      </div>
+      <div className="mt-32 p-4">
+        <div className="mb-4">
+          <h2 className="text-xl">
+            {selectedRoot.name} {selectedScale.name}
+          </h2>
+          <p className="text-sm text-gray-600">{selectedScale.description}</p>
+        </div>
 
-      <div className="space-y-4">
-        {scaleChords.map((chord, index) => {
-          const chordNotes = getChordNotes(
-            parseInt(chord.rootNote.alias),
-            chord.chord.pattern,
-          );
+        <div className="space-y-4">
+          {generateScaleChords().map((chord, index) => {
+            const chordNotes = getChordNotes(
+              parseInt(chord.rootNote.alias),
+              chord.chord.pattern,
+            );
 
-          return (
-            <div key={index} className="flex items-center gap-4">
-              <div className="w-12 text-sm font-medium">
-                {getRomanNumeral(index, chord.chord)}
+            return (
+              <div key={index} className="flex items-center gap-4">
+                <div className="w-12 text-sm font-medium">
+                  {getRomanNumeral(index, chord.chord)}
+                </div>
+                <div className="flex-1">
+                  <ChordView
+                    note={chord.rootNote}
+                    chord={chord.chord}
+                    chordNotes={chordNotes}
+                    onPlay={handlePlayChord}
+                    onToggleFavorite={() => {}}
+                    isFavorite={false}
+                    isLoading={isLoading}
+                  />
+                </div>
               </div>
-              <div className="flex-1">
-                <ChordView
-                  note={chord.rootNote}
-                  chord={chord.chord}
-                  chordNotes={chordNotes}
-                  onPlay={handlePlayChord}
-                  onToggleFavorite={() => {}}
-                  isFavorite={false}
-                  isLoading={isLoading}
-                />
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
