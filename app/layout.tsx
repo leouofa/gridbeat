@@ -66,7 +66,7 @@ export default function RootLayout({
       >
         <PreferencesProvider>
           <Menu />
-          <main className="pt-14">{children}</main>
+          <main className="pt-14 hidden md:block">{children}</main>
         </PreferencesProvider>
         <Analytics />
       </body>

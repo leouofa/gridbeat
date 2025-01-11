@@ -340,22 +340,49 @@ export function Menu() {
     </div>
   );
 
-  return (
-    <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-2 bg-zinc-900 text-zinc-100 font-mono">
-      <div className="flex items-center gap-0">
-        <Link href="/" className="flex items-center">
-          <Image
-            src="/logo.png"
-            alt="GridBeat Logo"
-            width={64}
-            height={64}
-            priority
-            className="h-14 w-auto mr-5"
-          />
-        </Link>
-        {renderNavigation(pathname)}
+  const MobileNotice = () => (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-900 p-4 text-center md:hidden">
+      <div className="max-w-sm">
+        <Image
+          src="/logo.png"
+          alt="GridBeat Logo"
+          width={64}
+          height={64}
+          priority
+          className="h-14 w-auto mx-auto mb-4"
+        />
+        <h2 className="text-xl font-bold font-mono text-white mb-2">
+          Desktop & Tablet Only
+        </h2>
+        <p className="text-zinc-300 font-sans">
+          GridBeat is optimized for tablets and computers. Please visit us on a
+          larger screen for the best experience.
+        </p>
       </div>
-      {renderDropdowns()}
     </div>
+  );
+
+  return (
+    <>
+      <MobileNotice />
+      <div className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between p-2 bg-zinc-900 text-zinc-100 font-mono">
+        <div className="flex items-center gap-0">
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logo.png"
+              alt="GridBeat Logo"
+              width={64}
+              height={64}
+              priority
+              className="h-14 w-auto mr-5"
+            />
+          </Link>
+          {/* Hide navigation on mobile */}
+          <div className="hidden md:block">{renderNavigation(pathname)}</div>
+        </div>
+        {/* Hide dropdowns on mobile */}
+        <div className="hidden md:block">{renderDropdowns()}</div>
+      </div>
+    </>
   );
 }
