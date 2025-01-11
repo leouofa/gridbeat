@@ -347,8 +347,9 @@ export function Menu() {
           <Image
             src="/logo.png"
             alt="GridBeat Logo"
-            width={32 * 2}
-            height={32 * 2}
+            width={64}
+            height={64}
+            priority
             className="h-14 w-auto mr-5"
           />
         </Link>

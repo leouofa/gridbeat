@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { PreferencesProvider } from "@/contexts/PreferencesContext";
 import { Menu } from "@/components/Menu";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title:
-    "GridBeat - Music Chord Calculator & Shape Visualizer | Free Music Tools",
+    "GridBeat by Leonid Medovyy - Open Source Chord & Scale Visualizer for Musicians",
   description:
     "Learn, visualize, and master musical chords with GridBeat's interactive scales tool and chord calculators. Perfect for guitarists, pianists, and grid musicians. Save and organize your favorite chords easily with our free music tool.",
   icons: {
@@ -68,7 +68,7 @@ export default function RootLayout({
           <Menu />
           <main className="pt-14">{children}</main>
         </PreferencesProvider>
-        <Analytics/>
+        <Analytics />
       </body>
     </html>
   );
