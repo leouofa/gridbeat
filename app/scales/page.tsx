@@ -160,7 +160,7 @@ export default function ScaleChordsPage() {
         </div>
       </div>
 
-      <div className="mt-32 p-4">
+      <div className="mt-36 p-4">
         <div className="mb-10">
           <h2 className="text-2xl">
             {selectedRoot.name} {selectedScale.name}

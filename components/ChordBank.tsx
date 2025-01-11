@@ -110,7 +110,7 @@ const ChordBank: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="mt-32">
+      <div className="mt-36">
         <ChordDetail chord={selectedChord} />
       </div>
     </>
