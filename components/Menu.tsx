@@ -4,6 +4,7 @@ import { usePreferences } from "@/contexts/PreferencesContext";
 import { useState, useRef } from "react";
 import { GridWidth, Instrument, SynthType } from "@/types";
 import Link from "next/link";
+import Image from "next/image";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { usePathname } from "next/navigation";
 
@@ -18,7 +19,6 @@ const CONSTANTS = {
     { value: "piano", label: "Piano" },
   ] as const,
   NAV_LINKS: [
-    { href: "/", label: "Home" },
     { href: "/notes", label: "Notes" },
     { href: "/chords", label: "Chords" },
     { href: "/scales", label: "Scales" },
@@ -342,7 +342,18 @@ export function Menu() {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-2 bg-zinc-900 text-zinc-100 font-mono">
-      {renderNavigation(pathname)}
+      <div className="flex items-center gap-0">
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/logo.png"
+            alt="GridBeat Logo"
+            width={32 * 2}
+            height={32 * 2}
+            className="h-14 w-auto mr-5"
+          />
+        </Link>
+        {renderNavigation(pathname)}
+      </div>
       {renderDropdowns()}
     </div>
   );

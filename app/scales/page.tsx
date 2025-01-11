@@ -137,7 +137,7 @@ export default function ScaleChordsPage() {
 
   return (
     <>
-      <div className="fixed top-[56px] left-0 right-0 bg-zinc-800 border-b border-zinc-800 z-40">
+      <div className="fixed top-[72px] left-0 right-0 bg-zinc-800 border-b border-zinc-800 z-40">
         <div className="p-3 font-mono">
           <ScaleList
             scales={SCALES}
