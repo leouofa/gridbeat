@@ -61,7 +61,7 @@ const DropdownButton = ({
 );
 
 const DropdownContainer = ({ children }: { children: React.ReactNode }) => (
-  <div className="absolute right-0 mt-2 py-2 w-48 bg-zinc-800 rounded-md shadow-lg">
+  <div className="absolute right-0 mt-2 py-2 w-48 bg-zinc-800 rounded-md shadow-lg border-2 border-zinc-900">
     {children}
   </div>
 );
@@ -365,7 +365,7 @@ export function Menu() {
   return (
     <>
       <MobileNotice />
-      <div className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between p-2 bg-zinc-900 text-zinc-100 font-mono">
+      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-2 bg-zinc-900 text-zinc-100 font-mono">
         <div className="flex items-center gap-0">
           <Link href="/" className="flex items-center">
             <Image
