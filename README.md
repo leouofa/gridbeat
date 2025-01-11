@@ -28,11 +28,4 @@ Contributions are welcome! If you'd like to contribute to GridBeat, please fork 
 
 ---
 ## License
-## License
--GridBeat is licensed under the MIT License.
-+GridBeat is licensed under the [MIT License](LICENSE).
-+
-+Copyright (c) 2024 Leonid Medovyy
-+
-+Permission is hereby granted, free of charge, to any person obtaining a copy
-+of this software and associated documentation files...
+GridBeat is licensed under the [MIT License](LICENSE.txt).
