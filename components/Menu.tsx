@@ -374,7 +374,7 @@ export function Menu() {
               width={64}
               height={64}
               priority
-              className="hidden lg:block h-14 w-14 mr-5"
+              className="hidden lg:block h-14 w-14 object-contain r-5"
             />
           </Link>
           {/* Hide navigation on mobile */}
