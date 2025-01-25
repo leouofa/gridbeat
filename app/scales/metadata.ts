@@ -1,0 +1,9 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Musical Scales | GridBeat",
+    description: "Discover and play musical scales with their corresponding chords. Learn about scale degrees, chord progressions, and music theory fundamentals.",
+    alternates: {
+        canonical: "https://www.gridbeat.wiki/scales",
+    },
+} 

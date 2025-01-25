@@ -2,6 +2,8 @@ import ContentCard from "@/components/ContentCard";
 import type {Metadata} from "next";
 
 export const metadata: Metadata = {
+  title: "GridBeat - Learn Music Production with Grid Controllers",
+  description: "Start your music production journey with grid controllers. Learn about electronic music, music theory, and create your own beats with interactive tutorials and guides.",
   alternates: {
     canonical: "https://www.gridbeat.wiki",
   },
