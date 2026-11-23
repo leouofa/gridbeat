@@ -3,16 +3,33 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { Preferences, PreferencesContextType } from "@/types";
 
-const defaultPreferences: Preferences = {
+export const defaultPreferences: Preferences = {
   gridWidth: 8,
+  pushLayout: "4ths",
+  pushMode: "chromatic",
   octaves: 2,
-  visibleInstruments: ["piano", "grid"],
+  visibleInstruments: ["piano", "launchpad"],
   guitarFrets: 12,
   ukuleleFrets: 12,
   activeChordName: "Major",
   synthType: "piano",
   favoriteChords: [],
 };
+
+export function migratePreferences(
+  parsedPreferences: Record<string, unknown>,
+): Preferences {
+  const migrated = { ...parsedPreferences };
+  if (Array.isArray(migrated.visibleInstruments)) {
+    migrated.visibleInstruments = migrated.visibleInstruments.map(
+      (inst: string) => (inst === "grid" ? "launchpad" : inst),
+    );
+  }
+  return {
+    ...defaultPreferences,
+    ...(migrated as Partial<Preferences>),
+  };
+}
 
 const PreferencesContext = createContext<PreferencesContextType>({
   preferences: defaultPreferences, // Provide default value here
@@ -32,11 +49,7 @@ export function PreferencesProvider({
       const storedPreferences = localStorage.getItem("gridbeat-preferences");
       if (storedPreferences) {
         const parsedPreferences = JSON.parse(storedPreferences);
-        // Ensure all required properties exist by merging with defaults
-        setPreferences({
-          ...defaultPreferences,
-          ...parsedPreferences,
-        });
+        setPreferences(migratePreferences(parsedPreferences));
       }
     } catch (error) {
       console.error("Failed to parse stored preferences:", error);

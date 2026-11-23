@@ -1,12 +1,16 @@
 export type GridWidth = 2 | 3 | 4 | 5 | 8;
+export type PushLayout = "4ths" | "3rds" | "sequent";
+export type PushMode = "chromatic" | "inKey";
 export type OctaveLength = 1 | 2 | 3 | 4;
-export type Instrument = "guitar" | "ukulele" | "grid" | "piano";
+export type Instrument = "guitar" | "ukulele" | "launchpad" | "push" | "piano";
 export type GuitarFrets = 3 | 5 | 7 | 9 | 12;
 export type UkuleleFrets = 3 | 5 | 7 | 9 | 12;
 export type SynthType = "piano" | "poly";
 
 export interface Preferences {
   gridWidth: GridWidth;
+  pushLayout: PushLayout;
+  pushMode: PushMode;
   octaves: OctaveLength;
   visibleInstruments: Instrument[];
   guitarFrets: GuitarFrets;

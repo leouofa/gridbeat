@@ -187,6 +187,8 @@ export default function ScalesClient() {
                       chord.chord,
                     )}
                     isLoading={isLoading}
+                    scale={selectedScale}
+                    scaleRootNote={parseInt(selectedRoot.alias)}
                   />
                 </div>
               </div>
