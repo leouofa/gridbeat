@@ -6,6 +6,7 @@
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-gridbeat.wiki-blue?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.gridbeat.wiki/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE.txt)
+[![API Docs](https://img.shields.io/badge/API-Documentation-orange.svg?style=for-the-badge)](API.md)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
@@ -53,6 +54,11 @@ See your chord voicings and scale patterns simultaneously mapped across:
 - Toggle individual instruments on or off to focus on your specific setup.
 - Customize grid width and fret depth to match your hardware controller or acoustic instrument.
 
+### 🔌 Chord Shapes API & AI/MCP Agent Integration
+- Programmatically calculate and retrieve structured JSON chord shapes across Launchpad, Push, Guitar, Ukulele, and Piano.
+- Purpose-built for developers and Model Context Protocol (MCP) coding agents to query deterministic music layouts.
+- Read the complete **[API Reference (API.md)](API.md)**.
+
 ---
 
 ## 🎯 Who is GridBeat For?
@@ -71,6 +77,22 @@ Experience GridBeat in your browser—no installation required:
 👉 **[https://www.gridbeat.wiki](https://www.gridbeat.wiki/)**
 
 *(Optimized for desktop and tablet displays)*
+
+---
+
+## 🔌 Chord Shapes API
+
+GridBeat includes a built-in JSON API to programmatically retrieve chord shapes and finger positions for Launchpad, Push, Guitar, Ukulele, and Piano:
+
+```bash
+# Example: Get C Major shape across all instruments
+curl "https://www.gridbeat.wiki/api/chord-shapes?root=C&chord=Major"
+
+# Example: Get G7 shape for guitar and Ableton Push
+curl "https://www.gridbeat.wiki/api/chord-shapes?root=G&chord=7th&instruments=guitar,push"
+```
+
+For the complete schema, layout configuration options, and POST request formats, refer to the **[API Documentation (API.md)](API.md)**.
 
 ---
 
