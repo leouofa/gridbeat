@@ -64,4 +64,98 @@ export interface Scale {
 }
 
 type ScaleCategory = "Western";
-type ScaleName = "Major" | "Minor";
+export type ScaleName = "Major" | "Minor";
+
+export interface GridPosition {
+  row: number;
+  column: number;
+  note: string;
+  pitch: string;
+  isRoot: boolean;
+}
+
+export interface FretboardPosition {
+  string: number;
+  fret: number;
+  note: string;
+  pitch: string;
+  isRoot: boolean;
+}
+
+export interface KeyboardPosition {
+  keyIndex: number;
+  octave: number;
+  note: string;
+  pitch: string;
+  isRoot: boolean;
+  isBlack: boolean;
+}
+
+export interface GridInstrumentShape {
+  instrument: "launchpad" | "push";
+  type: "grid";
+  dimensions: {
+    rows: number;
+    columns: number;
+    gridWidth?: number;
+  };
+  config?: {
+    pushMode?: PushMode;
+    pushLayout?: PushLayout;
+    scale?: ScaleName;
+    scaleRootNote?: number;
+  };
+  activePositions: GridPosition[];
+}
+
+export interface StringTuning {
+  string: number;
+  note: string;
+  octave: number;
+}
+
+export interface FretboardInstrumentShape {
+  instrument: "guitar" | "ukulele";
+  type: "fretboard";
+  frets: number;
+  tuning: StringTuning[];
+  activePositions: FretboardPosition[];
+}
+
+export interface KeyboardInstrumentShape {
+  instrument: "piano";
+  type: "keyboard";
+  octaves: number;
+  totalKeys: number;
+  activePositions: KeyboardPosition[];
+}
+
+export type InstrumentShape =
+  | GridInstrumentShape
+  | FretboardInstrumentShape
+  | KeyboardInstrumentShape;
+
+export interface ChordShapeRequestConfig {
+  gridWidth?: GridWidth;
+  pushMode?: PushMode;
+  pushLayout?: PushLayout;
+  scale?: ScaleName;
+  scaleRootNote?: number;
+  guitarFrets?: GuitarFrets;
+  ukuleleFrets?: UkuleleFrets;
+  octaves?: OctaveLength;
+}
+
+export interface ChordShapeRequest {
+  root: string | number;
+  chord: string | number[];
+  instruments?: Instrument[];
+  config?: ChordShapeRequestConfig;
+}
+
+export interface ChordShapeResponse {
+  root: Note;
+  chord: Chord;
+  chordNotes: string[];
+  shapes: Partial<Record<Instrument, InstrumentShape>>;
+}
