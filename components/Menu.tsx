@@ -2,7 +2,7 @@
 
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { useState, useRef } from "react";
-import { GridWidth, Instrument, SynthType } from "@/types";
+import { GridWidth, Instrument, PushLayout, PushMode, SynthType } from "@/types";
 import Link from "next/link";
 import Image from "next/image";
 import { useClickOutside } from "@/hooks/useClickOutside";
@@ -11,8 +11,17 @@ import { usePathname } from "next/navigation";
 // Constants
 const CONSTANTS = {
   GRID_WIDTH: [8, 5, 4, 3, 2] as const,
+  PUSH_MODES: [
+    { value: "chromatic", label: "Chromatic" },
+    { value: "inKey", label: "In Key" },
+  ] as const,
+  PUSH_LAYOUTS: [
+    { value: "4ths", label: "4ths" },
+    { value: "3rds", label: "3rds" },
+    { value: "sequent", label: "Sequent" },
+  ] as const,
   OCTAVES: [1, 2, 3, 4] as const,
-  INSTRUMENTS: ["piano", "grid", "guitar", "ukulele"] as const,
+  INSTRUMENTS: ["piano", "launchpad", "push", "guitar", "ukulele"] as const,
   FRETS: [3, 5, 7, 9, 12] as const,
   SYNTH_TYPES: [
     { value: "poly", label: "Synth" },
@@ -94,7 +103,8 @@ const getLayoutLabel = (width: GridWidth) =>
 
 const getInstrumentLabel = (instrument: Instrument): string =>
   ({
-    grid: "Grid",
+    launchpad: "Launchpad",
+    push: "Push",
     piano: "Piano",
     guitar: "Guitar",
     ukulele: "Ukulele",
@@ -260,11 +270,11 @@ export function Menu() {
         </div>
       )}
 
-      {/* Grid Width Dropdown - Only show if grid is visible */}
-      {preferences.visibleInstruments.includes("grid") && (
+      {/* Launchpad Width Dropdown - Only show if launchpad is visible */}
+      {preferences.visibleInstruments.includes("launchpad") && (
         <div className="relative">
           <DropdownButton
-            label={"Grid"}
+            label={"Launchpad"}
             isOpen={openDropdown === "gridWidth"}
             onClick={() => toggleDropdown("gridWidth")}
           />
@@ -281,6 +291,51 @@ export function Menu() {
                   onClick={() => updatePreference("gridWidth", width)}
                 >
                   {getLayoutLabel(width)}
+                </DropdownOption>
+              ))}
+            </DropdownContainer>
+          )}
+        </div>
+      )}
+
+      {/* Push Layout & Mode Dropdown - Only show if push is visible */}
+      {preferences.visibleInstruments.includes("push") && (
+        <div className="relative">
+          <DropdownButton
+            label={"Push"}
+            isOpen={openDropdown === "push"}
+            onClick={() => toggleDropdown("push")}
+          />
+          {openDropdown === "push" && (
+            <DropdownContainer>
+              <div className="px-4 py-2 text-md text-zinc-400 font-mono font-semibold">
+                Mode
+              </div>
+              <div className="border-t border-1 border-zinc-500" />
+              {CONSTANTS.PUSH_MODES.map(({ value, label }) => (
+                <DropdownOption
+                  key={value}
+                  isSelected={preferences.pushMode === value}
+                  onClick={() =>
+                    updatePreference("pushMode", value as PushMode)
+                  }
+                >
+                  {label}
+                </DropdownOption>
+              ))}
+              <div className="px-4 py-2 text-md text-zinc-400 font-mono font-semibold mt-2">
+                Layout
+              </div>
+              <div className="border-t border-1 border-zinc-500" />
+              {CONSTANTS.PUSH_LAYOUTS.map(({ value, label }) => (
+                <DropdownOption
+                  key={value}
+                  isSelected={preferences.pushLayout === value}
+                  onClick={() =>
+                    updatePreference("pushLayout", value as PushLayout)
+                  }
+                >
+                  {label}
                 </DropdownOption>
               ))}
             </DropdownContainer>

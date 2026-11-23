@@ -5,8 +5,10 @@ import { Preferences, PreferencesContextType } from "@/types";
 
 const defaultPreferences: Preferences = {
   gridWidth: 8,
+  pushLayout: "4ths",
+  pushMode: "chromatic",
   octaves: 2,
-  visibleInstruments: ["piano", "grid"],
+  visibleInstruments: ["piano", "launchpad"],
   guitarFrets: 12,
   ukuleleFrets: 12,
   activeChordName: "Major",
@@ -32,6 +34,12 @@ export function PreferencesProvider({
       const storedPreferences = localStorage.getItem("gridbeat-preferences");
       if (storedPreferences) {
         const parsedPreferences = JSON.parse(storedPreferences);
+        if (Array.isArray(parsedPreferences.visibleInstruments)) {
+          parsedPreferences.visibleInstruments =
+            parsedPreferences.visibleInstruments.map((inst: string) =>
+              inst === "grid" ? "launchpad" : inst,
+            );
+        }
         // Ensure all required properties exist by merging with defaults
         setPreferences({
           ...defaultPreferences,

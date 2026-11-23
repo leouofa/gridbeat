@@ -1,5 +1,5 @@
 import React from "react";
-import { Chord, Note } from "@/types";
+import { Chord, Note, Scale } from "@/types";
 import Grid from "@/components/Grid";
 import PianoKeyboard from "@/components/PianoKeyboard";
 import Guitar from "@/components/Guitar";
@@ -17,6 +17,8 @@ interface ChordViewProps {
   onToggleFavorite: () => void;
   isFavorite: boolean;
   isLoading?: boolean;
+  scale?: Scale;
+  scaleRootNote?: number;
 }
 
 export const ChordView: React.FC<ChordViewProps> = ({
@@ -27,10 +29,15 @@ export const ChordView: React.FC<ChordViewProps> = ({
   onToggleFavorite,
   isFavorite,
   isLoading = false,
+  scale,
+  scaleRootNote,
 }) => {
   const { preferences } = usePreferences();
   const hasVisibleInstruments = preferences.visibleInstruments.length > 0;
   const rootNoteNumber = parseInt(note.alias);
+  const showGridHeaders =
+    preferences.visibleInstruments.includes("launchpad") &&
+    preferences.visibleInstruments.includes("push");
 
   return (
     <div
@@ -85,8 +92,21 @@ export const ChordView: React.FC<ChordViewProps> = ({
             </div>
           </div>
         </div>
-        <div className="flex-grow">
-          <Grid pattern={chord.pattern} rootNote={rootNoteNumber} />
+        <div className="flex flex-wrap gap-4 flex-grow">
+          <Grid
+            controller="launchpad"
+            pattern={chord.pattern}
+            rootNote={rootNoteNumber}
+            showHeader={showGridHeaders}
+          />
+          <Grid
+            controller="push"
+            pattern={chord.pattern}
+            rootNote={rootNoteNumber}
+            scale={scale}
+            scaleRootNote={scaleRootNote}
+            showHeader={showGridHeaders}
+          />
         </div>
       </div>
     </div>

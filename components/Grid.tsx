@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { Note, Interval, SynthType } from "@/types";
-import { NOTES } from "@/constants";
+import { Note, Interval, SynthType, Scale, PushLayout } from "@/types";
+import { NOTES, SCALES } from "@/constants";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { getNoteHighlight } from "@/utils/NoteHighlighter";
 import { PianoSamplerSingleton } from "@/utils/PianoSamplerSingleton";
@@ -10,10 +10,19 @@ import * as Tone from "tone";
 import { useInstrument } from "@/hooks/useInstrument";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
+interface GridCell {
+  note: Note;
+  absoluteSemitones: number;
+}
+
 interface GridProps {
   pattern?: Interval;
   rootNote?: number;
   synthType?: SynthType;
+  controller?: "launchpad" | "push";
+  scale?: Scale;
+  scaleRootNote?: number;
+  showHeader?: boolean;
   props?: {
     visible?: boolean;
     width?: number;
@@ -24,6 +33,10 @@ const Grid: React.FC<GridProps> = ({
   pattern,
   rootNote,
   synthType: propsSynthType = undefined,
+  controller = "launchpad",
+  scale,
+  scaleRootNote,
+  showHeader = false,
   props,
 }) => {
   const { preferences } = usePreferences();
@@ -35,31 +48,12 @@ const Grid: React.FC<GridProps> = ({
     PianoSamplerSingleton.getInstance(); // Start loading immediately
   }, []);
 
-  const playNote = async (
-    note: Note,
-    rowIndex: number,
-    columnIndex: number,
-  ) => {
+  const playNote = async (cell: GridCell) => {
     await Tone.start();
 
     if (instrument) {
-      const actualRowIndex = 7 - rowIndex;
-      const position = actualRowIndex * 8 + columnIndex;
-
-      let octave = 1;
-      let notePosition = 0;
-
-      for (let i = 0; i < position; i++) {
-        if (notePosition === 12) {
-          notePosition = 0;
-        }
-        if (notePosition === 0) {
-          octave++;
-        }
-        notePosition++;
-      }
-
-      const standardNoteName = note.name.replace("♯", "#");
+      const octave = 2 + Math.floor(cell.absoluteSemitones / 12);
+      const standardNoteName = cell.note.name.replace("♯", "#");
       const noteWithOctave = `${standardNoteName}${octave}`;
       instrument.triggerAttackRelease(noteWithOctave, "8n");
     }
@@ -69,120 +63,139 @@ const Grid: React.FC<GridProps> = ({
     return <LoadingSpinner />;
   }
 
-  // Use props.visible if provided, otherwise check preferences
+  // Use props.visible if provided, otherwise check preferences for this controller
   const isVisible =
-    props?.visible ?? preferences.visibleInstruments.includes("grid");
+    props?.visible ?? preferences.visibleInstruments.includes(controller);
 
   // Early return if grid should not be visible
   if (!isVisible) {
     return null;
   }
 
-  // Helper function to normalize note position
+  // Helper function to normalize note position into 0..11
   const normalizePosition = (position: number): number => {
-    // Handle negative numbers and numbers larger than 11
     let normalized = position % 12;
     if (normalized < 0) normalized += 12;
     return normalized;
   };
 
-  const buildGrid = (): Note[][] => {
-    // Use props.width if provided, otherwise use preferences width
+  const getPushChromaticRowStep = (layout: PushLayout): number => {
+    switch (layout) {
+      case "4ths":
+        return 5;
+      case "3rds":
+        return 3;
+      case "sequent":
+        return 8;
+    }
+  };
+
+  const getPushInKeyRowStep = (layout: PushLayout): number => {
+    switch (layout) {
+      case "4ths":
+        return 3;
+      case "3rds":
+        return 2;
+      case "sequent":
+        return 8;
+    }
+  };
+
+  const resolveActiveScale = (): Scale => {
+    if (scale) return scale;
+    // Infer Minor scale for chords with a minor 3rd (e.g., Minor, Diminished), otherwise Major
+    const isMinorQuality = pattern && pattern[1] === 3;
+    const targetName = isMinorQuality ? "Minor" : "Major";
+    return SCALES.find((s) => s.name === targetName) ?? SCALES[0];
+  };
+
+  const getScaleDegreeSemitones = (activeScale: Scale): number[] => {
+    const offsets: number[] = [0];
+    let acc = 0;
+    for (let i = 0; i < activeScale.pattern.length - 1; i++) {
+      acc += activeScale.pattern[i];
+      offsets.push(acc);
+    }
+    return offsets;
+  };
+
+  const buildLaunchpadGrid = (): GridCell[][] => {
     const width = props?.width ?? preferences.gridWidth;
-
-    switch (width) {
-      case 8:
-        return buildEight();
-      case 2:
-        return buildWithOverlap(5);
-      case 3:
-        return buildWithOverlap(4);
-      case 4:
-        return buildWithOverlap(3);
-      case 5:
-        return buildWithOverlap(2);
-      default:
-        return buildEight();
-    }
-  };
-
-  const buildEight = (): Note[][] => {
-    const grid: number[][] = [];
+    const rowStep = [2, 3, 4, 5, 8].includes(width) ? width : 8;
+    const grid: GridCell[][] = [];
 
     for (let row = 0; row < 8; row++) {
-      const gridRow: number[] = [];
-
+      const gridRow: GridCell[] = [];
       for (let column = 0; column < 8; column++) {
-        if (row === 0) {
-          gridRow.push(normalizePosition(column));
-        } else {
-          const previousNote =
-            column === 0 ? grid[row - 1][7] : gridRow[column - 1];
-
-          const newPosition = normalizePosition(
-            previousNote === 11 ? 0 : previousNote + 1,
-          );
-          gridRow.push(newPosition);
-        }
+        const absoluteSemitones = row * rowStep + column;
+        const note = NOTES[normalizePosition(absoluteSemitones)];
+        gridRow.push({ note, absoluteSemitones });
       }
-
       grid.push(gridRow);
     }
 
-    return fillGrid(grid);
+    return grid;
   };
 
-  const buildWithOverlap = (noteStepback: number): Note[][] => {
-    const grid: number[][] = [];
+  const buildPushGrid = (): GridCell[][] => {
+    const anchorNoteNumber = scaleRootNote ?? rootNote ?? 1;
+    const anchorIndex = normalizePosition(anchorNoteNumber - 1);
+    const grid: GridCell[][] = [];
 
-    for (let row = 0; row < 8; row++) {
-      const gridRow: number[] = [];
+    if (preferences.pushMode === "inKey") {
+      const activeScale = resolveActiveScale();
+      const degreeOffsets = getScaleDegreeSemitones(activeScale);
+      const scaleLen = degreeOffsets.length;
+      const rowDegreeStep = getPushInKeyRowStep(preferences.pushLayout);
 
-      for (let column = 0; column < 8; column++) {
-        if (row === 0) {
-          gridRow.push(normalizePosition(column));
-        } else {
-          let newPosition: number;
-
-          if (column === 0) {
-            const previousNote = grid[row - 1][7];
-            newPosition = normalizePosition(previousNote - noteStepback);
-          } else {
-            const previousNote = gridRow[column - 1];
-            newPosition = normalizePosition(
-              previousNote === 11 ? 0 : previousNote + 1,
-            );
-          }
-
-          gridRow.push(newPosition);
+      for (let row = 0; row < 8; row++) {
+        const gridRow: GridCell[] = [];
+        for (let column = 0; column < 8; column++) {
+          const degreeIndex = row * rowDegreeStep + column;
+          const octaveSemitones = Math.floor(degreeIndex / scaleLen) * 12;
+          const degreeSemitones = degreeOffsets[degreeIndex % scaleLen];
+          const absoluteSemitones =
+            anchorIndex + octaveSemitones + degreeSemitones;
+          const note = NOTES[normalizePosition(absoluteSemitones)];
+          gridRow.push({ note, absoluteSemitones });
         }
+        grid.push(gridRow);
       }
+    } else {
+      const rowStep = getPushChromaticRowStep(preferences.pushLayout);
 
-      grid.push(gridRow);
+      for (let row = 0; row < 8; row++) {
+        const gridRow: GridCell[] = [];
+        for (let column = 0; column < 8; column++) {
+          const absoluteSemitones = anchorIndex + row * rowStep + column;
+          const note = NOTES[normalizePosition(absoluteSemitones)];
+          gridRow.push({ note, absoluteSemitones });
+        }
+        grid.push(gridRow);
+      }
     }
 
-    return fillGrid(grid);
+    return grid;
   };
 
-  const fillGrid = (gridWithNumbers: number[][]): Note[][] => {
-    return gridWithNumbers.map((row) =>
-      row.map((position) => {
-        const normalizedPos = normalizePosition(position);
-        return NOTES[normalizedPos];
-      }),
-    );
-  };
+  const grid =
+    controller === "push" ? buildPushGrid() : buildLaunchpadGrid();
 
-  const grid = buildGrid();
+  const headerLabel = controller === "push" ? "Push" : "Launchpad";
 
   return (
     <div>
+      {showHeader && (
+        <div className="font-mono text-xs text-zinc-400 mb-1 mx-1">
+          {headerLabel}
+        </div>
+      )}
       {grid.reverse().map((row, rowIndex) => (
         <div key={rowIndex} className="flex">
-          {row.map((note, columnIndex) => {
+          {row.map((cell, columnIndex) => {
             const highlight =
               pattern && rootNote !== undefined
-                ? getNoteHighlight(note, pattern, rootNote)
+                ? getNoteHighlight(cell.note, pattern, rootNote)
                 : { opacity: 1 };
 
             return (
@@ -190,14 +203,14 @@ const Grid: React.FC<GridProps> = ({
                 key={`${rowIndex}-${columnIndex}`}
                 className="w-12 h-12 flex items-center justify-center m-1 rounded border-2 border-gray-800 dark:border-gray-200 cursor-pointer hover:saturate-[2.5] active:saturate-[3.0] select-none"
                 style={{
-                  backgroundColor: note.color,
-                  color: note.textColor,
+                  backgroundColor: cell.note.color,
+                  color: cell.note.textColor,
                   opacity: highlight.opacity,
                   filter: highlight.filter,
                 }}
-                onClick={() => playNote(note, rowIndex, columnIndex)}
+                onClick={() => playNote(cell)}
               >
-                {note.name}
+                {cell.note.name}
               </div>
             );
           })}
