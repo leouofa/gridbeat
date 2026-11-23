@@ -1,5 +1,6 @@
 import ContentCard from "@/components/ContentCard";
 import type {Metadata} from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   alternates: {
@@ -149,6 +150,47 @@ export default function Home() {
                   expand your setup and add more launchpads to your arsenal.
                 </li>
               </ul>
+            </ContentCard>
+
+            <ContentCard
+              title="Explore Time Circle"
+              emoji="⏱️"
+              headingLevel="h2"
+            >
+              <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
+                Looking for an algorithmic harmony and backing track generator? Meet{" "}
+                <strong>Time Circle</strong>—a high-performance tool built in Rust and WebAssembly for interactive chord progressions, procedural rhythm accompaniment, and AI agent integration.
+              </p>
+              <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans mb-4">
+                <li>
+                  17 curated harmonic presets across Blues, Pop &amp; Rock, and Soul &amp; R&amp;B.
+                </li>
+                <li>
+                  Radial clockwork wheel with multi-chord bar subdivision and dynamic harmonic mutation.
+                </li>
+                <li>
+                  Multi-track rhythm section (chords, bass, drums) with zero-dependency procedural SoundFont audio and MIDI export.
+                </li>
+                <li>
+                  Model Context Protocol (MCP) integration for AI agents to compose, audition, and arrange music.
+                </li>
+              </ul>
+              <div className="flex flex-wrap gap-4 pt-2 font-sans">
+                <Link
+                  href="/time-circle"
+                  className="text-blue-700 dark:text-blue-400 underline font-semibold text-base sm:text-lg"
+                >
+                  Learn More &amp; MCP Guide →
+                </Link>
+                <a
+                  href="https://time-circle.gridbeat.wiki/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-700 dark:text-blue-400 underline font-semibold text-base sm:text-lg"
+                >
+                  Open Live App ↗
+                </a>
+              </div>
             </ContentCard>
           </div>
         </div>
