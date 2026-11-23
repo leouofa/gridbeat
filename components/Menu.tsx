@@ -23,6 +23,7 @@ const CONSTANTS = {
     { href: "/chords", label: "Chords" },
     { href: "/scales", label: "Scales" },
     { href: "/favorites", label: "Favorites" },
+    { href: "/time-circle", label: "Time Circle" },
   ],
 } as const;
 
