@@ -58,6 +58,12 @@ export const getScaleDegreeSemitones = (activeScale: Scale): number[] => {
   return offsets;
 };
 
+export const getCellPitch = (cell: GridCell): string => {
+  const octave = 2 + Math.floor(cell.absoluteSemitones / 12);
+  const standardNoteName = cell.note.name.replace("♯", "#");
+  return `${standardNoteName}${octave}`;
+};
+
 export const buildLaunchpadGrid = (width: number = 8): GridCell[][] => {
   const rowStep = [2, 3, 4, 5, 8].includes(width) ? width : 8;
   const grid: GridCell[][] = [];

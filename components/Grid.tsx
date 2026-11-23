@@ -12,6 +12,7 @@ import {
   GridCell,
   buildLaunchpadGrid,
   buildPushGrid,
+  getCellPitch,
 } from "@/utils/gridUtils";
 
 interface GridProps {
@@ -51,9 +52,7 @@ const Grid: React.FC<GridProps> = ({
     await Tone.start();
 
     if (instrument) {
-      const octave = 2 + Math.floor(cell.absoluteSemitones / 12);
-      const standardNoteName = cell.note.name.replace("♯", "#");
-      const noteWithOctave = `${standardNoteName}${octave}`;
+      const noteWithOctave = getCellPitch(cell);
       instrument.triggerAttackRelease(noteWithOctave, "8n");
     }
   };
@@ -92,7 +91,7 @@ const Grid: React.FC<GridProps> = ({
           {headerLabel}
         </div>
       )}
-      {grid.reverse().map((row, rowIndex) => (
+      {[...grid].reverse().map((row, rowIndex) => (
         <div key={rowIndex} className="flex">
           {row.map((cell, columnIndex) => {
             const highlight =
