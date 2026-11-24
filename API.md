@@ -1,6 +1,6 @@
 # 🔌 GridBeat Chord Shapes API Reference
 
-GridBeat provides an HTTP API at `/api/chord-shapes` for retrieving deterministic chord shapes and layout calculations across multiple musical instruments. It is designed for external applications, music composition tools, and Model Context Protocol (MCP) agents (such as Antigravity, Claude, and Cursor).
+GridBeat provides an HTTP API at `/api/chord-shapes` for retrieving deterministic chord shapes and layout calculations across multiple musical instruments. It is designed for external applications, music composition tools, and Model Context Protocol (MCP) agents (such as Antigravity, Claude, and Cursor) via the [gridbeat-mcp](https://github.com/leouofa/gridbeat-mcp) server.
 
 ---
 

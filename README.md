@@ -7,6 +7,7 @@
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-gridbeat.wiki-blue?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.gridbeat.wiki/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE.txt)
 [![API Docs](https://img.shields.io/badge/API-Documentation-orange.svg?style=for-the-badge)](API.md)
+[![MCP Server](https://img.shields.io/badge/MCP%20Server-gridbeat--mcp-purple?style=for-the-badge)](https://github.com/leouofa/gridbeat-mcp)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
@@ -58,6 +59,7 @@ See your chord voicings and scale patterns simultaneously mapped across:
 - Programmatically calculate and retrieve structured JSON chord shapes across Launchpad, Push, Guitar, Ukulele, and Piano.
 - Purpose-built for developers and Model Context Protocol (MCP) coding agents to query deterministic music layouts.
 - Read the complete **[API Reference (API.md)](API.md)**.
+- Connect AI assistants directly via the official **[GridBeat MCP Server (gridbeat-mcp)](https://github.com/leouofa/gridbeat-mcp)**.
 
 ---
 
@@ -93,6 +95,34 @@ curl "https://www.gridbeat.wiki/api/chord-shapes?root=G&chord=7th&instruments=gu
 ```
 
 For the complete schema, layout configuration options, and POST request formats, refer to the **[API Documentation (API.md)](API.md)**.
+
+---
+
+## 🤖 Model Context Protocol (MCP) Server
+
+Empower AI assistants (such as Claude Desktop, Cursor, Antigravity, and Windsurf) with deterministic chord lookup and publication-ready vector PDF chord sheet generation via the official **[gridbeat-mcp](https://github.com/leouofa/gridbeat-mcp)** server.
+
+### Key Capabilities
+- **`get_chord_shapes`**: Query exact note intervals and finger matrices across 8×8 pads (Novation Launchpad, Ableton Push), acoustic fretboards (Guitar, Ukulele), and piano keyboards.
+- **`generate_chord_sheet_pdf`**: Render publication-quality vector PDF chord sheets directly from natural language prompts, complete with 2D auto-layout optimization, deduplicated voicing grids, and tonal center key locking.
+
+### Quickstart with MCP Clients
+
+```json
+{
+  "mcpServers": {
+    "gridbeat": {
+      "command": "node",
+      "args": ["/path/to/gridbeat-mcp/dist/index.js"],
+      "env": {
+        "GRIDBEAT_API_URL": "https://www.gridbeat.wiki"
+      }
+    }
+  }
+}
+```
+
+👉 Explore the full installation and setup guide in the **[gridbeat-mcp repository](https://github.com/leouofa/gridbeat-mcp)**.
 
 ---
 
