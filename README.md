@@ -7,7 +7,7 @@
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-gridbeat.wiki-blue?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.gridbeat.wiki/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE.txt)
 [![API Docs](https://img.shields.io/badge/API-Documentation-orange.svg?style=for-the-badge)](API.md)
-[![MCP Server](https://img.shields.io/badge/MCP%20Server-gridbeat--mcp-purple?style=for-the-badge)](https://github.com/leouofa/gridbeat-mcp)
+[![MCP Server](https://img.shields.io/badge/MCP%20Server-gridbeat--mcp-purple?style=for-the-badge)](https://github.com/delta-orchid/gridbeat-mcp)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
@@ -59,7 +59,7 @@ See your chord voicings and scale patterns simultaneously mapped across:
 - Programmatically calculate and retrieve structured JSON chord shapes across Launchpad, Push, Guitar, Ukulele, and Piano.
 - Purpose-built for developers and Model Context Protocol (MCP) coding agents to query deterministic music layouts.
 - Read the complete **[API Reference (API.md)](API.md)**.
-- Connect AI assistants directly via the official **[GridBeat MCP Server (gridbeat-mcp)](https://github.com/leouofa/gridbeat-mcp)**.
+- Connect AI assistants directly via the official **[GridBeat MCP Server (gridbeat-mcp)](https://github.com/delta-orchid/gridbeat-mcp)**.
 
 ---
 
@@ -74,7 +74,7 @@ See your chord voicings and scale patterns simultaneously mapped across:
 
 ## 🌐 Hosted Version
 
-Experience GridBeat in your browser—no installation required:
+Experience GridBeat in your browser with no installation required:
 
 👉 **[https://www.gridbeat.wiki](https://www.gridbeat.wiki/)**
 
@@ -100,7 +100,7 @@ For the complete schema, layout configuration options, and POST request formats,
 
 ## 🤖 Model Context Protocol (MCP) Server
 
-Empower AI assistants (such as Claude Desktop, Cursor, Antigravity, and Windsurf) with deterministic chord lookup and publication-ready vector PDF chord sheet generation via the official **[gridbeat-mcp](https://github.com/leouofa/gridbeat-mcp)** server.
+Empower AI assistants (such as Claude Desktop, Cursor, Antigravity, and Windsurf) with deterministic chord lookup and publication-ready vector PDF chord sheet generation via the official **[gridbeat-mcp](https://github.com/delta-orchid/gridbeat-mcp)** server.
 
 ### Key Capabilities
 - **`get_chord_shapes`**: Query exact note intervals and finger matrices across 8×8 pads (Novation Launchpad, Ableton Push), acoustic fretboards (Guitar, Ukulele), and piano keyboards.
@@ -122,7 +122,7 @@ Empower AI assistants (such as Claude Desktop, Cursor, Antigravity, and Windsurf
 }
 ```
 
-👉 Explore the full installation and setup guide in the **[gridbeat-mcp repository](https://github.com/leouofa/gridbeat-mcp)**.
+👉 Explore the full installation and setup guide in the **[gridbeat-mcp repository](https://github.com/delta-orchid/gridbeat-mcp)**.
 
 ---
 
@@ -136,7 +136,7 @@ Want to run GridBeat locally or contribute to development?
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/leouofa/gridbeat.git
+git clone https://github.com/delta-orchid/gridbeat.git
 cd gridbeat
 ```
 

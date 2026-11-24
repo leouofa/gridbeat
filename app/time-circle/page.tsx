@@ -1,10 +1,11 @@
 import ContentCard from "@/components/ContentCard";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Time Circle - Algorithmic Harmony, Groove Generator & MCP | GridBeat",
+  title: "Time Circle - Algorithmic Harmony & Dynamic Groove Generator | GridBeat",
   description:
-    "Explore chord progressions, procedural backing tracks, multi-track MIDI export, and AI agent integration with Time Circle and the Time Circle MCP Server.",
+    "Explore chord progressions, radial clockwork harmony visualization, procedural backing tracks, and multi-track MIDI export with Time Circle.",
   alternates: {
     canonical: "https://www.gridbeat.wiki/time-circle",
   },
@@ -42,7 +43,13 @@ export default function TimeCirclePage() {
                   <strong>Studio-Grade MIDI Export:</strong> Drag-and-drop Standard MIDI Files (SMF Format 1) with dedicated Conductor, Chords, Bass, and Drum tracks directly into any DAW.
                 </li>
                 <li>
-                  <strong>AI &amp; MCP Integration:</strong> Direct bidirectional control for LLMs and coding agents like Antigravity, Claude Desktop, and Cursor.
+                  <Link
+                    href="/mcps"
+                    className="text-blue-700 dark:text-blue-400 underline font-semibold"
+                  >
+                    AI &amp; MCP Integration:
+                  </Link>{" "}
+                  Direct bidirectional control for LLMs and coding agents like Antigravity, Claude Desktop, and Cursor.
                 </li>
               </ul>
 
@@ -69,7 +76,7 @@ export default function TimeCirclePage() {
                   </svg>
                 </a>
                 <a
-                  href="https://github.com/leouofa/time-circle"
+                  href="https://github.com/delta-orchid/time-circle"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-100 font-medium text-sm sm:text-base transition-colors duration-200"
@@ -89,27 +96,12 @@ export default function TimeCirclePage() {
                     />
                   </svg>
                 </a>
-                <a
-                  href="https://github.com/leouofa/time-circle-mcp"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/mcps"
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-100 font-medium text-sm sm:text-base transition-colors duration-200"
                 >
-                  <span>Time Circle MCP GitHub</span>
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                    />
-                  </svg>
-                </a>
+                  <span>Explore Music MCPs →</span>
+                </Link>
               </div>
             </ContentCard>
 
@@ -138,88 +130,41 @@ export default function TimeCirclePage() {
               </ol>
             </ContentCard>
 
-            {/* Card 3: AI & MCP Server Integration */}
-            <ContentCard
-              title="AI & Model Context Protocol (MCP) Integration"
-              emoji="🤖"
-              headingLevel="h2"
-            >
-              <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
-                Time Circle includes native AI agent interoperability powered by the companion{" "}
-                <a
-                  href="https://github.com/leouofa/time-circle-mcp"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-700 dark:text-blue-400 underline font-medium"
-                >
-                  time-circle-mcp
-                </a>{" "}
-                server.
-              </p>
-              <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
-                Standard language models often struggle with strict harmonic voice leading and real-time playback. With the Time Circle MCP Server, agents like Antigravity, Claude Desktop, and Cursor gain a deterministic music engine. Agents can query session state, reharmonize chord progressions, audition voicings, dial in swing feel, and export DAW-ready MIDI files.
-              </p>
-              <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
-                The MCP server can run either in headless mode for automated agent scripting, or connected over WebSocket (<code className="text-sm bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">ws://127.0.0.1:3847</code>) to the live WebAssembly app at{" "}
-                <a
-                  href="https://time-circle.gridbeat.wiki/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-700 dark:text-blue-400 underline font-medium"
-                >
-                  time-circle.gridbeat.wiki
-                </a>{" "}
-                for instant visual synchronization.
-              </p>
-              <div className="pt-2">
-                <a
-                  href="https://github.com/leouofa/time-circle-mcp#readme"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-blue-700 dark:text-blue-400 underline font-semibold text-base sm:text-lg"
-                >
-                  <span>View MCP Quickstart &amp; Client Setup Guide on GitHub →</span>
-                </a>
-              </div>
-            </ContentCard>
-
-            {/* Card 4: Open Source & Desktop Build */}
+            {/* Card 3: Open Source & Desktop Build */}
             <ContentCard
               title="Open Source & Desktop Build"
               emoji="🛠️"
               headingLevel="h2"
             >
               <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
-                Both Time Circle and its MCP server are 100% open source under the MIT License.
+                Time Circle and its companion Model Context Protocol tools are 100% open source under the MIT License.
               </p>
               <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans mb-4">
                 <li>
-                  <strong>Native Desktop GUI:</strong> In addition to the web app, Time Circle compiles to a native 60 FPS desktop application for macOS, Linux, and Windows using <code className="text-sm bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">egui</code> and <code className="text-sm bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">cpal</code> audio.
+                  <strong>Native Desktop GUI:</strong> In addition to the web app, Time Circle compiles to a native 60 FPS desktop application for macOS, Linux, and Windows using <code className="text-sm bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded font-mono">egui</code> and <code className="text-sm bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded font-mono">cpal</code> audio.
                 </li>
                 <li>
                   <strong>WebAssembly Pipeline:</strong> The exact same Rust engine powers the browser edition without external plugins.
                 </li>
                 <li>
-                  <strong>Get Involved:</strong> Contributions, feedback, and feature requests are welcome across both projects on GitHub.
+                  <strong>AI &amp; MCP Integration:</strong> Explore the <Link href="/mcps" className="text-blue-700 dark:text-blue-400 underline font-medium">Time Circle MCP Server</Link> for AI composition and DAW MIDI export.
                 </li>
               </ul>
-              <div className="flex flex-wrap gap-4 pt-2">
+              <div className="flex flex-wrap gap-4 pt-2 font-sans">
                 <a
-                  href="https://github.com/leouofa/time-circle"
+                  href="https://github.com/delta-orchid/time-circle"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-700 dark:text-blue-400 underline font-semibold text-base sm:text-lg"
                 >
                   time-circle Repository ↗
                 </a>
-                <a
-                  href="https://github.com/leouofa/time-circle-mcp"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/mcps"
                   className="text-blue-700 dark:text-blue-400 underline font-semibold text-base sm:text-lg"
                 >
-                  time-circle-mcp Repository ↗
-                </a>
+                  Explore Music MCPs →
+                </Link>
               </div>
             </ContentCard>
           </div>
