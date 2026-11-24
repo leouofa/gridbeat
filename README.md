@@ -74,7 +74,7 @@ See your chord voicings and scale patterns simultaneously mapped across:
 
 ## 🌐 Hosted Version
 
-Experience GridBeat in your browser—no installation required:
+Experience GridBeat in your browser with no installation required:
 
 👉 **[https://www.gridbeat.wiki](https://www.gridbeat.wiki/)**
 

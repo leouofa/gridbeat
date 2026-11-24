@@ -24,7 +24,7 @@ export default function MCPsPage() {
               headingLevel="h1"
             >
               <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
-                <strong>gridbeat-mcp</strong> is a production-grade Model Context Protocol (MCP) server that connects AI coding assistants—such as Claude Desktop, Cursor, Antigravity, and Windsurf—directly to the GridBeat Chord Shapes engine.
+                <strong>gridbeat-mcp</strong> is a production-grade Model Context Protocol (MCP) server that connects AI coding assistants, including Claude Desktop, Cursor, Antigravity, and Windsurf, directly to the GridBeat Chord Shapes engine.
               </p>
               <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
                 Standard language models frequently hallucinate chord voicings, finger positions, and fret numbers. GridBeat MCP solves this by providing deterministic music calculations and publication-ready vector PDF rendering directly from conversational prompts.

@@ -21,8 +21,8 @@ export default function Home() {
             >
               <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
                 Have you ever wondered why music speaks to everyone, no matter
-                their background? Music {"isn't"} just something we listen to—
-                {"it's"} part of who we are. Here are some truths about music:
+                their background? Music {"isn't"} just something we listen to.
+                {"It's"} part of who we are. Here are some truths about music:
               </p>
               <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans">
                 <li>
@@ -58,7 +58,7 @@ export default function Home() {
                   yourself the space to grow.
                 </li>
                 <li>
-                  Music is a marathon, not a sprint—slow down and enjoy the
+                  Music is a marathon, not a sprint. Slow down and enjoy the
                   journey.
                 </li>
               </ul>
@@ -94,7 +94,7 @@ export default function Home() {
                 </li>
                 <li>Produce your own music and share it with the world.</li>
                 <li>
-                  Music is music—your skills in electronic music will enhance
+                  Music is music. Your skills in electronic music will enhance
                   your ability to play traditional instruments.
                 </li>
               </ul>
@@ -159,7 +159,7 @@ export default function Home() {
             >
               <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
                 Looking for an algorithmic harmony and backing track generator? Meet{" "}
-                <strong>Time Circle</strong>—a high-performance tool built in Rust and WebAssembly for interactive chord progressions, procedural rhythm accompaniment, and AI agent integration.
+                <strong>Time Circle</strong>, a high-performance tool built in Rust and WebAssembly for interactive chord progressions, procedural rhythm accompaniment, and AI agent integration.
               </p>
               <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans mb-4">
                 <li>

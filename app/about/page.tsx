@@ -161,7 +161,7 @@ export default function AboutPage() {
                 >
                   Modern Applications of Ninjutsu
                 </a>
-                , Leonid adapts ancient ninja principles—adaptability, resilience, strategic patience, and self-reliance—into an actionable blueprint for modern life and career mastery.
+                , Leonid adapts ancient ninja principles, including adaptability, resilience, strategic patience, and self-reliance, into an actionable blueprint for modern life and career mastery.
               </p>
               <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
                 A centerpiece of the book is <strong>Chapter 8: &ldquo;Music for Ninjas&rdquo;</strong>, which dismantles the myth that musical ability is an innate, mystical gift:
@@ -171,13 +171,13 @@ export default function AboutPage() {
                   <strong>The Music Instinct:</strong> Rhythm is hardwired into the human nervous system through our heartbeat, breathing, and walking. Music is a trainable skill that sharpens timing, pattern recognition, and emotional intuition.
                 </li>
                 <li>
-                  <strong>Electronic Music as an On-Ramp:</strong> Why electronic production and isomorphic grid controllers are the smartest starting point—they decouple music theory, song structure, and harmony from years of mechanical finger gymnastics, allowing you to learn the language before mastering the handwriting.
+                  <strong>Electronic Music as an On-Ramp:</strong> Why electronic production and isomorphic grid controllers are the smartest starting point because they decouple music theory, song structure, and harmony from years of mechanical finger gymnastics, allowing you to learn the language before mastering the handwriting.
                 </li>
                 <li>
                   <strong>The Simple Practice Loop:</strong> A 30-day framework focused on 5 minutes of metronome timing, 10–20 minutes of harmonic vocabulary (chords and scales), and 10–20 minutes of tangible output.
                 </li>
                 <li>
-                  <strong>The Rule of Progress:</strong> Never leave a session without finishing and saving a concrete artifact—an 8-bar loop, a clean progression take, or a recorded song section.
+                  <strong>The Rule of Progress:</strong> Never leave a session without finishing and saving a concrete artifact, such as an 8-bar loop, a clean progression take, or a recorded song section.
                 </li>
               </ul>
 
