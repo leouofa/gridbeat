@@ -34,6 +34,7 @@ const CONSTANTS = {
     { href: "/favorites", label: "Favorites" },
     { href: "/time-circle", label: "Time Circle" },
     { href: "/mcps", label: "MCPs" },
+    { href: "/about", label: "About" },
   ],
 } as const;
 
