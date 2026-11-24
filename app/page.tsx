@@ -172,7 +172,13 @@ export default function Home() {
                   Multi-track rhythm section (chords, bass, drums) with zero-dependency procedural SoundFont audio and MIDI export.
                 </li>
                 <li>
-                  Model Context Protocol (MCP) integration for AI agents to compose, audition, and arrange music.
+                  <Link
+                    href="/mcps"
+                    className="text-blue-700 dark:text-blue-400 underline"
+                  >
+                    Model Context Protocol (MCP)
+                  </Link>{" "}
+                  integration for AI agents to compose, audition, and arrange music.
                 </li>
               </ul>
               <div className="flex flex-wrap gap-4 pt-2 font-sans">
@@ -180,7 +186,7 @@ export default function Home() {
                   href="/time-circle"
                   className="text-blue-700 dark:text-blue-400 underline font-semibold text-base sm:text-lg"
                 >
-                  Learn More &amp; MCP Guide →
+                  Learn More →
                 </Link>
                 <a
                   href="https://time-circle.gridbeat.wiki/"
@@ -189,6 +195,51 @@ export default function Home() {
                   className="text-blue-700 dark:text-blue-400 underline font-semibold text-base sm:text-lg"
                 >
                   Open Live App ↗
+                </a>
+              </div>
+            </ContentCard>
+
+            <ContentCard
+              title="AI & Music MCPs"
+              emoji="🤖"
+              headingLevel="h2"
+            >
+              <p className="text-base sm:text-lg mb-3 sm:mb-4 font-sans">
+                Connect AI coding assistants and LLMs (such as Claude Desktop, Cursor, Antigravity, and Windsurf) directly to deterministic music theory, hardware controller mappings, and generative rhythm engines via the <strong>Model Context Protocol (MCP)</strong>.
+              </p>
+              <ul className="list-disc list-inside text-base sm:text-lg space-y-1 sm:space-y-2 font-sans mb-4">
+                <li>
+                  <strong>GridBeat MCP:</strong> Query precise chord shapes, note intervals, and finger matrices across Launchpad, Ableton Push, Guitar, Ukulele, and Piano, and render publication-quality vector PDF chord sheets.
+                </li>
+                <li>
+                  <strong>Time Circle MCP:</strong> 15 tools for algorithmic chord progressions, harmonic mutation (spice), virtual rhythm accompaniment (comping, bass, drums), and multi-track MIDI export.
+                </li>
+                <li>
+                  <strong>Deterministic &amp; Real-Time:</strong> Eliminates model hallucinations with exact chord math, live WebSocket visual synchronization, and headless automation.
+                </li>
+              </ul>
+              <div className="flex flex-wrap gap-4 pt-2 font-sans">
+                <Link
+                  href="/mcps"
+                  className="text-blue-700 dark:text-blue-400 underline font-semibold text-base sm:text-lg"
+                >
+                  Explore Music MCPs →
+                </Link>
+                <a
+                  href="https://github.com/delta-orchid/gridbeat-mcp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-700 dark:text-blue-400 underline font-semibold text-base sm:text-lg"
+                >
+                  gridbeat-mcp GitHub ↗
+                </a>
+                <a
+                  href="https://github.com/delta-orchid/time-circle-mcp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-700 dark:text-blue-400 underline font-semibold text-base sm:text-lg"
+                >
+                  time-circle-mcp GitHub ↗
                 </a>
               </div>
             </ContentCard>
